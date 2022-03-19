@@ -24,7 +24,7 @@ export class AllFileSearch {
       that.hideSearchDiv()
     })
 
-    $(document).click(function (e) {
+    $("#shadow").click(function (e) {
       that.hideSearchDiv()
     })
 

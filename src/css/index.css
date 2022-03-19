@@ -133,7 +133,8 @@ pre {
 .card-header {
   font-size: 12px;
   border-left: 3px solid #0068d7;
-  padding-bottom: 0
+  padding-bottom: 0;
+  font-weight: bolder;
 }
 
 .card:hover {
@@ -146,8 +147,8 @@ pre {
 }
 
 .card-text {
-  margin: 5px;
-  font-size: 11px;
+  margin: 6px;
+  font-size: 12px;
 }
 
 #allFileSearchInput {

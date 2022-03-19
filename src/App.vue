@@ -13,8 +13,7 @@
     <ul id="content"></ul>
     <ul id="nav"></ul>
     <div id="allFileSearch" class="hide">
-      <input id="allFileSearchInput" type="text" placeholder="Search" aria-label="Search"
-             @keyup.enter="allFileQuery()">
+      <input id="allFileSearchInput" type="search" placeholder="搜索..." @keyup.enter="allFileQuery()">
       <div id="showView">
       </div>
       <div id="allFileSearchNums" style="font-size: 12px;margin-top: 5px; color: yellow"></div>

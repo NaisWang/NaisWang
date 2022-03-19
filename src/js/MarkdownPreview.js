@@ -30,10 +30,10 @@ export class MarkdownPreview {
   setMkContent(file) {
     if (file !== undefined) {
       this.init();
-      if (file.endsWith(".pdf") || file.endsWith(".doc") || file.endsWith("docx")) {
+      if (file.endsWith(".pdf") || file.endsWith(".doc") || file.endsWith(".docx")) {
         let iframeNode = document.createElement('iframe');
         iframeNode.setAttribute("width", "100%");
-        iframeNode.setAttribute("height", "100%");
+        iframeNode.setAttribute("height", window.innerHeight - 45 + "px");
         if (file.endsWith(".pdf")) {
           iframeNode.setAttribute("src", file);
         } else {

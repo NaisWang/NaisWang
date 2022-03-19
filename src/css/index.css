@@ -24,7 +24,7 @@
 }
 
 #files li.selected{
-  color: yellow;
+  font-weight: bolder;
 }
 
 #files li.parent.close::before{

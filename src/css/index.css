@@ -9,6 +9,7 @@
   padding-left: 0;
   overflow: auto;
   margin: 0;
+  box-shadow: 2px 0 4px rgba(0, 0, 0, .15);
 }
 
 #files li {
@@ -33,6 +34,10 @@
 
 #files li.parent.open::before {
   content: "▽"
+}
+
+#files li.parent li:not(.parent) {
+  margin-left: 15px;
 }
 
 #content {
@@ -172,7 +177,7 @@ div.top {
   height: 45px;
   z-index: 1;
   background-color: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 5%), inset 0 -1px 0 rgb(0 0 0 / 15%);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .15);;
   position: sticky;
   top: 0;
 }

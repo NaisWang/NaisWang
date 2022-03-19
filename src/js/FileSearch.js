@@ -26,6 +26,7 @@ export class FileSearch {
         that.$fileInput.focus();
       }
     })
+
   }
 
   search(searchContent) {

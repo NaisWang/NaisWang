@@ -1,3 +1,4 @@
+npm run build
 python3 ./getAllFilesName.py
 git add .
 git commit -m 'a'

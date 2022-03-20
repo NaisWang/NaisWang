@@ -10,8 +10,12 @@
       <span id="topTitle"></span>
     </div>
     <ul id="files"></ul>
-    <ul id="content"></ul>
-    <ul id="nav"></ul>
+
+<!--    <ul id="content"></ul>-->
+<!--    <ul id="nav"></ul>-->
+
+    <router-view :key="$route.path"></router-view>
+
     <div id="allFileSearch" class="hide">
       <input id="allFileSearchInput" type="search" placeholder="搜索..." @keyup.enter="allFileQuery()">
       <div id="showView">
@@ -23,7 +27,6 @@
 </template>
 
 <script>
-import {MarkdownPreview} from "./js/MarkdownPreview";
 import {FilesShow} from "./js/FilesShow";
 import {FileSearch} from "./js/FileSearch";
 import {AllFileSearch} from "./js/allFileSearch";
@@ -35,14 +38,12 @@ export default {
     return {
       msg: 'OK',
       allFileSearch: null,
-      markdownPreview: null
     }
   },
   mounted() {
     this.$nextTick(() => {
-      this.markdownPreview = new MarkdownPreview();
-      this.allFileSearch = new AllFileSearch(this.markdownPreview);
-      let filesShow = new FilesShow(this.markdownPreview);
+      this.allFileSearch = new AllFileSearch(this.$router);
+      let filesShow = new FilesShow(this.$router);
       let fileSearch = new FileSearch();
       filesShow.setFilesContent();
     })

@@ -2,14 +2,14 @@ import $ from "jquery"
 
 export class FilesShow {
 
-  constructor(markdownPreview) {
-    this.markdownPreview = markdownPreview;
+  constructor($router) {
+    this.$router = $router
     this.$filsPreviewDiv = document.getElementById("files")
     this.filesJson = {}
     this.setFilesContent();
     this.init();
   }
-    
+
   init() {
     this.bindEvent();
   }
@@ -32,7 +32,8 @@ export class FilesShow {
         $(this).addClass("selected");
         let filePath = $(this).data("path");
         $('title').html($(this).html())
-        that.markdownPreview.setMkContent(filePath);
+        filePath = filePath.replaceAll("\./", "");
+        that.$router.push({path: `/${filePath}`})
       }
       e.stopPropagation();
     })

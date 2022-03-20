@@ -52,6 +52,16 @@
   width: 75vw;
 }
 
+#content h1,
+#content h2,
+#content h3,
+#content h4,
+#content h5,
+#content h6 {
+  padding-top: 45px;
+  margin-top: -45px;
+}
+
 #nav {
   margin: 0;
   display: inline-block;

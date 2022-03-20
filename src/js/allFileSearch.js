@@ -5,9 +5,9 @@ import $ from "jquery"
 
 export class AllFileSearch {
 
-  constructor(markdownPreview) {
+  constructor($router) {
+    this.$router = $router
     this.allFileSearchJson = null;
-    this.markdownPreview = markdownPreview;
     this.init()
   }
 
@@ -20,7 +20,8 @@ export class AllFileSearch {
     let that = this
     $("#showView").on("click", ".card", function (e) {
       let filePath = $(this).data("path");
-      that.markdownPreview.setMkContent(filePath);
+      filePath = filePath.replaceAll("\./", "");
+      that.$router.push({path: `/${filePath}`})
       that.hideSearchDiv()
     })
 

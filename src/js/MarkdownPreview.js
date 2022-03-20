@@ -49,7 +49,7 @@ export class MarkdownPreview {
         $.get(file, function (data) {
           that.mkContent = data
           that.previewContent()
-          $('#topTitle').html(file)
+          $('#topTitle').html(decodeURI(file))
         })
       }
     }

@@ -30,8 +30,14 @@ export class AllFileSearch {
     })
 
     $(document).keyup(function (e) {
+      // 按下 /
       if (e.keyCode === 221) {
         that.showSearchDiv()
+      }
+
+      // 按下 ESC
+      if (e.keyCode === 27) {
+        that.hideSearchDiv()
       }
     })
 

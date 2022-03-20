@@ -1,0 +1,62 @@
+#allFileSearch {
+  position: fixed;
+  height: 60%;
+  width: 60%;
+  top: 30%;
+  left: 30%;
+  z-index: 3;
+}
+
+#allFileSearch.hide {
+  visibility: hidden;
+}
+
+#showView {
+  height: 60%;
+  width: 60%;
+  text-justify: auto;
+  overflow: auto;
+  z-index: 100;
+  background-color: #FFFFFF;
+  padding: 20px;
+  -webkit-box-shadow: 0px 0px 6px #22221b;
+  -moz-box-shadow: 0px 0px 6px #22221b;
+  box-shadow: 0px 0px 6px #22221b;
+}
+
+.card-header {
+  font-size: 12px;
+  border-left: 3px solid #0068d7;
+  padding-bottom: 0;
+  font-weight: bolder;
+}
+
+.card:hover {
+  background-color: aquamarine;
+  cursor: pointer;
+}
+
+.card-body {
+
+}
+
+.card-text {
+  margin: 6px;
+  font-size: 12px;
+}
+
+#allFileSearchInput {
+  width: 60%;
+  margin: 10px 20px;
+  height: 25px;
+}
+
+#shadow {
+  width: 100vw;
+  height: 100vh;
+  background-color: #000000c7;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 2;
+}

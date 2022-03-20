@@ -1,0 +1,21 @@
+#content {
+  margin: 0 0 0 22vw;
+  display: inline-block;
+  min-height: 100vh;
+  width: 52vw;
+  vertical-align: top;
+}
+
+#content.other {
+  width: 75vw;
+}
+
+#content h1,
+#content h2,
+#content h3,
+#content h4,
+#content h5,
+#content h6 {
+  padding-top: 45px;
+  margin-top: -45px;
+}

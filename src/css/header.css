@@ -1,0 +1,21 @@
+#fileSearchInput {
+  margin: 10px;
+  height: 26px;
+}
+
+div.top {
+  width: 100vw;
+  height: 45px;
+  z-index: 1;
+  background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .15);;
+  position: sticky;
+  top: 0;
+}
+
+#topTitle {
+  float: right;
+  font-size: 20px;
+  font-weight: bolder;
+  margin: 8px;
+}

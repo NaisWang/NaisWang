@@ -1,0 +1,41 @@
+#files {
+  position: fixed;
+  left: 0;
+  top: 25px;
+  display: inline-block;
+  width: 20vw;
+  height: 100vh;
+  vertical-align: top;
+  padding-left: 0;
+  overflow: auto;
+  margin: 0;
+  box-shadow: 2px 0 4px rgba(0, 0, 0, .15);
+}
+
+#files li {
+  list-style: none;
+}
+
+#files li.hide {
+  display: none;
+}
+
+#files ul {
+  padding-left: 12px;
+}
+
+#files li.selected {
+  font-weight: bolder;
+}
+
+#files li.parent.close::before {
+  content: "▷"
+}
+
+#files li.parent.open::before {
+  content: "▽"
+}
+
+#files li.parent li:not(.parent) {
+  margin-left: 15px;
+}

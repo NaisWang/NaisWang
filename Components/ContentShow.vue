@@ -12,13 +12,14 @@ export default {
   name: "ContentShow",
   data() {
     return {
-      markdownPreview: null
+      markdownPreview: null,
     }
   },
   mounted() {
-    this.markdownPreview = new MarkdownPreview();
-    this.markdownPreview.setMkContent("." + this.$route.path)
-  }
+    console.log(this.$route)
+    this.markdownPreview = new MarkdownPreview(this.$router, this.$route);
+    this.markdownPreview.setMkContent("." + this.$route.path);
+  },
 }
 </script>
 

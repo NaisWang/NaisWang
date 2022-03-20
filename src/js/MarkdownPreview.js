@@ -38,11 +38,7 @@ export class MarkdownPreview {
       e.preventDefault()
       let title = $(this).data("title")
       that.scrollToTitle(title)
-
-      if (decodeURIComponent(title) !== decodeURIComponent(location.hash.substring(location.hash.lastIndexOf("#") + 1, location.hash.length))) {
-        that.$router.push({path: "#" + $(this).data("title")})
-        that.activeLi($(this).data("title"))
-      }
+      that.activeLi(title)
     })
 
     //监听滚动栏停下来后，判断当前标题是什么
@@ -54,15 +50,30 @@ export class MarkdownPreview {
       timer = setTimeout(() => {
         t2 = document.documentElement.scrollTop || document.body.scrollTop;
         if (t2 === t1) {
-          let el = document.elementFromPoint(window.innerWidth / 2, 45)
+          let el = null
 
+          // 排除el匹配到的为空标签或者是为ul#content标签
+          for (let i = 45; i < 500;) {
+            el = document.elementFromPoint(window.innerWidth / 2, i)
+            if (el != null && (el.hasAttribute("id") && el.id !== "content") || !el.hasAttribute("id")) {
+              break
+            }
+            i += 3
+          }
+
+          // 使el匹配到的为ul#content的直接子标签，因为<h>标签一定是ul#content的直接子标签
+          while (el != null && (!el.parentElement.hasAttribute("id") || el.parentElement.id !== "content")) {
+            el = el.parentElement
+          }
+
+          // 使el匹配到<h>标签
           while (el != null && !el.tagName.startsWith("H")) {
             el = el.previousElementSibling;
           }
-          if (el != null && el.id && decodeURIComponent(el.id) !== decodeURIComponent(location.hash.substring(location.hash.lastIndexOf("#") + 1, location.hash.length))) {
-            that.$router.replace({hash: decodeURIComponent(el.id)})
 
-            that.activeLi(decodeURIComponent(el.id))
+          if (el != null && el.id && decodeURIComponent(encodeURIComponent(el.id)) !== decodeURIComponent(encodeURIComponent(location.hash.substring(location.hash.lastIndexOf("#") + 1, location.hash.length)))) {
+            that.$router.replace({hash: el.id})
+            that.activeLi(el.id)
           }
         }
       }, 100);
@@ -152,17 +163,20 @@ export class MarkdownPreview {
     this.changeTocUrl()
 
     let that = this
-    window.onload = function () {
-      let title = decodeURIComponent(that.$route.hash.substring(1, that.$route.hash.length))
-      that.scrollToTitle(title)
-      that.activeLi(title)
-    }
 
+    $(function () {
+      setTimeout(() => {
+        let title = decodeURIComponent(that.$route.hash.substring(1, that.$route.hash.length))
+        that.scrollToTitle(title)
+        that.activeLi(title)
+      }, 1000)
+    })
   }
 
   activeLi(title) {
+    title = decodeURIComponent(title)
     $("#nav li").removeClass("active")
-    $(`#nav a[data-title='${title}']`)[0].parentNode.classList.add("active")
+    $(`#nav a[data-title='${title}']`)[0].parentElement.classList.add("active")
   }
 
   scrollToTitle(title) {

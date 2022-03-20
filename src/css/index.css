@@ -1,4 +1,4 @@
-img {
+.ytp-cued-thumbnail-overlay-image, img {
   max-width: 100%;
   height: auto;
 }

@@ -7,12 +7,10 @@
               onclick="window.scrollTo({ left: 0,top: 0,behavior: 'smooth'})">
         置顶
       </button>
+
       <span id="topTitle"></span>
     </div>
     <ul id="files"></ul>
-
-<!--    <ul id="content"></ul>-->
-<!--    <ul id="nav"></ul>-->
 
     <router-view :key="$route.path"></router-view>
 

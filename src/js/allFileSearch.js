@@ -22,7 +22,7 @@ export class AllFileSearch {
       let title = e.currentTarget.children[0].children[0].textContent.toLowerCase().replaceAll(" ", "")
       let searchContent = e.currentTarget.children[1].children[0].textContent
       let filePath = $(this).data("path");
-      filePath = filePath.replaceAll("\./", "");
+      filePath = filePath.replace("\./", "");
       that.$router.push({path: `/${filePath}${title}`})
       that.hideSearchDiv()
     })
@@ -51,7 +51,7 @@ export class AllFileSearch {
   }
 
   replaceStr(str) {
-    return str.replaceAll("-", "").replaceAll("*", "").replace("#", "").replace("`", "");
+    return str.replace("-", "").replace("*", "").replace("#", "").replace("`", "");
   }
 
   showSearchDiv() {
@@ -110,7 +110,7 @@ export class AllFileSearch {
   // 查找位于matchIndex前最近的标题
   findTitle(str, matchIndex) {
     str = str.replace(/[ ]*```([\s\S](?!```))+\n[ ]*```/g, function (word) {
-      return word.replaceAll("#", "*")
+      return word.replace(/#/g, "*")
     })
     let index = str.lastIndexOf("#", matchIndex);
     return str.substring(index, str.indexOf("\n", index))

@@ -72,7 +72,9 @@ export class MarkdownPreview {
           }
 
           if (el != null && el.id && decodeURIComponent(encodeURIComponent(el.id)) !== decodeURIComponent(encodeURIComponent(location.hash.substring(location.hash.lastIndexOf("#") + 1, location.hash.length)))) {
-            that.$router.replace({hash: el.id})
+            let href = location.href
+            href = href.substring(0, href.lastIndexOf("#") + 1) + decodeURIComponent(el.id)
+            history.replaceState(null, document.title, href)
             that.activeLi(el.id)
           }
         }

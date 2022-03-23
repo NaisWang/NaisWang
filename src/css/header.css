@@ -1,6 +1,19 @@
 #fileSearchInput {
-  margin: 10px;
-  height: 26px;
+  margin: 7px;
+  height: 32px;
+  cursor: text;
+  width: 10rem;
+  color: #2c3e50;
+  display: inline-block;
+  border: 1px solid #eaecef;
+  border-radius: 32px;
+  font-size: 14px;
+  line-height: 32px;
+  padding: 0 8px 0 32px;
+  outline: 0;
+  transition: all ease .3s;
+  background: #fff url("https://javaguide.cn/assets/search.0782d0d1.svg") 9.6px 8px no-repeat;
+  background-size: 16px;
 }
 
 div.top {
@@ -13,9 +26,41 @@ div.top {
   top: 0;
 }
 
-#topTitle {
+.topRight {
   float: right;
+}
+
+#topTitle {
+  display: inline-block;
+  vertical-align: top;
   font-size: 20px;
   font-weight: bolder;
   margin: 8px;
+}
+
+#allFileSearchButton {
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.page-meta .edit-link {
+  display: inline-block;
+  font-size: 14px;
+  margin-right: 0.25rem;
+}
+
+.page-meta .edit-link .icon {
+  position: relative;
+  bottom: -0.125em;
+  width: 1em;
+  height: 1em;
+  margin-right: 0.25em;
+}
+
+.editPage {
+  margin-top: 7px;
+  display: inline-block;
+  margin-right: 8px;
+  cursor: pointer;
 }

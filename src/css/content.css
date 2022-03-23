@@ -34,3 +34,51 @@
   width: 100%;
   height: 100%;
 }
+
+#content table {
+  display: block;
+  overflow-x: auto;
+  margin: 1rem 0;
+  border-collapse: collapse;
+  box-sizing: border-box;
+  text-indent: initial;
+  border-spacing: 2px;
+  border-color: grey;
+}
+
+#content thead {
+  display: table-header-group;
+  vertical-align: middle;
+  border-color: inherit;
+}
+
+#content tr {
+  border-top: 1px solid #dfe2e5;
+  border-color: #eee;
+  display: table-row;
+  vertical-align: inherit;
+}
+
+#content th {
+  text-align: center;
+  padding: 0.6em 1em;
+  border: 1px solid #dfe2e5;
+  border-color: #eee;
+  display: table-cell;
+  vertical-align: inherit;
+  font-weight: bold;
+}
+
+#content td {
+  padding: 0.6em 1em;
+  border: 1px solid #dfe2e5;
+  border-color: #eee;
+  display: table-cell;
+  vertical-align: inherit;
+}
+
+#content tbody {
+  display: table-row-group;
+  vertical-align: middle;
+  border-color: inherit;
+}

@@ -1493,12 +1493,13 @@ f-string方式出自PEP 498（Literal String Interpolation，字面字符串插�
 这种方式在可读性上秒杀format()方式，处理长字符串的拼接时，速度与join()方法相当。
 
 尽管如此，这种方式与其它某些编程语言相比，还是欠优雅，因为它引入了一个 f 标识。而其它某些程序语言可以更简练，比如shell：
-
+```shell
 name="world"
 myname="python_cat"
 words="Hello ${name}. My name is ${myname}."
 echo $words
 >>>Hello world. My name is python_cat.
+```
 
 ## Summary
 总结一下，我们前面说的“字符串拼接”，其实是从结果上理解。若从实现原理上划分的话，我们可以将这些方法划分出三种类型：

@@ -8,6 +8,8 @@
 <script>
 import {MarkdownPreview} from "../src/js/MarkdownPreview";
 
+import $ from "jquery"
+
 export default {
   name: "ContentShow",
   data() {
@@ -16,7 +18,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$route)
     this.markdownPreview = new MarkdownPreview(this.$router, this.$route);
     this.markdownPreview.setMkContent("." + this.$route.path);
   },

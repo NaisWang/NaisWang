@@ -2,12 +2,12 @@
   margin: 0;
   display: inline-block;
   position: fixed;
+  top: 0;
   right: 0;
   width: 20vw;
-  height: 100vh;
+  padding-top: 45px;
   vertical-align: top;
   overflow: auto;
-  white-space: nowrap;
   padding-left: 8px;
   font-size: 14px;
   color: rgb(153, 153, 153)

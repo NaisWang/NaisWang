@@ -151,6 +151,7 @@ export class MarkdownPreview {
           itemClass: 'itemClass',
           linkClass: 'linkClass',
           callback: function (html, ast) {
+            document.getElementById("nav").style.height = window.innerHeight - 45 + "px"
             //把目录单独列出来
             document.getElementById("nav").innerHTML = html
           }
@@ -169,6 +170,11 @@ export class MarkdownPreview {
         let title = decodeURIComponent(that.$route.hash.substring(1, that.$route.hash.length))
         that.scrollToTitle(title)
         that.activeLi(title)
+
+        // 标记对应文件目录
+        $("#files li.selected").removeClass("selected");
+        $(`#files li[data-path='.${decodeURIComponent(that.$route.path)}']`).addClass("selected");
+
       }, 1000)
     })
   }

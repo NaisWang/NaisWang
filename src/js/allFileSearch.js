@@ -112,7 +112,6 @@ export class AllFileSearch {
     str = str.replace(/[ ]*```([\s\S](?!```))+\n[ ]*```/g, function (word) {
       return word.replaceAll("#", "*")
     })
-    console.log(str.substring(0, matchIndex + 11))
     let index = str.lastIndexOf("#", matchIndex);
     return str.substring(index, str.indexOf("\n", index))
   }

@@ -32,7 +32,7 @@ export class FilesShow {
         $(this).addClass("selected");
         let filePath = $(this).data("path");
         $('title').html($(this).html())
-        filePath = filePath.replaceAll("\./", "");
+        filePath = filePath.replace("\./", "");
         that.$router.push({path: `/${filePath}`})
       }
       e.stopPropagation();

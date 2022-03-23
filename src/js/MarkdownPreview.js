@@ -73,7 +73,12 @@ export class MarkdownPreview {
 
           if (el != null && el.id && decodeURIComponent(encodeURIComponent(el.id)) !== decodeURIComponent(encodeURIComponent(location.hash.substring(location.hash.lastIndexOf("#") + 1, location.hash.length)))) {
             let href = location.href
-            href = href.substring(0, href.lastIndexOf("#") + 1) + decodeURIComponent(el.id)
+            if (href.indexOf(".md#") !== -1) {
+              href = href.substring(0, href.lastIndexOf("#") + 1) + decodeURIComponent(el.id)
+            } else {
+              href += "#" + decodeURIComponent(el.id);
+            }
+            console.log(href)
             history.replaceState(null, document.title, href)
             that.activeLi(el.id)
           }
@@ -114,6 +119,7 @@ export class MarkdownPreview {
   }
 
   previewContent(file) {
+
 
     var md = MarkdownIt({
       html: true, //可以识别html
@@ -169,16 +175,15 @@ export class MarkdownPreview {
 
     $(function () {
       setTimeout(() => {
-        let title = decodeURIComponent(that.$route.hash.substring(1, that.$route.hash.length))
-        that.scrollToTitle(title)
-        that.activeLi(title)
-
         // 标记对应文件目录
         $("#files li.selected").removeClass("selected");
         $(`#files li[data-path='.${decodeURIComponent(that.$route.path)}']`).addClass("selected");
 
-      }, 1000)
-    })
+        let title = decodeURIComponent(that.$route.hash.substring(1, that.$route.hash.length))
+        that.scrollToTitle(title)
+        that.activeLi(title)
+      }, 500)
+    })()
   }
 
   activeLi(title) {

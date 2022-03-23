@@ -19,9 +19,11 @@ export class AllFileSearch {
   bindEvent() {
     let that = this
     $("#showView").on("click", ".card", function (e) {
+      let title = e.currentTarget.children[0].children[0].textContent.toLowerCase().replaceAll(" ", "")
+      let searchContent = e.currentTarget.children[1].children[0].textContent
       let filePath = $(this).data("path");
       filePath = filePath.replaceAll("\./", "");
-      that.$router.push({path: `/${filePath}`})
+      that.$router.push({path: `/${filePath}${title}`})
       that.hideSearchDiv()
     })
 
@@ -48,6 +50,10 @@ export class AllFileSearch {
 
   }
 
+  replaceStr(str) {
+    return str.replaceAll("-", "").replaceAll("*", "").replace("#", "").replace("`", "");
+  }
+
   showSearchDiv() {
     $('#shadow').show()
     $('#allFileSearch').removeClass('hide')
@@ -71,10 +77,13 @@ export class AllFileSearch {
     for (let i = 0; i < this.allFileSearchJson.length; i++) {
       let item = this.allFileSearchJson[i];
       let positions = this.searchSubStr(item.body, text);
+      //let tempBody = item.body
       if (positions.length !== 0) {
         positions.forEach(matchIndex => {
+          //tempBody = tempBody.substring(matchIndex + 1, tempBody.length)
           let result = {}
           result["title"] = item.title
+          result["header"] = this.findTitle(item.body, matchIndex)
           result["body"] = item.body.substring(matchIndex - 30, matchIndex + 30)
           result["body"] = result["body"].replace(text, "<span style='color: red'>" + text + "</span>")
           ans.push(result);
@@ -88,7 +97,7 @@ export class AllFileSearch {
     for (let i = 0; i < generateCardNums; i++) {
       let item = ans[i];
       showView.innerHTML = showView.innerHTML + "<div class='card' data-path='" + item['title'] + "'>\n" +
-          "                <div class=\"card-header\">" + item['title'] + "</div>\n" +
+          "                <div class=\"card-header\">" + item['title'] + "-------" + "<span class='card-header-detail' style='color:cadetblue'>" + item['header'] + "</span></div>\n" +
           "                <div class=\"card-body\">\n" +
           "                    <p class=\"card-text\">" + item['body'] + "</p>\n" +
           "                </div>\n" +
@@ -96,6 +105,16 @@ export class AllFileSearch {
     }
 
     $("#allFileSearchNums").html("总符合数：" + ans.length + " ； 展示数：" + generateCardNums);
+  }
+
+  // 查找位于matchIndex前最近的标题
+  findTitle(str, matchIndex) {
+    str = str.replace(/[ ]*```([\s\S](?!```))+\n[ ]*```/g, function (word) {
+      return word.replaceAll("#", "*")
+    })
+    console.log(str.substring(0, matchIndex + 11))
+    let index = str.lastIndexOf("#", matchIndex);
+    return str.substring(index, str.indexOf("\n", index))
   }
 
 

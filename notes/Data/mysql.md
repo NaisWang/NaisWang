@@ -1411,6 +1411,184 @@ drop trigger [schema_name.]trigger_name
 show triggers ；
 ```
 
+# case函数
+case函数，流程控制函数。case函数有两个用法
+
+case函数第一个用法的语法
+```sql
+
+case value
+
+when compare_calue1 then result1
+
+when compare_calue2 then result2
+
+...
+
+else result
+
+end
+```
+
+case函数用value和后面的compare_value1、compare_value2、…依次进行比较，如果value和指定的compare_value1相等，则返回对应的result1，否则返回else后的result
+
+case函数的第二个用法的语法
+```sql
+
+case 
+
+when condition1 then result1
+
+where condition2 then result2
+
+...
+
+else result
+
+end
+```
+
+condition返回boolean值的条件表达式
+
+```sql
+--id小于3的为初级工程师，3~6为中级工程师，其他为高级工程师 
+
+select name, case
+
+when id<=3 then '初级工程师 '
+
+when id <=6 then '中级工程师 '
+
+else '高级工程师' 
+
+end 
+
+from tableName;
+```
+
+# with as用法
+## With As介绍
+WITH AS短语，也叫做子查询部分（subquery factoring），可以让你做很多事情，定义一个SQL片断，该SQL片断会被整个SQL语句所用到。有的时候，是为了让SQL语句的可读性更高些，也有可能是在UNION ALL的不同部分，作为提供数据的部分。 
+
+特别对于UNION ALL比较有用。因为UNION ALL的每个部分可能相同，但是如果每个部分都去执行一遍的话，则成本太高，所以可以使用WITH AS短语，则只要执行一遍即可。如果WITH AS短语所定义的表名被调用两次以上，则优化器会自动将WITH AS短语所获取的数据放入一个TEMP表里，如果只是被调用一次，则不会。而提示materialize则是强制将WITH AS短语里的数据放入一个全局临时表里。很多查询通过这种方法都可以提高速度。
+
+## WITH AS 语法
+```sql
+[ WITH <common_table_expression> [ ,n ] ] 
+<common_table_expression>::= 
+        expression_name [ ( column_name [ ,n ] ) ] 
+    AS 
+        ( CTE_query_definition ) 
+```
+
+
+## With As使用方法
+我们数据库中有两个表，一个商品信息表tbSpXinXi，一个库存表tbSpKc。先看一下两个表的结构：
+
+tbSpXinXi
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220322210347.png)
+
+tbSpKc
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220322210406.png)
+
+
+**我们要实现查商品名称最后一个字为"茶"的库存**
+
+最原始的写法，嵌套一个查询语句：
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220322210430.png)
+
+用变量表名的方法：
+```sql
+declare @tb table(incode varchar(20))
+insert into @tb(incode)
+select incode from tbSpXinXi where fname like '%茶'
+
+select * from tbSpKc where incode in (select * from @tb)
+```
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220322210504.png)
+
+接下来我们就直接换成With As的用法
+```sql
+with row as 
+    (    
+    select incode from tbSpXinXi where fname like '%茶'
+    )
+select * from tbSpKc where incode in (select * from row)
+```
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220322210535.png)
+
+从上面来看，感觉用With As的语句比最原始的写法好像还麻烦了点，因为我这里举的例子只是为了让大家知道怎么用，使用这个可以组合很多类型。
+
+## With As使用时注意的问题
+
+1. With As后面必须直接跟使用With As的SQL语句（如select、insert、update等），否则，With As将失效。如下面的SQL语句将无法正常使用With As。
+```sql
+with row as 
+    (    
+    select incode from tbSpXinXi where fname like '%茶'
+    )
+select * from tbGysXinXi  -- 加上这句下面的row就失效了 
+--使用row必须跟在with row as的后面
+select * from tbSpKc where incode in (select * from row)
+```
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220322210613.png)
+
+2. With As后面也可以跟其他的As，但只能使用一个With，多个With As中间用逗号（,）分隔。
+```sql
+with xinxi as 
+    (    
+    select incode,fname from tbSpXinXi where fname like '%茶'
+    ),
+    kc as 
+    (
+    select * from tbSpKc where 1=1
+    )
+    
+select * from xinxi a,kc b where a.incode=b.incode
+```
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220322210642.png)
+
+3. 如果With As的表达式名称与某个数据表或视图重名，则紧跟在该With As后面的SQL语句使用的仍然是With As的名称，当然，后面的SQL语句使用的就是数据表或视图了
+```sql
+with tbSpKc as 
+    (    
+    select * from tbSpXinXi where incode='14004015'
+    )
+select * from tbSpKc  -- 使用了名为tbSpKc的公共表表达式 
+select * from tbSpKc  -- 原来的tbSpKc表
+```
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220322210707.png)
+
+4. With As可以引用自身，也可以引用在同一 WITH 子句中预先定义的 公共表达式。但不允许前向引用。 
+
+5. 不能在 CTE_query_definition 中使用以下子句： 
+- COMPUTE 或 COMPUTE BY
+- ORDER BY（除非指定了 TOP 子句）
+- INTO
+- 带有查询提示的 OPTION 子句
+- FOR XML
+- FOR BROWSE
+
+6. 如果将 With As用在属于批处理的一部分的语句中，那么在它之前的语句必须以分号结尾。
+```sql
+declare @fname varchar(20)
+select @fname='%茶'
+;with xinxi as --这里前面必须加分号
+    (    
+    select incode from tbSpXinXi where fname like @fname
+    )
+select * from tbSpKc where incode in (select * from xinxi) 
+```
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220322210744.png)
 
 # MyISAM与InnoDB
 MySQL5.5版本开始Innodb已经成为Mysql的默认引擎(之前是MyISAM)
@@ -1425,7 +1603,7 @@ MySQL5.5版本开始Innodb已经成为Mysql的默认引擎(之前是MyISAM)
 也就是说：InnoDB的B+树主键索引的叶子节点就是数据文件，辅助索引的叶子节点是主键的值；而MyISAM的B+树主键索引和辅助索引的叶子节点都是数据文件的地址指针。
 <img src="https://gitee.com/NaisWang/images/raw/master/img/20210418163537.png" width="700px"/>
 
-4. InnoDB不保存表的具体行数，执行select count(*) from table时需要全表扫描。而MyISAM用一个变量保存了整个表的行数，执行上述语句时只需要读出该变量即可，速度很快（注意不能加有任何WHERE条件）
+4. InnoDB不保存表的具体行数，执行`select count(*) from table`时需要全表扫描。而MyISAM用一个变量保存了整个表的行数，执行上述语句时只需要读出该变量即可，速度很快（注意不能加有任何WHERE条件）
 5. Innodb不支持全文索引，而MyISAM支持全文索引，在涉及全文索引领域的查询效率上MyISAM速度更快高；PS：5.7以后的InnoDB支持全文索引了
 6. MyISAM表格可以被压缩后进行查询操作
 7. InnoDB支持表、行(默认)级锁，而MyISAM只支持表级锁
@@ -1549,8 +1727,6 @@ mysql> select *,"true" as is_person from user;
 ```
 
 # 单表访问方法
-
-
 # EXPLAIN解释命令
 ## EXPLAIN概念
 EXPLAIN会向我们提供一些MySQL是执行sql的信息：

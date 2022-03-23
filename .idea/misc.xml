@@ -8,4 +8,7 @@
       </MavenGeneralSettings>
     </option>
   </component>
+  <component name="WebPackConfiguration">
+    <option name="mode" value="DISABLED" />
+  </component>
 </project>

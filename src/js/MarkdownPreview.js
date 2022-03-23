@@ -62,7 +62,7 @@ export class MarkdownPreview {
           }
 
           // 使el匹配到的为ul#content的直接子标签，因为<h>标签一定是ul#content的直接子标签
-          while (el != null && (!el.parentElement.hasAttribute("id") || el.parentElement.id !== "content")) {
+          while (el != null && el.parentElement != null && (!el.parentElement.hasAttribute("id") || el.parentElement.id !== "content")) {
             el = el.parentElement
           }
 
@@ -174,16 +174,20 @@ export class MarkdownPreview {
   }
 
   activeLi(title) {
-    title = decodeURIComponent(title)
-    $("#nav li").removeClass("active")
-    $(`#nav a[data-title='${title}']`)[0].parentElement.classList.add("active")
+    if (title) {
+      title = decodeURIComponent(title)
+      $("#nav li").removeClass("active")
+      $(`#nav a[data-title='${title}']`)[0].parentElement.classList.add("active")
+    }
   }
 
   scrollToTitle(title) {
-    window.scrollTo({
-      top: document.getElementById(encodeURIComponent(title)).offsetTop,
-      behavior: 'smooth'
-    })
+    if (title) {
+      window.scrollTo({
+        top: document.getElementById(encodeURIComponent(title)).offsetTop,
+        behavior: 'smooth'
+      })
+    }
   }
 
   changeTocUrl() {

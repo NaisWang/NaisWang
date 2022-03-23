@@ -2834,3 +2834,25 @@ document.body.clientWidth ：body展示的宽度；表示body在浏览器内显�
 滚动条高度/宽度 ：如高度，可通过浏览器内页面可用高度 - body展示高度得出，即window.innerHeight - body.clientHeight。
 ```
 
+# js中replace妙用
+## 使用分组回朔
+|字符|替换文本|
+|--|--|
+|$1、$2、...、$99	与 regexp 中的第 1 到第 99 个子表达式相匹配的文本。|
+|$&|与 regexp 相匹配的子串。|
+|$`|位于匹配子串左侧的文本。|
+|$'|位于匹配子串右侧的文本。|
+|%|直接量符号。|
+
+实例:
+```js
+console.log("123-222-bbb".replace(/(\d{3})-(\d{3})-(\w{3})/g, "$3$1$1")) //输出：bbb123123
+```
+
+## 使用回调
+
+```js
+"123-2##22-b##bb".replace(/.+/g, function (keyword){
+    return keyword.replaceAll("#", "*")
+})
+```

@@ -19,7 +19,7 @@ export class AllFileSearch {
   bindEvent() {
     let that = this
     $("#showView").on("click", ".card", function (e) {
-      let title = e.currentTarget.children[0].children[0].textContent.toLowerCase().replaceAll(" ", "")
+      let title = e.currentTarget.children[0].children[0].textContent.toLowerCase().replace(" ", "")
       let searchContent = e.currentTarget.children[1].children[0].textContent
       let filePath = $(this).data("path");
       filePath = filePath.replace("\./", "");

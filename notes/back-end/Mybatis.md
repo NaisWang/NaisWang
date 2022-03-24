@@ -376,7 +376,7 @@ public void test1() throws IOException {
 ## 参数传递
 - 单个参数：mybatis不会做任何处理
 #{}可以以任意的名字获取参数值
-${}只能以\${value}或\${_parameter}获取
+${}只能以`${value}`或`${_parameter}`获取
 
 - 多个参数：mybatis会做特殊处理
 任意多个参数，都会被MyBatis重新包装成一个Map传入。Map的key是param1，param2或者0，1…，值就是参数的值
@@ -525,6 +525,30 @@ autoMappingBehavior默认是PARTIAL，开启自动映射的功能, 此时唯一�
 fetchType属性有两个属性值, 分别是eager(立即加载)与lazy(延时加载)
 ```xml
 <association property ="school" select="com.atguitu.mapper.DeptMapper.getSchoolByDid" column="sid" fetchType="eager"/>
+```
+
+#### Result Maps collection does not contain value for错误
+**原因1:  resultMap的指向不正确**
+
+例如: 有如下内容:
+```xml
+<resultMap type="com.atguigu.mybatis.bean.Emp" id="MyEmp">
+    ...
+</resultMap>
+
+<select id="getEmpById" resultMap="com.atguigu.mybatis.EmpMapper.MyEmp">
+   ...
+</select>
+```
+对应以上xml文件，会报错，因为select语句中的resultMap映射不正确，mybatis会找不到`com.atguigu.mybatis.EmpMapper.MyEmp`。使用resultMap映射时，该值应该是resultMap标签的id值。所以正确书写如下:
+```xml
+<resultMap type="com.atguigu.mybatis.bean.Emp" id="MyEmp">
+    ...
+</resultMap>
+
+<select id="getEmpById" resultMap="MyEmp">
+   ...
+</select>
 ```
 
 ### Mybatis返回对象中包含多个List属性

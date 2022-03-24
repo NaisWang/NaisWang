@@ -8,6 +8,9 @@ export class FileSearch {
   }
 
   init() {
+
+    document.getElementById("files").style.height = $("body")[0].clientHeight - 45 + "px"
+
     this.bindEvent();
   }
 

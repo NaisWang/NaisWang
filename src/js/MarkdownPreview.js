@@ -159,9 +159,9 @@ export class MarkdownPreview {
           itemClass: 'itemClass',
           linkClass: 'linkClass',
           callback: function (html, ast) {
-            document.getElementById("nav").style.height = $("body").clientHeight - 45 + "px"
             //把目录单独列出来
             document.getElementById("nav").innerHTML = html
+            document.getElementById("nav").style.height = $("body")[0].clientHeight - 45 + "px"
           }
         });
 

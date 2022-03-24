@@ -18,14 +18,7 @@ export default {
     }
   },
   mounted() {
-
-    // 图片预览刷新
-    this.$previewRefresh();
-    this.$preview.on('close', () => {
-      this.isShow = false
-    })
-
-    this.markdownPreview = new MarkdownPreview(this.$router, this.$route);
+    this.markdownPreview = new MarkdownPreview( this.$router, this.$route, this.$previewRefresh);
     this.markdownPreview.setMkContent("." + this.$route.path);
 
   },

@@ -15,7 +15,8 @@ import {assertSourceType} from "@babel/core/lib/config/validation/option-asserti
 
 
 export class MarkdownPreview {
-  constructor($router, $route) {
+  constructor($router, $route, $previewRefresh) {
+    this.$previewRefresh = $previewRefresh
     this.$router = $router
     this.$route = $route
     this.mkContent = "";
@@ -183,6 +184,10 @@ export class MarkdownPreview {
       let title = decodeURIComponent(that.$route.hash.substring(1, that.$route.hash.length))
       that.scrollToTitle(title)
       that.activeLi(title)
+
+      // 图片预览刷新
+      that.$previewRefresh();
+
     }, 500)
 
   }

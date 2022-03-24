@@ -3,7 +3,7 @@
     <div class="top">
       <a id="posit" href="#frozenset"></a>
       <input type="search" id="fileSearchInput" placeholder="搜索...">
-      <div id="allFileSearchButton">
+      <div id="allFileSearchButton" title="全文搜索">
         <svg t="1648025539535" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
              p-id="13634" width="32" height="32">
           <path
@@ -40,7 +40,7 @@
 
         <div id="topTitle"></div>
 
-        <div class="editPage">
+        <div class="editPage" title="编辑此页">
           <svg t="1648026965228" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
                p-id="4237" width="28" height="28">
             <path

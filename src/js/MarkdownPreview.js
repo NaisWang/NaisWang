@@ -78,7 +78,6 @@ export class MarkdownPreview {
             } else {
               href += "#" + decodeURIComponent(el.id);
             }
-            console.log(href)
             history.replaceState(null, document.title, href)
             that.activeLi(el.id)
           }

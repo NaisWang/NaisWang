@@ -167,6 +167,8 @@ export class MarkdownPreview {
     this.mkContent = md.render(this.mkContent);
     this.$mkPreviewDiv.innerHTML = this.mkContent;
 
+    //给img标签添加preview属性
+    $("#content img").attr("preview", "0")
 
     this.changeTocUrl()
 
@@ -182,6 +184,7 @@ export class MarkdownPreview {
         that.scrollToTitle(title)
         that.activeLi(title)
       }, 500)
+
     })()
   }
 

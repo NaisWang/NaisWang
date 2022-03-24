@@ -5,6 +5,10 @@ import router from "./js/router.js";
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
+import preview from 'vue-photo-preview'
+import 'vue-photo-preview/dist/skin.css'
+Vue.use(preview)
+
 import $ from 'jquery'
 
 

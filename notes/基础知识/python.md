@@ -1,7 +1,6 @@
 # python中字符串下标
 ![](https://raw.githubusercontent.com/NaisWang/images/master/20211223195218.png)
 
-
 # Python3 中有六个标准的数据类型
 - Number（数字）
 - String（字符串）
@@ -1535,7 +1534,7 @@ class subprocess.Popen(args, bufsize=0, executable=None, stdin=None, stdout=None
 Popen非常强大，支持多种参数和模式，通过其构造函数可以看到支持很多参数。但Popen函数存在缺陷在于，它是一个阻塞的方法，如果运行cmd命令时产生内容非常多，函数就容易阻塞。另一点，Popen方法也不会打印出cmd的执行信息。
 
 以下罗列常用到的参数：
- 
+
 > args：这个参数必须是字符串或者是一个由字符串成员的列表。其中如果是一个字符串列表的话，那第一个成员为要运行的程序的路径以及程序名称；从第二个成员开始到最后一个成员为运行这个程序需要输入的参数。这与popen中是一样的。
 > bufsize：一般使用比较少，略过。
 > executable：指定要运行的程序，这个一般很少用到，因为要指定运行的程序在args中已经指定了。stdin，stdout ，stderr：分别代表程序的标准输入、标准输出、标准错误处理。可以选择的值有 PIPE，已经存在的打开的文件对象和 NONE。若stdout是文件对象的话，要确保文件对象是处于打开状态。

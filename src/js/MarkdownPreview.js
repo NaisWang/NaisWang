@@ -174,18 +174,17 @@ export class MarkdownPreview {
 
     let that = this
 
-    $(function () {
-      setTimeout(() => {
-        // 标记对应文件目录
-        $("#files li.selected").removeClass("selected");
-        $(`#files li[data-path='.${decodeURIComponent(that.$route.path)}']`).addClass("selected");
 
-        let title = decodeURIComponent(that.$route.hash.substring(1, that.$route.hash.length))
-        that.scrollToTitle(title)
-        that.activeLi(title)
-      }, 500)
+    setTimeout(() => {
+      // 标记对应文件目录
+      $("#files li.selected").removeClass("selected");
+      $(`#files li[data-path='.${decodeURIComponent(that.$route.path)}']`).addClass("selected");
 
-    })()
+      let title = decodeURIComponent(that.$route.hash.substring(1, that.$route.hash.length))
+      that.scrollToTitle(title)
+      that.activeLi(title)
+    }, 500)
+
   }
 
   activeLi(title) {

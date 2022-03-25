@@ -3,8 +3,8 @@
 
 | 功能                                       | Jetbrain |
 | ------------------------------------------ | -------- |
-| Back                                       | go       |
-| Forward                                    | gp       |
+| Back                                       | command+left       |
+| Forward                                    |  command+right      |
 | find usage                                 | gr       |
 | 跳转到上一个方法Previousmethod             | gk       |
 | 跳转到下一个方法Nextmethod                 | gj       |

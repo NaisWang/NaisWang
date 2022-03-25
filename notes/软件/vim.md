@@ -115,3 +115,67 @@ autocmd FileType javascript,python,c,cpp,java,vim,shell let g:indentLine_conceal
 - 如果你想到达后面某个单词的末尾处，则使用e或E
 - 如果你想要到达前面某个词处或前面某个词的开头，则使用b或B
 - 如果你想要到达前面某个词的末尾处，则使用ge或gE
+
+## 可视模式
+- gv: 重选上次的高亮选区:
+- o: 切换高亮选区的活动端
+
+## 跳转命令
+### jump list
+每跳过一下vim都会把你跳过的位置存入jump list中。我们可以使用`Ctrl-o`来跳转到上一个位置, 使用`Ctrl-i`来跳转到下一个位置
+
+原理：jump list相当于与一个队列，有一个指针指向当前是位于jump list到什么位置, 如下：
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220325204708.png)
+
+表示上一个位置是第7行，上上个位置是第6行。当使用2次`Ctrl-o`后，jump list如下：
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220325204908.png)
+
+此时使用1次`Ctrl-i`后，jump list如下:
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220325205030.png)
+
+此时再使用2次`Ctrl-o`后，jump list如下：
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220325205135.png)
+
+此时若使用跳转命令gg的话，会将跳转后的位置存入jump list的尾部，而不是当前指向的位置的后面，如下：
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220325205344.png)
+
+### change list
+每修改一次代码，vim都会把你修改的位置存入change list中。我们可以使用`g;`来跳转到上一个修改的地方，使用`g,`来跳转到下一个修改的地方
+
+原理：与jump list一样
+
+假如现在change list如下:
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220325210209.png)
+
+当使用2次`g;`后，change list如下：
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220325210326.png)
+
+此时使用1次`g,`后，change list如下:
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220325210357.png)
+
+此时再使用2次`g;`后，change list如下：
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220325210525.png)
+
+此时若使用`r`命令将当前字符进行替换的话，会将此修改的位置存入change list的尾部，而不是当前指向的位置的后面，如下：
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220325210718.png)
+
+### 其他
+- `'.`: 跳转到最后一次编辑的地方
+- `.^`: 跳转到最后一次退出插入模式的地方
+
+## 搜索
+- `*`: 向下 全字匹配
+- `#`: 向上 全字匹配
+- `g*`: 向下 普通匹配
+- `g#`: 向上 普通匹配
+

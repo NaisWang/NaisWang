@@ -3,18 +3,18 @@
 
 | 功能                                       | Jetbrain |
 | ------------------------------------------ | -------- |
-| Back                                       | command+left       |
-| Forward                                    |  command+right      |
-| find usage                                 | gr       |
+| Back                                       | ctrl+o       |
+| Forward                                    |  ctrl+i      |
+| find usage                                 | gR       |
+| show usage                                 | gr       |
 | 跳转到上一个方法Previousmethod             | gk       |
 | 跳转到下一个方法Nextmethod                 | gj       |
 | 上一个错误或警告                           | g[       |
 | 下一个错误或警告                           | g]       |
 | 跳转到方法的实现                           | gi       |
-| JumpToLastChange                           | g,       |
-| JuwmToNextChange                           | g.       |
 | 跳转到父类方法处go to super method         | gs       |
-| 跳转到声明处(如果是声明处，则跳转到使用处) | gd       |
+| JumpToLastChange                           | ',       |
+| 跳转到声明处(如果是声明处，则跳转到使用处) | ctrl+]       |
 | 全局查找                                   | gF       |
 | 翻半页(保留vim操作)                        | ctrl+u/d |
 

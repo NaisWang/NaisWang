@@ -20,7 +20,6 @@ export default {
   mounted() {
     this.markdownPreview = new MarkdownPreview( this.$router, this.$route, this.$previewRefresh);
     this.markdownPreview.setMkContent("." + this.$route.path);
-
   },
 }
 </script>

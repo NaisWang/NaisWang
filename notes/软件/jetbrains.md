@@ -54,7 +54,8 @@
 [官网](https://www.jetbrains.com/help/idea/debugging-code.html)
 
 ### debug面板按钮详解
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210505163515.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220327142719.png)
 
 - `show execution point`: 如果你的光标在其他行或其他页面，点击这个按钮可跳转到当前代码执行的行
 - `step over`: 一行一行地往下走，如果这一行有方法不会进入方法
@@ -66,30 +67,35 @@
 - `Pause program`: 暂停运行 
 
 
+
 ### 断点
 #### 断点类型
 IDEA支持以下几种断点类型：
 - 行断点（Line Breakpoints）：遇断点所在的行即停
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210505152403.png" width="400px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220327143139.png)
 
 - 方法断点（Method Breakpoints）：如果你看到代码调用了一个接口中的抽象方法，但不知道具体会跑在哪个实现上，便可以在该接口上的抽象方法上设置断点，这样不管哪个子类运行到这个方法都会停下来。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210505152435.png" width="400px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220327143156.png)
 
 - 异常断点（Exception Breakpoints）：可以在Run -> View Breakpoints中的Java Exception Breakpoints里添加异常的具体类型。这样的话，程序中一旦发生了这种异常马上就会停下来。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210505152531.png" width="400px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220327143214.png)
 
 - 字段断点（Field Watchpoints）：可以设置在字段上，这样读写字段都可以触发。需要注意的是，默认只有写才会停下，想要让读取时也停下，需要右击断点，在Watch的Field access上打勾才行。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210505152557.png" width="400px"/>
 
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220327143233.png)
 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210505151813.png" width="700px"/>
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210505151830.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220327143247.png)
 
-[视频](https://www.bilibili.com/video/BV1ur4y1P7SV)
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220327143302.png)
+
+<div class="container">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/a_AXz-DoGzM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
 
 #### 条件断点
 断点是可以设置条件的，这样便可以只在关心的时候停下来。比如说循环里处理一堆字符串，但是只关心特定的字符串，那条件断点便可以派上用场。按住Shift键设置断点，或是右击断点之后选择More来打开以下界面：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210505152652.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220327143517.png)
 
 上图就是设置条件断点的界面，直接在Condition里输入条件即可，如"ggg".equals(name)。需要注意的是，**Suspend默认是没有打勾的，必须勾选上才能让程序暂停**。另外，辛辛苦苦设置的特定断点，是可以拖拽到别的地方去的，这样就省的到处敲来敲去的了。还有一个小技巧是按住Alt的同时设置断点，可以让断点仅停一次便自动消失。在设置临时断点时有点用。
 
@@ -139,10 +145,10 @@ private double random() {
 
 #### 调试流（Trace Current Stream Chain）
 前面说了Visual Studio的好，但是它调试时不能看lambda的值也真是挺恶心的，据说2015版以后开始支持有限的lambda了。IDEA在这方面就做的非常到位。Java 8带来的Stream里面到底是什么，有时候很难知道。通过IDEA提供的这个功能，我们可以很轻松地看到流在各个步骤之间的变化。如下图：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210505160923.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220327143539.png)
 
 展平模式（Flat Mode）更是提供了全局的视角：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210505160948.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220327143559.png)
 
 使用这个功能也非常简单，当程序在lambda表达式的任意处停下时，单击调试窗口的Trace Current Stream Chain按钮即可。
 官方文档传送门：https://www.jetbrains.com/help/idea/analyze-java-stream-operations.html
@@ -153,17 +159,22 @@ private double random() {
 
 ## IDEA中的Project Structure的几个设置：
 ### Modules
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191201162644.png"/>
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191201162706.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220327143614.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220327143630.png)
 
 ### Facets
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191201162737.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220327143647.png)
 
 ### Artifacts
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191201162806.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220327143815.png)
 
 ### Project
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191201162834.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220327143829.png)
 
 ### Facets和Artifacts的区别：
 Facets 表示这个module有什么特征，比如 Web，Spring和Hibernate等；
@@ -179,9 +190,11 @@ explode 在这里你可以理解为展开，不压缩的意思。也就是war、
 
 artifact你把它理解成“生成的东西”就差不多了。这个词强调的是这是你软件生产过程中某一步的产生物，不像程序本身，或者是配置文件这些，是你手写出来的
 
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191201162946.png"/>
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191201163005.png"/>
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191201163023.png"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220327143843.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220327143901.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220327143938.png)
 
 注意：通常在开发环境下，部署为war exploded，这种方式支持热部署[update classes and resources]。
 

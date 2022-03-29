@@ -2,7 +2,7 @@
 ## 为什么用Nosql
 先聊一下数据库的发展史：
 1. 单机MySQL的年代！
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210418162547.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132631.png)
 90年代，一个基本的网站访问量一般不会太大，单个数据库完全足够！
 那个时候，更多的去使用静态网页 Html ~ 服务器根本没有太大的压力！
 思考一下，这种情况下：整个网站的瓶颈是什么？
@@ -15,11 +15,11 @@
 由于网站在80%的情况下都是在读，每次都要去查询数据库的话就十分的麻烦！所以说我们希望减轻数据的压
 力，我们可以使用缓存来保证效率！
 发展过程： 优化数据结构和索引--> 文件缓存（IO）---> Memcached（当时最热门的技术！）
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210418162719.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132640.png)
 
 3. 使用分库分表 + 水平拆分 + MySQL集群的年代
 技术和业务在发展的同时，对人的要求也越来越高！早年间，由于mysql使用的是MyISAM，而MyISAM只支持表锁，使得高并发下很容易出现严重的锁问题，后来，mysql转用Innodb, Innodb支持行锁，使得高并发下不是很容易出现锁问题，后来，mysql又推出了集群功能，很好满足哪个年代的所有需求！
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210418171310.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132649.png)
 
 4. 如今的时代: Nosql + RDBMS
 随着互联网web2.0网站的兴起，传统的关系数据库在处理web2.0网站，特别是超大规模和高并发的SNS类型的web2.0纯动态网站已经显得力不从心，出现了很多难以克服的问题，而非关系型的数据库则由于其本身的特点得到了非常迅速的发展。NoSQL数据库的产生就是为了解决大规模数据集合多重数据种类带来的挑战，特别是大数据应用难题。
@@ -46,7 +46,7 @@ NoSQL有如下优点：
 图形结构的数据库同其他行列以及刚性结构的SQL数据库不同，它是使用灵活的图形模型，并且能够扩展到多个服务器上。NoSQL数据库没有标准的查询语言(SQL)，因此进行数据库查询需要制定数据模型。许多NoSQL数据库都有REST式的数据接口或者查询API。如：Neo4J， InfoGrid， Infinite Graph。
 
 不同分类特点对比
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210418185023.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132659.png)
 
 # Redis入门
 Redis（Remote Dictionary Server )，即远程字典服务，是一个开源的使用ANSI C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，并提供多种语言的API
@@ -59,48 +59,48 @@ Redis支持主从同步。数据可以从主服务器向任意数量的从服务
 Redis推荐都是在Linux服务器上搭建的
 1. 下载安装包！ redis-5.0.8.tar.gz 
 2. 解压Redis的安装包！
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210418191731.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132711.png)
 3. 进入解压后的文件，可以看到我们redis的配置文件
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210418191743.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132725.png)
 4. 基本的环境安装
 ```shell
 yum install gcc-c++ 
 make
 make install
 ```
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210418191815.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132737.png)
 5. redis的默认安装路径 /usr/local/bin
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210418191833.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132747.png)
 6. 将redis配置文件。复制到我们当前目录下
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210418191851.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132758.png)
 7. redis默认不是后台启动的，修改配置文件！
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210418191906.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132808.png)
 8. 启动Redis服务！
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210418191919.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132819.png)
 9. 使用redis-cli 进行连接测试！
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210418191935.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132833.png)
 10. 查看redis的进程是否开启！
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210418191949.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132846.png)
 11. 如何关闭Redis服务呢？ shutdown
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210418192012.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132901.png)
 
 ## 测试性能 redis-benchmark 是一个压力测试工具！
 官方自带的性能测试工具！
 redis-benchmark 命令参数！
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210418192453.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132911.png)
 
 我们来简单测试下：
 ```shell
 # 测试：100个并发连接 100000请求 
 redis-benchmark -h localhost -p 6379 -c 100 -n 100000
 ```
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210418192602.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132932.png)
 如何查看这些分析呢？
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210418192615.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132943.png)
 
 ## 基础的知识
 redis默认有16个数据库
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210418194720.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132957.png)
 默认使用的是第0个
 
 ```shell
@@ -132,7 +132,7 @@ OK
 Redis 是一个开源（BSD许可）的，内存中的数据结构存储系统，它可以用作数据库、缓存和消息中间件MQ。 它支持多种类型的数据结构，如 字符串（strings）， 散列（hashes）， 列表（lists）， 集合（sets）， 有序集合（sorted sets） 与范围查询， bitmaps， hyperloglogs 和 地理空间（geospatial） 索引半径查询。 Redis 内置了 复制（replication），LUA脚本（Lua scripting）， LRU驱动事件（LRU eviction），事务（transactions） 和不同级别的 磁盘持久化（persistence）， 并通过Redis哨兵（Sentinel）和自动 分区（Cluster）提供高可用性（high availability）。
 
 后面如果遇到不会的命令，可以在官网查看帮助文档！
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210418200927.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329133010.png)
 
 ## Redis-Key
 **keys ***
@@ -547,7 +547,7 @@ Redis 的 Geo 在Redis3.2 版本就推出了！ 这个功能可以推算地理�
 几里有哪些人
 
 这个Geospatial类型只有6个命令，且全部以geo开头
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210419161928.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329133029.png)
 
 **geoadd**
  getadd命令为添加地理位置
@@ -836,15 +836,15 @@ QUEUED
 ```
 
 如果修改失败，获取最新的值就好
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210419174246.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329133039.png)
 
 
 # Redis.conf详解
 **设置单位大小**
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210419195044.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329133056.png)
 
 **引入外部配置文件**
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210419195105.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329133109.png)
 
 **有关网络的设置**
 ```conf
@@ -949,17 +949,17 @@ Redis 是内存数据库，如果不将内存中的数据库状态保存到磁�
 RDB其实就是把数据以快照的形式保存在磁盘上。什么是快照呢，你可以理解成把当前时刻的数据拍成一张照片保存下来。
 
 RDB持久化是指在指定的时间间隔内将内存中的数据集快照写入磁盘。也是默认的持久化方式，这种方式是就是将内存中数据以快照的方式写入到二进制文件中,默认的文件名为dump.rdb， 我们可以在配置文件种进行配置。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210419204852.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329133120.png)
 
 ### 触发机制
 **1. save触发方式**
 该命令会阻塞当前Redis服务器，执行save命令期间，Redis不能处理其他命令，直到RDB过程完成为止。具体流程如下：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210419205028.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329133131.png)
 执行完成时候如果存在老的RDB文件，就用新的替代掉旧的。我们的客户端可能都是几万或者是几十万，这种方式显然不可取。
 
 **2. bgsave触发方式**
 执行该命令时，Redis会在后台异步进行快照操作，快照同时还可以响应客户端请求。具体流程如下：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210419205130.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329133142.png)
 具体操作是Redis进程执行fork操作创建子进程，RDB持久化过程由子进程负责，完成后自动结束。阻塞只发生在fork阶段，一般时间很短。基本上 Redis 内部所有的RDB操作都是采用 bgsave 命令。
 
 **3. 自动触发**
@@ -988,7 +988,7 @@ dir ./ # rdb 文件保存的目录！
 
 
 **save与bgsave对比**
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210419205733.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329133153.png)
 
 ### 从rdb文件中恢复数据
 redis启动的时候会自动从配置文件中指定rdb存储目录中找dump.rdb文件， 然后从rdb文件中恢复其中的数据！
@@ -1011,19 +1011,19 @@ aof默认是不开启的，我们需要手动进行配置！我们只需要将 a
 
 如果这个 aof 文件有错位，这时候 redis 是启动不起来的吗，我们需要修复这个aof文件
 redis 给我们提供了一个工具`redis-check-aof --fix`
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210419212151.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329133213.png)
 如果文件正常，重启就可以直接恢复了！
 
 ### 持久化原理
 他的原理看下面这张图：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210419211855.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329133226.png)
 每当有一个写命令过来时，就直接保存在我们的AOF文件中。
 
 ### 文件重写原理
 AOF的方式也同时带来了另一个问题。持久化文件会变的越来越大。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210419212854.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329133241.png)
 如果 aof 文件大于 64m，太大了！ fork一个新的进程来将我们的文件进行重写！
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210419212912.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329133251.png)
 
 ### AOF三种触发机制
 ```conf
@@ -1062,9 +1062,9 @@ Redis 发布订阅 (pub/sub) 是一种消息通信模式：发送者 (pub) 发�
 Redis 客户端可以订阅任意数量的频道。
 
 下图展示了频道 channel1 ， 以及订阅这个频道的三个客户端 —— client2 、 client5 和 client1 之间的关系：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210419215317.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329133322.png)
 当有新消息通过 PUBLISH 命令发送给频道 channel1 时， 这个消息就会被发送给订阅它的三个客户端：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210419215333.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329133333.png)
 
 **Redis 发布订阅命令， 下表列出了 redis 发布订阅常用命令：**
 |序号	| 命令及描述|
@@ -1121,7 +1121,7 @@ redis发布订阅功能并不是特别使用，稍微复杂的场景我们还是
 一个主节点可以有多个从节点(或没有从节点)，但一个从节点只能有一个主节点。
 
 <font color="red">redis中主机可以读写，而从节点只能读</font>
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210419225807.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329133346.png)
 主节点如果断开连接，从节点依旧可以读，只是这个集群就失去了写操作。如果主节点重新连接了，从节点仍然可以读取主节点的信息。
 
 **主从复制的作用主要包括：**
@@ -1135,7 +1135,7 @@ redis发布订阅功能并不是特别使用，稍微复杂的场景我们还是
 - 从结构上，单个Redis服务器会发生单点故障，并且一台服务器需要处理所有的请求负载，压力较大；
 - 从容量上，单个Redis服务器内存容量有限，就算一台Redis服务器内存容量为256G，也不能将所有内存用作Redis存储内存，一般来说，单台Redis最大使用内存不应该超过20G。电商网站上的商品，一般都是一次上传，无数次浏览的，说专业点也就是"多读少写"。
 对于这种场景，我们可以使如下这种架构：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210419222638.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329133357.png)
 
 主从复制，读写分离！ 80% 的情况下都是在进行读操作！减缓服务器的压力！架构中经常使用！ 一主二从！
 只要在公司中，主从复制就是必须要使用的，因为在真实的项目中不可能单机使用Redis！
@@ -1147,7 +1147,7 @@ redis发布订阅功能并不是特别使用，稍微复杂的场景我们还是
 - log文件名字
 - dump.rdb 名字
 修改完毕之后，启动我们的3个redis服务器，可以通过进程信息查看！
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210419223702.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329133408.png)
 
 我可以通过`info replication`命令来查看当前redis主从信息
 ```shell
@@ -1225,7 +1225,7 @@ Master接收到命令，启动后台的存盘进程，同时收集所有接收�
 ## 层层链路
 将6379端口的redis设为为6380端口的redis的主节点， 又将6380端口的redis设为6381端口的redis的主节点；此时在6380端口上的redis上使用`info replication`查看可得知，6380还是从节点，而不是主节点；
 在6379端口上的redis上使用`info replication`查看可得知，6379只有一个从节点6380
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210419230501.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329133418.png)
 
 
 ## 哨兵模式
@@ -1234,14 +1234,14 @@ Master接收到命令，启动后台的存盘进程，同时收集所有接收�
 
 哨兵模式是一种特殊的模式，首先Redis提供了哨兵的命令，哨兵是一个独立的进程，作为进程，它会独
 立运行。其原理是哨兵通过发送命令，等待Redis服务器响应，从而监控运行的多个Redis实例。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210419232332.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329133427.png)
 
 这里的哨兵有两个作用
 - 通过发送命令，让Redis服务器返回监控其运行状态，包括主服务器和从服务器。
 - 当哨兵监测到master宕机，会自动将slave切换成master，然后通过发布订阅模式通知其他的从服务器，修改配置文件，让它们切换主机。
 
 然而一个哨兵进程对Redis服务器进行监控，可能会出现问题，为此，我们可以使用多个哨兵进行监控。各个哨兵之间还会进行监控，这样就形成了多哨兵模式。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210419232411.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329133439.png)
 
 假设主服务器宕机，哨兵1先检测到这个结果，系统并不会马上进行`failover[故障转移]`过程，仅仅是哨兵1主观的认为主服务器不可用，这个现象成为主观下线。当后面的哨兵也检测到主服务器不可用，并且数量达到一定值时，那么哨兵之间就会进行一次投票，投票的结果由一个哨兵发起，进行failover操作。切换成功后，就会通过发布订阅模式，让各个哨兵把自己监控的从服务器实现切换主机，这个过程称为客观下线。
 
@@ -1266,8 +1266,8 @@ sentinel monitor mymaster 127.0.0.1 6379
 ```
 
 如果6379端口的主节点断开了，这个时候就会从从机中随机选择一个服务器来当主节点！（这里面有一个投票算法！）
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210419233246.png" width="700px"/>
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210419233330.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329133452.png)
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329133504.png)
 
 如果6379端口的主节点此时回来了，只能归并到新的主机6381下，当做从机，这就是哨兵模式的规则！
 
@@ -1704,8 +1704,8 @@ class RedisApplicationTests {
 }
 ```
 输出：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210420222655.png" width="700px"/>
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210420222713.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329133519.png)
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329133529.png)
 
 ## 基本操作
 **操作String**
@@ -1941,7 +1941,7 @@ public RedisSentinelConfiguration redisSentinelConfiguration(){
 
 # Redis缓存穿透、缓存击穿和雪崩问题
 **在实际开发中，我们一般是把redis当作缓存来使用**
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210420232908.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329133539.png)
 Redis缓存的使用，极大的提升了应用程序的性能和效率，特别是数据查询方面。但同时，它也带来了一些问题。其中，最要害的问题，就是数据的一致性问题，从严格意义上讲，这个问题无解。如果对数据的一致性要求很高，那么就不能使用缓存。
 另外的一些典型问题就是，缓存穿透、缓存雪崩和缓存击穿。目前，业界也都有比较流行的解决方案。
 

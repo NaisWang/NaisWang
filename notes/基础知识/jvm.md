@@ -1,8 +1,8 @@
 # JDK体系结构
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210331190721.png" width="500px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329131332.png)
 
 # JVM整体架构
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210331190757.png" width="400px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329131351.png)
 
 ## java中的编译器和解释器
 Java中引入了虚拟机的概念，即在机器和编译程序之间加入了一层抽象的虚拟机器。这台虚拟的机器在任何平台上都提供给编译程序一个的共同的接口。编译程序只需要面向虚拟机，生成虚拟机能够理解的代码，然后由解释器来将虚拟机代码转换为特定系统的机器码执行。在Java中，这种供虚拟机理解的代码叫做字节码（即扩展为.class的文件），它不面向任何特定的处理器，只面向虚拟机。每一种平台的解释器是不同的，但是实现的虚拟机是相同的。Java源程序经过编译器编译后变成字节码，字节码由虚拟机解释执行，虚拟机将每一条要执行的字节码送给解释器，解释器将其翻译成特定机器上的机器码，然后在特定的机器上运行，这就是上面提到的Java的特点的编译与解释并存的解释。
@@ -47,10 +47,10 @@ javap <options> <classes>
 `javap -c`会对当前class字节码进行反编译生成汇编代码。
 
 # Class类文件结构
-Class文件是一组以8位字节为基础单位的二进制流，各个数据项目严格按照顺序紧凑地排列在Class文件中，中间没有添加任何分隔符，这使得整个Class文件中存储的内容几乎全部都是程序运行的必要数据。根据Java虚拟机规范的规定，Class文件格式采用一种类似于C语言结构体的伪结构来存储，这种伪结构中**只有两种数据类型：无符号数和表**。无符号数属于基本数据类型，以u1、u2、u4、u8来分别代表1、2、4、8个字节的无符号数。表是由多个无符号数或其他表作为数据项构成的符合数据类型，所有的表都习惯性地以“_info”结尾。
+Class文件是一组以8位字节为基础单位的二进制流，各个数据项目严格按照顺序紧凑地排列在Class文件中，中间没有添加任何分隔符，这使得整个Class文件中存储的内容几乎全部都是程序运行的必要数据。根据Java虚拟机规范的规定，Class文件格式采用一种类似于C语言结构体的伪结构来存储，这种伪结构中**只有两种数据类型：无符号数和表**。无符号数属于基本数据类型，以u1、u2、u4、u8来分别代表1、2、4、8个字节的无符号数。表是由多个无符号数或其他表作为数据项构成的符合数据类型，所有的表都习惯性地以`_info`结尾。
 下表列出了Class文件中各个数据项的具体含义：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210414110740.png" width="700px"/>
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210414172353.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329131430.png)
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329131444.png)
 从表中可以看出，无论是无符号数还是表，当需要描述同一类型但数量不定的多个数据时，经常会在其前面使用一个前置的容量计数器来记录其数量，而便跟着若干个连续的数据项，称这一系列连续的某一类型的数据为某一类型的集合，如：fields_count个field_info表数据便组成了方法表集合
 
 这里需要注意的是：Class的结构不像XML等描述语言，由于它没有任何分隔符号，所以上表的数据项，无论是顺序还是数量，甚至于数据存储的字节序这样的细节，都是被严格限定的，每个字节代表的含义、长度、先后顺序都不允许改变。
@@ -73,32 +73,34 @@ major_version之后是常量池（constant_pool）的入口，它是Class文件�
 - **<font color="red">直接引用</font>**：直接引用可以是直接指向目标的指针、相对偏移量或是一个能间接定位到目标的句柄， 比如指向内存里的java/lang/StringBuilder实例对象的指针。直接引用是与虚拟机实现的内存布局相关的，同一个符号引用在不同虚拟机实例上翻译出来的直接引用一般不会相同。如果有了直接引用，那说明引用的目标必定已经存在于内存之中了。
 
 常量池中的每一项常量都是一个表，在jdk1.7之前共有11种结构各不相同的表结构数据，在jdk1.7中为了更好地支持动态语言调用，又额外增加了3种(CONSTANT_MethodHandle_info, CONSTANT_MethodType_info, CONSTANT_InvokeDynamic_info), 表开始的第一位是一个u1类型的标志位（1-12，缺少2），代表当前这个常量属于的常量类型。14种常量类型所代表的具体含义如下表所示：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/截屏2021-10-23 下午4.10.04的副本.jpg" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329131605.png)
 
 这14种常量类型各自均有自己的结构。以CONSTANT_Class_info型常量为例，该结构中有一项name_index属性，该常属性中存放一个索引值，指向常量池中一个CONSTANT_Utf8_info类型的常量，该常量中即保存了该类的全限定名字符串。而CONSTANT_Fieldref_info、CONSTANT_Methodref_info、CONSTANT_InterfaceMethodref_info型常量的结构中都有一项index属性，存放该字段或方法所属的类或接口的描述符CONSTANT_Class_info的索引项。另外，最终保存的诸如Class名、字段名、方法名、修饰符等字符串都是一个CONSTANT_Utf8_info类型的常量，也因此，Java中方法和字段名的最大长度也即是CONSTANT_Utf8_info型常量的最大长度，在CONSTANT_Utf8_info型常量的结构中有一项length属性，它是u2类型的，即占用2个字节，那么它的最大的length即为65535。因此，Java程序中如果定义了超过64KB英文字符的变量或方法名，将会无法编译。
 
 **常量池中14种常量项的结构总表**
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210414115157.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329131620.png)
 
 **为什么需要常量池？**
 一个java源文件中的类、接口，编译后产生一个字节码文件。而java中的字节码需要数据支持，通常这种数据会很大以至于不能直接存到字节码里，换另一种方式，可以存到常量池，这个字节码包含了指向常量池的引用。在动态链接的时候会用到运行时常量池。
 
 ## access_flag
 在常量池结束之后，紧接着的2个字节代表访问标志（access_flag），这个标志用于识别一些类或接口层次的访问信息，包括：这个Class是类还是接口，是否定义为public类型，abstract类型，如果是类的话，是否声明为final，等等。每种访问信息都由一个十六进制的标志值表示，如果同时具有多种访问信息，则得到的标志值为这几种访问信息的标志值的逻辑或。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210414115613.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329131634.png)
 
 ## this_class、super_class、interfaces
 类索引（this_class）和父类索引（super_class）都是一个u2类型的数据，而接口索引集合（interfaces）则是一组u2类型的数据集合，Class文件中由这三项数据来确定这个类的继承关系。类索引、父类索引和接口索引集合都按照顺序排列在访问标志之后，类索引和父类索引两个u2类型的索引值表示，它们各自指向一个类型为COMNSTANT_Class_info的类描述符常量，通过该常量中的索引值找到定义在COMNSTANT_Utf8_info类型的常量中的全限定名字符串。而接口索引集合就用来描述这个类实现了哪些接口，这些被实现的接口将按implements语句（ 如果这个类本身是个接口，则应当是extend语句）后的接口顺序从左到右排列在接口的索引集合中。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210414120158.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329131649.png)
 
 ## field_info
 字段表（field_info）用于描述接口或类中声明的变量。字段包括了类级变量或实例级变量，但不包括在方法内声明的变量。java中描述一个字段可以包含的信息有：字段的作用域(public、private、protected修饰符),是实例变量还是类变量(static修饰符),可变性(final修饰符), 并发可见性(volatile修饰符), 可否被序列化(transient修饰符), 字段基本类型，字段名称等。上述这些信息中，各个修饰符都是布尔值，要么有某个修饰符，要么没有，很适合使用标志位来表示，而字段叫什么名字、字段被定义成什么数据类型，这些都是无法固定的，只能引用常量池中的常量来描述。下面是字段表的最终格式：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210414121325.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329131702.png)
 字段修饰符放在access_flags项目中，它与类和接口中的access_flags项目是非常类似的，都是一个u2的数据类型，其中可以设置的标志位和含义见下图：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210414121910.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329131717.png)
 
 name_index和descriptor_index都是对常量池的引用，分别代表字段的简单名称及字段和方法的JNI描符符。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210414125754.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329131730.png)
 
 **最后需要注意一点：字段表集合中不会列出从父类或接口中继承而来的字段，但有可能列出原本Java代码中不存在的字段。比如在内部类中为了保持对外部类的访问性，会自动添加指向外部类实例的字段。**
 
@@ -113,13 +115,13 @@ name_index和descriptor_index都是对常量池的引用，分别代表字段的
 属性表（attribute_info）在前面已经出现过多系，在Class文件、字段表、方法表中都可以携带自己的属性表集合，以用于描述某些场景专有的信息。
 
 属性表集合的限制没有那么严格，不再要求各个属性表具有严格的顺序，并且只要不与已有的属性名重复，任何人实现的编译器都可以向属性表中写入自己定义的属性信息，但Java虚拟机运行时会忽略掉它不认识的属性。Java虚拟机规范中预定义了9项虚拟机应当能识别的属性（JDK1.5后又增加了一些新的特性，因此不止下面9项），如下是其中一些属性中的关键常用的部分：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210414135342.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329131740.png)
 
 对于每个属性，它的名称都需要从常量池中引用一个CONSTANT_Utf8_info类型的常量来表示，每个属性值的结构是完全可以自定义的，只需说明属性值所占用的位数长度即可。一个符合规则的属性表至少应具有“attribute_name_info”、“attribute_length”和至少一项信息属性。
 
 ### Code属性
 前面已经说过，Java程序方法体中的代码讲过Javac编译后，生成的字节码指令便会存储在Code属性中，但并非所有的方法表都必须存在这个属性，比如接口或抽象类中的方法就不存在Code属性。如果方法表有Code属性存在，那么它的结构将如下表所示：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210414135614.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329131752.png)
 
 **attribute_name_index，attribute_length**
 attribute_name_index是一项指向CONSTANT_Utf8_info型常量的索引，常量值固定为“Code”，它代表了该属性的名称。attribute_length指示了属性值的长度，由于属性名称索引与属性长度一共是6个字节，所以属性值的长度固定为整个属性表的长度减去6个字节。
@@ -132,7 +134,7 @@ code_length和code用来存储Java源程序编译后生成的字节码指令。c
 
 **exception_table**
 字节码指令之后是这个方法的显式异常处理表集合（exception_table），它对于Code属性来说并不是必须存在的。它的格式如下表所示：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210414141510.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329131805.png)
 
 它包含四个字段，这些字段的含义为：如果字节码从第start_pc行到第end_pc行之间（不含end_pc行）出现了类型为catch_type或其子类的异常（catch_type为指向一个CONSTANT_Class_info型常量的索引），则转到第handler_pc行继续处理，当catch_pc的值为0时，代表人和的异常情况都要转到handler_pc处进行处理。异常表实际上是Java代码的一部分，编译器使用异常表而不是简单的跳转命令来实现Java异常即finally处理机制，也因此，finally中的内容会在try或catch中的return语句之前执行
 
@@ -140,7 +142,7 @@ Code属性是Class文件中最重要的一个属性，如果把一个Java程序�
 
 ### Exception属性
 这里的Exception属是在方法表中与Code属性平级的一项属性，不要与Code属性中的exception_table产生混淆。Exception属性的作用是列举出方法中可能抛出的受查异常，也就是方法描述时在throws关键字后面列举的异常。它的结构很简单，只有attribute_name_index、attribute_length、number_of_exceptions、exception_index_table四项，从字面上便很容易理解，这里不再详述。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210414142254.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329131815.png)
 
 # 类加载
 <font color="red">注：加载不等于类加载，加载只是类加载中的一个阶段</font>
@@ -151,9 +153,9 @@ Code属性是Class文件中最重要的一个属性，如果把一个Java程序�
 - 静态绑定：即前期绑定。在程序执行前方法已经被绑定，此时由编译器或其它连接程序实现。针对java，简单的可以理解为程序编译期的绑定。java当中的方法只有final，static，private和构造方法是前期绑定的。
 - 动态绑定：即晚期绑定，也叫运行时绑定。在运行时根据具体对象的类型进行绑定。在java中，几乎所有的方法都是后期绑定的。
 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210116145531.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329131828.png)
 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210707033748.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329131838.png)
 
 <span id="loading"></span>
 
@@ -218,9 +220,9 @@ private static File[] getExtDirs(){
 }
 ```
 例如我当前`<JAVA_HOME>\jre\lib\ext`目录如下：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211027165347.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329131850.png)
 其中dnsns.jar包如下：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211027165810.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329131908.png)
 我们可以发现DNSNameService类的一定是通过扩展类类加载器来加载的；我们可以通过如下代码来验证
 ```java
 ClassLoader cl = DNSNameService.class.getClassLoader();
@@ -242,7 +244,7 @@ public class Main{
 在程序开发中，类的加载几乎是由上述3种类加载器相互配合执行的，同时我们还可以自定义类加载器、需要注意的是，java虚拟机对class文件采用的是按需加载的方式，也就是说需要使用该类时才会将它的class文件加载到内存生成class对象，而且加载某个类的class文件时，java虚拟机采用的是双亲委派模式，即把加载类的请求交由父加载器处理，它一种任务委派模式。
 
 #### 类加载层级结构
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210116152113.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132012.png)
 该模型要求除了顶层的启动类加载器外，其余的类加载器都应该有自己的父类加载器，而这种父子关系一般通过组合（Composition）关系来实现，而不是通过继承（Inheritance）。
 
 通过java代码来得到每个加载器加载了那些类
@@ -291,7 +293,7 @@ public static void extClassLoaderLoadingPath(){
 ```
 
 #### 双亲委派模型
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210116172533.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132024.png)
 这种层次关系称为类加载器的双亲委派模型。我们把每一层上面的类加载器叫做当前层类加载器的父加载器，当然，它们之间的父子关系并不是通过继承关系来实现的，而是使用组合关系来复用父加载器中的代码。该模型在JDK1.2期间被引入并广泛应用于之后几乎所有的Java程序中，但它并不是一个强制性的约束模型，而是Java设计者们推荐给开发者的一种类的加载器实现方式。
 
 双亲委派模型的工作流程是：如果一个类加载器收到了类加载的请求，它首先不会自己去尝试加载这个类，而是把请求委托给父加载器去完成，依次向上，因此，所有的类加载请求最终都应该被传递到顶层的启动类加载器中，只有当父加载器在它的搜索范围中没有找到所需的类时，即无法完成该加载，子加载器才会尝试自己去加载该类。
@@ -381,7 +383,7 @@ protected Class<?> loadClass(String name, boolean resolve)
 3. 调用findClass(String)方法查找类
 如果使用上述步骤找到类，并且resolve标志为true，则此方法将在得到的Class对象上调用resolveClass(Class)方法。
 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210116175024.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132035.png)
 
 #### findClass
 在自定义类加载时，一般我们需要覆盖这个方法，且ClassLoader中给出了一个默认的错误实现, 如下：
@@ -557,7 +559,7 @@ wanghengzhi@:~/Temp/java/classLoaderTest$
 在java中存在着很多的服务提供者接口SPI，全称Service Prcrider Interface，是java提供的一套用来被第三方实现或者扩展的API，这些接口一般由第三方提供实现，常见的SPI有JDBC、INDI等。这些SPI的接口（比如JDBC中的java.sql.Driver）属于核心类库，一般存在rt.jar包中，由根类加载器加载。而第三方实现的代码一般作为依赖jar包存放在classpath路径下，由于SPI接口中的代码需要加载具体的第三方实现类并调用其相关方法，SPI的接口类是由根类加载器加载的，Bootstrap类加载器无法直接加载位于classpath下的具体实现类。由于双亲委派模式的存在，Bootstrap类加载器也无法反向委托AppClassLoader加载SPI的具体实现类。在这种情况下，java提供了线程上下文类加载器用于解决以上问题
 线程上下文类加载器可以通过java.lang.Thread的getContextClassLoader(来获取，或者通过set ContextClassLoader(ClassLoader cl)来设置线程的上下文类加载器。如果没有手动设置上下文类加载器，线程将继承其父线程的上下文类加载器，初始线程的上下文类加载器是系统类加载器 (AppClassLoader），在线程中运行的代码可以通过此类加载品来加载类或资源。
 显然这种加载类的方式破坏了双亲委托模型，但它使得java类加载器变得更加灵活。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211102165629.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132046.png)
 
 ## 类的链接过程
 当类的字节码文件被加载进JVM内存之后，JVM便会创建一个对应的Class对象（也可以叫字节码对象），把字节码指令中对常量池中的**符号引用转换为直接引用**，接着把类的字节码指令合并到JRE中。链接包含三个步骤：验证、准备、解析
@@ -583,7 +585,7 @@ wanghengzhi@:~/Temp/java/classLoaderTest$
 解析动作主要针对类或接口、字段、类方法、接口方法四类符号引用进行，分别对应于常量池中的CONSTANT_Class_info、CONSTANT_Fieldref_info、CONSTANT_Methodref_info、CONSTANT_InterfaceMethodref_info四种常量类型。
 1. 类或接口的解析：判断所要转化成的直接引用是对数组类型，还是普通的对象类型的引用，从而进行不同的解析。
 2. 字段解析：对字段进行解析时，会先在本类中查找是否包含有简单名称和字段描述符都与目标相匹配的字段，如果有，则查找结束；如果没有，则会按照继承关系从上往下递归搜索该类所实现的各个接口和它们的父接口，还没有，则按照继承关系从上往下递归搜索其父类，直至查找结束，查找流程如下图所示：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210414145538.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132059.png)
 最后需要注意：理论上是按照上述顺序进行搜索解析，但在实际应用中，虚拟机的编译器实现可能要比上述规范要求的更严格一些。如果有一个同名字段同时出现在该类的接口和父类中，或同时在自己或父类的接口中出现，编译器可能会拒绝编译
 3. 类方法解析：对类方法的解析与对字段解析的搜索步骤差不多，只是多了判断该方法所处的是类还是接口的步骤，而且对类方法的匹配搜索，是先搜索父类，再搜索接口。
 4. 接口方法解析：与类方法解析步骤类似，知识接口不会有父类，因此，只递归向上搜索父接口就行了。
@@ -706,7 +708,7 @@ public class ArrayTest{
 至此，实例就构造完毕了；
 
 # java的类/实例初始化顺序
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210408231821.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132110.png)
 
 实例一：
 组合的初始化
@@ -839,8 +841,8 @@ Student(int), i=2
 
 # Java内存区域
 Java虚拟机在执行Java程序的过程中会把他所管理的内存划分为若干个不同的数据区域。Java虚拟机规范将JVM所管理的内存分为以下几个运行时数据区：**程序计数器、Java虚拟机栈、本地方法栈、Java堆、方法区**。下面详细阐述各数据区所存储的数据类型。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210414175428.png" width="700px"/>
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210414154153.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132120.png)
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132133.png)
 
 ## 程序计数器（Program Counter Register）
 一块较小的内存空间，它是当前线程所执行的字节码的行号指示器，字节码解释器工作时通过改变该计数器的值来选择下一条需要执行的字节码指令，分支、跳转、循环等基础功能都要依赖它来实现。**每条线程都有一个独立的的程序计数器，各线程间的计数器互不影响，因此该区域是线程私有的。**
@@ -851,7 +853,7 @@ Java虚拟机在执行Java程序的过程中会把他所管理的内存划分为
 Java虚拟机栈(Java Virtual Machine Stack), 早期也叫Java栈。每个线程在创建时都会创建一个虚拟机栈，它的生命周期也与线程相同。
 
 虚拟机栈描述的是Java方法执行的内存模型：每个方法被执行的时候都会同时创建一个栈帧，栈它是用于支持续虚拟机进行方法调用和方法执行的数据结构。对于执行引擎来讲，活动线程中，只有栈顶的栈帧是有效的，称为当前栈帧，这个栈帧所关联的方法称为当前方法，执行引擎所运行的所有字节码指令都只针对当前栈帧进行操作。**栈帧用于存储局部变量表、操作数栈、动态链接、方法返回地址和一些额外的附加信息。在编译程序代码时，栈帧中需要多大的局部变量表、多深的操作数栈都已经完全确定了，并且写入了方法表的Code属性之中。因此，一个栈帧需要分配多少内存，不会受到程序运行期变量数据的影响，而仅仅取决于具体的虚拟机实现**。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210401141850.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132142.png)
 
 对于虚拟栈来说，是不存在垃圾回收问题的
 
@@ -901,8 +903,8 @@ javac Math.java && java -Xss5m Math
 栈帧的存储空间由创建它的线程分配在Java虚拟机栈之中，每一个栈帧都有自己的本地变量表(局部变量表)、操作数栈和指向当前方法所属的类的运行时常量池的引用。
 接下来，详细讲解一下栈帧中的局部变量表、操作数栈、动态连接、方法返回地址等各个部分的数据结构和作用。
 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210401141100.png" width="400px"/>
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210331205023.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132152.png)
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132202.png)
 
 #### 局部变量表
 局部变量表是一组变量值存储空间，用于存放方法参数和方法内部定义的局部变量，其中存放的数据的类型是编译期可知的各种基本数据类型、对象引用（reference）和returnAddress类型（它指向了一条字节码指令的地址）。局部变量表所需的内存空间在编译期间完成分配，即在Java程序被编译成Class文件时，就确定了所需分配的最大局部变量表的容量。当进入一个方法时，这个方法需要在栈中分配多大的局部变量空间是完全确定的，在方法运行期间不会改变局部变量表的大小。
@@ -931,11 +933,11 @@ public class Math{
 }
 ```
 对应上述代码使用`javac -g Math.java`来编译，加-g参数的目的是让生成的字节码文件带有局部变量表信息。然后使用`javap -v Math.class`来查看字节码文件详细信息，如下
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210401165441.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132217.png)
 
 **注：**
 如果当前栈帧是由构造方法或者非静态方法创建的，那么该对象引用this将会放在index为0的slot处，其余的参数按照参数表顺序继续排列,如下是一个非静态方法的局部变量表信息：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210401161153.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132243.png)
 **这也就是为什么静态方法中不能使用this的原因所在**；即this变量不存在与静态方法的局部变量表中，即没办法使用this
 
 <font color="red">有关局部变量、实例成员变量、类成员变量的存放位置</font>
@@ -944,7 +946,7 @@ public class Math{
 静态变量(也叫类变量)是存放在方法区中的。
 局部变量是属于方法的，也就存在栈中。
 **注：局部变量表是不会存放成员变量的**
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210414093905.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132258.png)
 
 **槽位重用**
 栈帧中的局部变量表中的槽位是可以重复用的，如果一个局部变量过了其作用域，那么在其作用域之后申明的新的局部变量就很有可能会复用过期局部变量的槽位，从而达到节省资源的目的，如下所示
@@ -959,7 +961,7 @@ public void meth1(){
 }
 ```
 对应的局部变量表：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210401162236.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132311.png)
 
 #### 操作数栈
 操作数栈又常被称为操作栈，操作数栈的最大深度也是在编译的时候就确定了。32位数据类型所占的栈容量为1,64为数据类型所占的栈容量为2。当一个方法开始执行时，它的操作栈是空的，在方法的执行过程中，会有各种字节码指令（比如：加操作、赋值元算等）向操作栈中写入和提取内容，也就是入栈和出栈操作。
@@ -983,7 +985,7 @@ public class Math{
 }
 ```
 对应的字节码文件如下：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210401172046.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132322.png)
 
 #### 方法返回地址
 当一个方法被执行后，有两种方式退出该方法：执行引擎遇到了任意一个方法返回的字节码指令或遇到了异常，并且该异常没有在方法体内得到处理。无论采用何种退出方式，在方法退出之后，都需要返回到方法被调用的位置，程序才能继续执行。方法返回时可能需要在栈帧中保存一些信息，用来帮助恢复它的上层方法的执行状态。一般来说，方法正常退出时，调用者的PC计数器的值就可以作为返回地址，栈帧中很可能保存了这个计数器值，而方法异常退出时，返回地址是要通过异常处理器来确定的，栈帧中一般不会保存这部分信息。
@@ -992,8 +994,8 @@ public class Math{
 
 ## 堆
 Java 中的堆是 JVM 管理的最大的一块内存空间，主要用于存放Java类的实例对象，其被划分为二个不同的区域：年轻代 ( Young )、老年代 ( Old )，其中年轻代 ( Young )又被划分为：Eden、From Survivor和To Survivor三个区域，如下图所示：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210331215702.png" width="700px"/>
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210401192837.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132333.png)
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132342.png)
 
 - 堆大小 = 年轻代( Young ) + 老年代( Old )。
 - 年轻代 ( Young ) 被细分为 Eden 和 两个 Survivor 区域，为了便于区分，两个 Survivor 区域分别被命名为 from 和 to。默认情况下，Eden : from : to = 8 : 1 : 1 ( 可以通过参数 –XX:SurvivorRatio 来设定 )，即： Eden = 8/10 的年轻代空间大小，from = to = 1/10 的年轻代空间大小。JVM 每次只使用 Eden 和其中的一块 Survivor 区域来为对象服务，所以无论什么时候，总是有一块 Survivor 区域是空闲着的，因此，年轻代实际可用的内存空间为 9/10 ( 即90% )的年轻代空间。
@@ -1035,7 +1037,7 @@ Java 中的堆是 JVM 管理的最大的一块内存空间，主要用于存放J
 
 **查看堆大小的三种方法**
 - 可以使用`java -XX:+PrintGCDetails 类名.class`来运行java程序，可以展示堆的分配以及GC的详细情况，如下：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210401193835.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132354.png)
 
 - 通过代码获取堆信息
 ```java
@@ -1048,13 +1050,13 @@ public static void main(String[] args){
 ```
 
 - 使用`jstat -gc java进程id`命令
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210401195831.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132410.png)
 
 **年轻代与老年代在堆结构的占比**
 - 可以修改`-XX:NewRatio`的值来修改其占比
 - 默认`-XX:NewRatio=2`, 表示新生代占1，老年代占2，新生代占整个堆的1/3
 注：可以通过`jinfo -flag NewRatio 进程id`来查看NewRatio的值，如下：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210401202928.png" width="400px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132432.png)
 
 ### 年轻代与老年代
 - 在HotSpot中，Eden空间和另外两个Survivor空间缺省默认所占比例是8:1:1
@@ -1063,7 +1065,7 @@ public static void main(String[] args){
 - 绝大部分java对象的销毁在新生代进行
 - 可以使用`-Xmn`设置新生代最大内存大小，这个参数一般使用默认值就可以
 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210401214041.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132445.png)
 
 ### 对象分配过程：TLAB
 **为什么有TLAB(Thread Local Allocation Buffer)?**
@@ -1180,10 +1182,10 @@ public class Math{
 }
 ```
 开启了逃逸分析时：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210401233953.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132502.png)
 
 未开启逃逸分析时：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210401234119.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132512.png)
 
 ## 本地方法栈
 本地方法就是一个Java调用非Java代码的接口
@@ -1191,7 +1193,7 @@ java虚拟机栈用于管理Java方法的调用，而本地方法栈用于管理
 
 ## 方法区
 **栈、堆、方法区的交互关系**
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210402102923.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132524.png)
 
 方法区用于存储已被虚拟机加载的类型信息、域信息、方法信息，常量、静态变量、字面量数据、即时编译器编译后的代码缓存等
 即方法区主要用于存放两大数据：字面量和符号引用量。 
@@ -1236,9 +1238,9 @@ Object obj = new Object();
 
 另外，由于reference类型在Java虚拟机规范里面只规定了一个指向对象的引用，并没有定义这个引用应该通过哪种方式去定位，以及访问到Java堆中的对象的具体位置，因此不同虚拟机实现的对象访问方式会有所不同，主流的访问方式有两种：使用句柄池和直接使用指针。
 通过句柄池访问的方式如下：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210414162507.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132535.png)
 通过直接指针访问的方式如下：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210414162530.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132546.png)
 这两种对象的访问方式各有优势，使用句柄访问方式的最大好处就是reference中存放的是稳定的句柄地址，在对象呗移动（垃圾收集时移动对象是非常普遍的行为）时只会改变句柄中的实例数据指针，而reference本身不需要修改。使用直接指针访问方式的最大好处是速度快，它节省了一次指针定位的时间开销。目前Java默认使用的Hot Spot虚拟机采用的便是是第二种方式进行对象访问的。
 
 
@@ -1261,7 +1263,7 @@ public class Math{
 }
 ```
 java visualvm界面
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210331222957.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329132601.png)
 
 # 调优工具Arthas
 强烈建议使用Arthas

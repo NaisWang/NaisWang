@@ -7,10 +7,11 @@
 | java.util         | Arrays, 所有集合类(如ArrayList)，所有Map类(如HashMap)，Collections，Comparator, Iterator，Optional |
 | java.io           | File, InputStream, IOException                                                                     |
 
-程序运行时会自动引入Java.lang.*
+程序运行时会自动引入`Java.lang.*`
 
 # classpath和jar
 ## classpath
+
 在Java中，我们经常听到classpath这个东西。网上有很多关于“如何设置classpath”的文章，但大部分设置都不靠谱。
 
 到底什么是classpath？
@@ -105,9 +106,10 @@ package_sample
          └─ Arrays.class
 这里需要特别注意的是，jar包里的第一层目录，不能是bin，而应该是hong、ming、mr。如果在Windows的资源管理器中看，应该长这样：
 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210927174557.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329130249.png)
+
 如果长这样：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210927174718.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329130315.png)
 
 说明打包打得有问题，JVM仍然无法从jar包中查找正确的class，原因是hong.Person必须按hong/Person.class存放，而不是bin/hong/Person.class。
 
@@ -295,7 +297,7 @@ wanghengzhi@:~/Temp/java/spring$ tree
 ```
 
 # java中的数据类型与类型转换
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210408210810.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329130336.png)
 
 Java基本类型基本： byte,short,char  <  int  <  long  <  float  <  double
 表达式中的类型会自动提升到表达式中类型最高的一级
@@ -520,7 +522,8 @@ System.out.println(b.getClass().getName()); // 输出：[Ljava.lang.Integer;
 # 实参与形参
 - 形参出现在函数定义中，在整个函数体内都可以使用， 离开该函数则不能使用。
 - 实参出现在主调函数中，进入被调函数后，实参变量也不能使用。 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210404181321.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329131057.png)
 
 # 成员变量(域)与局部变量
 - 成员变量有2次初始化的机会，第一次是在“准备阶段”，执行系统初始化，对类变量设置零值，另一次则是在“初始化”阶段，赋予程序员在代码中定义的初始值
@@ -582,7 +585,7 @@ public class Math{
 }
 ```
 其字节码文件
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210402121458.png" width="400px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329131109.png)
 
 # final与static final的区别
 当使用final修饰变量时，该变量只能在定义处、静态代码块、构造函数中赋值
@@ -735,7 +738,7 @@ JDK9是怎么解决这个问题的呢？
 - 当调用string的replace()方法修改指定字符或字符串时，也需要重新指定内存区域赋值，不能使用原有的value进行赋值
 
 通过字面量的方式(区别于new)给一个字符串赋值，此时的字符串值声明在字符串常量池中
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210402160356.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329131122.png)
 
 ### String底层Hashtable结构
 <font color="red">String的字符串常量池是一个固定大小的HashTable</font>, 默认值大小长度是1009。如果放进字符串常量池的String非常多，就会造成Hash冲突严重，从而导致链表会很长，而链表长了后直接会造成的影响就是当调用String.intern时性能会大幅下降
@@ -988,7 +991,7 @@ public void test(){
 - 异常栈中每个异常都由异常名+细节信息+路径组成。异常名从行首开始（或紧随”Caused by”），紧接着是细节信息（为增强可读性，需要提供恰当的细节信息），从下一行开始，跳过一个制表符，就是路径中的一个位置，一行一个位置。
 - 异常栈中的异常是以FILO的顺序打印，位于打印内容最下方的异常最早被抛出，逐渐导致上方异常被抛出。位于打印内容最上方的异常最晚被抛出，且没有再被捕获。从上到下数，第i+1个异常是第i个异常被抛出的原因cause，以“Caused by”开头。
 - 异常中的路径描述打印顺序也是FILO的顺序打印，位于打印内容最下方的路径是最早经过的，逐渐导致上方路径被经过。从上到下数，第i+1个路径是第i个路径被经过的原因
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210504170315.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329131153.png)
 
 ## 实战：
 ```java
@@ -1261,7 +1264,7 @@ map.put("2", "two");
 
 # 日期时间API
 ## JDK8之前日期时间API
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210506144645.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329131224.png)
 
 ### java.lang.System类
 System类提供的`public static long currentTimeMilis()`用来返回当前时间与1970年1月1日0时0分0秒之间以毫秒为单位的时间差。
@@ -1594,10 +1597,10 @@ public static int numberOfDaysOfWeekInMonth(DayOfWeek dow, YearMonth yearMonth) 
 - 和数组区别：
   - 数组长度固定，集合长度不固定
   - 数组可以存储基本类型和引用类型，集合只能存储引用类型，
-- 位置：java.util.*；
+- 位置：`java.util.*`；
 
 ## Collection体系集合
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210523151726.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329130431.png)
 
 ## Collection父接口
 Collection接口实现了Iterable接口
@@ -1637,7 +1640,7 @@ while(it.hasNext()){
 }
 ```
 注：在使用的迭代器遍历集合的过程中，是不能使用集合自带的删除方法进行删除操作的，即`collection.remove(o)`操纵，否则会报如下错误
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210113210104.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329130454.png)
 但是我们可以使用的迭代器中的remove方法来进行删除
 
 ### Iterator与Iterable的区别
@@ -1970,7 +1973,7 @@ List<Integer> list = new ArrayList(Arrays.asList(nums));
 ```
 
 # Map集合体系
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210412215829.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329130525.png)
 
 ## Map父接口
 特点：存储一对数据（Key-Value），无序、无下标，键不可重复，值可重复。
@@ -2556,7 +2559,7 @@ public enum SeasonEnum {
 ```
 
 **Enum类的主要方法**
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210122165420.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329130539.png)
 - values()方法：返回枚举类型的对象数组。该方法可以很方便地遍历所有的枚举值。
 - valueOf(String str)：可以把一个字符串转为对应的枚举类对象。要求字符串必须是枚举类对象的“名字”。如不是，会有运行时异常：IllegalArgumentException。 
 - toString()：返回当前枚举类对象常量的名称
@@ -2708,8 +2711,10 @@ JDK5.0提供了4个标准的meta-annotation类型，分别是：
 - RetentionPolicy.SOURCE:在源文件中有效（即源文件保留），编译器直接丢弃这种策略的注释
 - RetentionPolicy.CLASS:在class文件中有效（即class保留） ， 当运行Java程序时, JVM不会保留注解。 这是默认值
 - RetentionPolicy.RUNTIME:在运行时有效（即运行时保留），当运行 Java 程序时, JVM 会保留注释。程序可以通过反射获取该注释。
+
 *只有声明为RUNTIME的注解，才能通过反射获取*
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210122212248.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329130603.png)
 
 **@Targe**
 @Target: 用于修饰 Annotation 定义, 用于指定被修饰的 Annotation 能用于修饰哪些程序元素。 @Target 也包含一个名为 value 的成员变量
@@ -3251,7 +3256,7 @@ Java的IO流共涉及40多个类，实际上非常规则，都是从如下4个�
 
 **IO流的体系**
 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210206192125.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329130630.png)
 
 **InputStream**
 - `int read()` 从输入流中读取数据的下一个字节。返回 0 到 255 范围内的 int 字节值。如果因为已经到达流末尾而没有可用的字节，则返回值 -1。 
@@ -3598,7 +3603,8 @@ try {
 - 如果需要让某个对象支持序列化机制，则必须让对象所属的类及其属性是可序列化的，为了让某个类是可序列化的，该类必须实现Serializable接口或Externalizable接口。否则，会抛出NotSerializableException异常
 - 凡是实现Serializable接口的类都有一个表示序列化版本标识符的静态变量：`private static final long serialVersionUID`, serialVersionUID用来表明类的不同版本间的兼容性。简言之，其目的是以序列化对象进行版本控制，有关各版本反序列化时是否兼容。如果类没有显示定义这个静态常量，它的值是Java运行时环境根据类的内部细节自动生成的。若类的实例变量做了修改，serialVersionUID 可能发生变化。故建议，显式声明。
 如下：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210412231129.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329130645.png)
+
 - 简单来说，Java的序列化机制是通过在运行时判断类的serialVersionUID来验证版本一致性的。在进行反序列化时，JVM会把传来的字节流中的serialVersionUID与本地相应实体类的serialVersionUID进行比较，如果相同就认为是一致的，可以进行反序列化，否则就会出现序列化版本不一致的异常。(InvalidCastException)
 
 **使用对象流序列化对象**
@@ -3838,9 +3844,9 @@ Java 方法引用是Java 8随着Lambda表达式引入的新特性。可以直接
 **针对于`对象名::实例方法名`与`类名::静态方法名`的情况**
 其使用条件为Lambda 表达式的主体仅包含一个表达式，且 Lambda 表达式只调用了一个已经存在的方法；且函数式接口中的抽象方法的参数列表和返回值类型，必须与方法引用的方法的参数列表和返回值类型保持一致
 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210328092247.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329130712.png)
 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210328092257.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329130743.png)
 
 **针对于`类名::实例方法名`**
 其使用条件为Lambda 表达式的主体仅包含一个表达式，且 Lambda 表达式只调用了一个已经存在的方法；函数式接口中的返回值类型与方法引用的方法的返回值类型保持一致，且其参数列表对应关系分下列2种情况
@@ -3918,7 +3924,7 @@ Stream API对集合数据进行操作，提供了高效且易于使用的处理�
 3. 终止操作
   一旦执行终止操作，就执行中间操作链，并产生结果，之后，不会再被使用
 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210328090013.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329130808.png)
 
 ### 创建方式
 **1. 通过集合**
@@ -4067,8 +4073,8 @@ public static void test10(){
 **有关collect(Collector c)的注意点**
 Collector接口中方法的实现决定了如何对流执行收集的操作(如收集到List, Set, Map)
 Collectors实现类提供了很多静态方法，可以方便地创建常见收集器实例，具体方法与实例如下：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210331094642.png" width="700px"/>
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210331094659.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329130822.png)
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329130850.png)
 
 ```java
 public static void test10(){
@@ -4109,7 +4115,7 @@ java, javascript中使用split()方法对零长度字符串切分后数组长度
 # javaWeb三大组件与拦截器
 javaWeb的三大组件式：监听器、过滤器、Servlet
 javaWeb运行流程图：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210407131552.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220327145409.png)
 
 ## 监听器
 web监听器式Servlet中一种特殊的类，能帮助开发者监听web中的特定事件，比如ServletContext, HttpSession, ServletRequest的创建和销毁；变量的创建、销毁和修改等。可以在某些动作前后增加处理，实现监控。
@@ -4306,13 +4312,13 @@ public class TestFilter implements Filter {
 现在的很多语言以及不能以编译型语言和解释型语言来区分了，因为很多语言都兼具编译型语言和解释型语言的特点。
 
 ## String.getProperty("user.dir")返回的路径
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210408135917.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329130922.png)
 
 ## 类路径classpath
 maven项目中的classpath就是resoucers文件下的目录
 
 ## new File()中路径填写
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210411001404.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329130938.png)
 
 ## SDK
 SDK是Software Development Kit的缩写，中文意思是“软件开发工具包”。这是一个覆盖面相当广泛的名词，可以这么说：辅助开发某一类软件的相关文档、范例和工具的集合都可以叫做“SDK”。SDK是一系列文件的组合，它为软件的开发提供一个平台(它为软件开发使用各种API提供便利)。
@@ -4409,7 +4415,7 @@ public static void main(string[] args) {
 ## Java获取路径的方法汇总
 **调用方法来获取路径的关键点是：使用相对路径时，这个方法是相对于哪个目录？**
 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210411115646.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329131238.png)
 
 ```java
 @SpringBootApplication
@@ -4477,7 +4483,7 @@ Unsafe是位于sun.misc包下的一个类，主要提供一些用于执行低级
 ## DecimalFormat类
 概述
 DecimalFormat类能够解析和格式化任意语言环境中的数，包括对西方语言、阿拉伯语和印度语数字的支持。它还支持不同类型的数，包括整数 (123)、定点数 (123.4)、科学记数法表示的数 (1.23E4)、百分数 (12%) 和金额 ($123)。所有这些内容都可以本地化
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210506151520.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329131253.png)
 
 代码
 ```java
@@ -4648,7 +4654,7 @@ final double d = Math.random();
 final int i = (int)(d*100);
 ```
 注：Math.random()的内部原理还是通过调用Random的nextDouble()方法
-![](https://gitee.com/naiswang/images/raw/master/20190906213506.png =750x)
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220329131212.png)
 
 注：由于使用Math.random()的底层的Random对象是静态的，从而使得在一个代码里执行执行多个代码Math.random（）的产生的随机数更加具有随机性
 

@@ -2017,7 +2017,7 @@ public static void main(String[] args) throws Exception{
 jdk1.2版本，线程不安全，运行效率快，允许null作为key或是value
 
 - HashMap刚创建时，table是nu11，为了节省空间，当添加第一个素是，table容量调整为16
-- 当元素个数大于阈值（16*0.75=12）时，会进行扩容，扩容后大小为原来的2倍。目的是减少调整元素的个数。
+- 当元素个数大于阈值`（16*0.75=12）`时，会进行扩容，扩容后大小为原来的2倍。目的是减少调整元素的个数。
 - jdk1.8当每个链表长度大于8，并且元素个数大于等于64时，会调整为红黑树，目的提高执行效率
 - jdk1.8当链表长度小于6时，调整成链表
 - jdk1.8以前，链表时头插入，jdk1.8以后时是尾插入
@@ -2087,7 +2087,6 @@ public static int[][] get(){
   return list.toArray(new int[list.size()][]); 
 }
 ```
-
 
 ## 没有指定泛型类型时
 注：new泛型类，或实现泛型接口时，如果没有指定泛型，则泛型类或泛型接口中的泛型类型默认为Object
@@ -2389,6 +2388,36 @@ class Student extends Person{
 
 使用`<T extends Person>`，则编译时，T就只能使用Person中的属性与方法，这是因为在编译时，编译器无法知道有哪些类是继承了Person， 所以不能使用Person子类中的属性与方法，否则会报错
 
+## 泛型擦除
+所谓泛型，就是指在定义一个类、接口或者方法时可以指定类型参数。这个类型参数我们可以在使用类、接口或者方法时动态指定。
+
+使用泛型可以给我们带来如下的好处：
+- 编译时类型检查：当我们使用泛型时，加入向容器中存入非特定对象在编译阶段就会报错。假如不使用泛型，可以向容器中存入任意类型，容易出现类型转换异常。
+- 不需要进行类型强制转换：使用泛型后容器可以记住存入容器中的对象的类型；
+- 代码可读性提升：使用泛型后开发人员看一眼就知道容器中存放的是何种对象。
+
+有了上面的泛型擦除知识后，我们就可以理解下面的现象了：
+
+1. 泛型类的class对象相同
+```java
+public static void main(String[] args) {  
+    List<String> ls = new ArrayList<String>();  
+    List<Integer> li = new ArrayList<Integer>();  
+    System.out.println(ls.getClass() == li.getClass());  
+}  
+```
+
+2. 不能对泛型数组进行初始化
+```java
+List<String>[] list = new List<String>[];  
+```
+
+3. instanceof 不允许存在泛型参数
+```java
+List<String> list = new ArrayList<String>();  
+//在运行时list的泛型参数会被删除，所以判断不了类型
+System.out.println(list instanceof List<String>)
+```
 
 # 比较器
 在java中经常会涉及到对象数组的排序问题，那么就涉及到对象之间的比较问题

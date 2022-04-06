@@ -38,7 +38,8 @@ service mysqld restart
 # 进程相关操作
 ## ctrl+z
 ctrl + z可以将一个正在前台执行的命令放到后台，即前台进程的挂起
-<img src="https://gitee.com/naiswang/images/raw/master/20190917091310.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220406213306.png)
 
 ## ctrl+c
 前台进程的终止
@@ -89,16 +90,19 @@ jobs命令用于显示Linux中的任务列表及任务状态，包括后台运�
 -r：仅输出运行状态（running）的任务；
 -s：仅输出停止状态（stoped）的任务。
 
-<img src="https://gitee.com/naiswang/images/raw/master/20190917091455.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220406213321.png)
 
 <font color="red">注：</font> 切换到tmux的shell中的或是开启子shell， 然后再执行jobs命名会发现没有bin/spark-shell进程挂起， 这是因为jobs只列出的当前shell环境中的已启动的任务状态。
-<img src="https://gitee.com/naiswang/images/raw/master/20190917094533.png" width="700px"/>
-<img src="https://gitee.com/naiswang/images/raw/master/20190917094801.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220406213335.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220406213350.png)
 
 ## ps
 列出系统中正在运行的进程；
 不加参数执行ps命令：展示当前终端中运行的进程情况，很少使用。
-<img src="https://gitee.com/naiswang/images/raw/master/20190917093920.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220406213401.png)
 
 默认展示了4列信息：
 PID: 运行着的命令(CMD)的进程编号
@@ -112,11 +116,13 @@ ps常使用的参数：
 -u ：查看特定用户进程；
 -x ：通常与 a 这个参数一起使用，可列出较完整信息
 由于输出的内容太多，ps一般使用情况是   ps -aux | grep %要查询的东西%
-<img src="https://gitee.com/naiswang/images/raw/master/20190917092228.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220406213411.png)
 
 ## fg
 fg将后台中的命令调至前台继续运行如果后台中有多个命令，可以用 fg %jobnumber将选中的命令调出， %jobnumber是通过jobs命令查到的后台正在执行的命令的序号(不是pid)
-<img src="https://gitee.com/naiswang/images/raw/master/20190917092356.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220406213425.png)
 
 ## bg
 bg将一个在后台暂停的命令，变成继续执行， 即使一个进程在后台
@@ -1235,27 +1241,35 @@ Linux Shell today is 2017-11-07    #多个$()同时使用也不会有问题
 咦，make是一个程序，会去找Makefile，那Makefile怎么写？通常软件开发商都会字来检测用户的操作环境，以及该操作环境是否有软件开发商所需要的其他功能，该检测后，就会主动地建立这个Makefile的规则文件，通常这个检测程序的文件名为configure或是config。
 
 **至于make与configure运行流程的相关性**，如下图：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210424165239.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220406213439.png)
+
 你要进行的任务其实只有两个，一个是执行configure来建立Makefile, 这个步骤一定要成功。成功之后再以make来调用所需要的数据进行编译即可
 
 ### 实战
 1. 安装gcc和make和两个工具，把源码包变成可以执行的程序
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210424165707.png" width="300px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220406213453.png)
+
 2. tar解包，释放源代码至指定目录。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210424165758.png" width="300px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220406213505.png)
 
 **以下所有步骤都要在解压目录下执行。**
 3. 执行`./configure`
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210424170030.png" width="300px"/>
+  
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220406213521.png)
 
 **`prefix=PREFIX`，选择安装目录**
 
 4. make编译，生成可执行的二进制程序文件
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210424170137.png" width="300px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220406213540.png)
 
 5. make install安装，将编译好的文件复制到安装目录
 make install后，进去/mnt/myprm看到以下包证明装完了
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210424170220.png" width="300px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220406213550.png)
 
 
 #### 卸载程序
@@ -1444,7 +1458,9 @@ APT 管理软件包，主要由以下几个命令组成：
 
 # Unix目录结构的来历
 Unix（包含Linux）的初学者，常常会很困惑，不明白目录结构的含义何在。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210504142234.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220406213602.png)
+
 举例来说，根目录下面有一个子目录/bin，用于存放二进制程序。但是，/usr子目录下面还有/usr/bin，以及/usr/local/bin，也用于存放二进制程序；某些系统甚至还有/opt/bin。它们有何区别？
 原来Unix目录结构是历史造成的。1969年，Ken Thompson和Dennis Ritchie在小型机PDP-7上发明了Unix。1971年，他们将主机升级到了PDP-11。当时，他们使用一种叫做RK05的储存盘，一盘的容量大约是1.5MB。没过多久，操作系统（根目录）变得越来越大，一块盘已经装不下了。于是，他们加上了第二盘RK05，并且规定第一块盘专门放系统程序，第二块盘专门放用户自己的程序，因此挂载的目录点取名为/usr。也就是说，根目录"/"挂载在第一块盘，"/usr"目录挂载在第二块盘。除此之外，两块盘的目录结构完全相同，第一块盘的目录（/bin, /sbin, /lib, /tmp...）都在/usr目录下重新出现一次。
 后来，第二块盘也满了，他们只好又加了第三盘RK05，挂载的目录点取名为/home，并且规定/usr用于存放用户的程序，/home用于存放用户的数据。
@@ -1462,7 +1478,9 @@ Unix（包含Linux）的初学者，常常会很困惑，不明白目录结构�
 ssh-keygen
 ```
 生成公钥的位置
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20190916170540.png ">
+  
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220406213613.png)
+
 就是这个文件.在ssh/下.这个是公钥.id_rsa是私钥.我们只需要公钥.
 
 3. 发送公钥到linux
@@ -1483,7 +1501,9 @@ service sshd restart  //重启ssh服务
 
 6. 连接
 配置ssh免密钥登录之前如果没有登录过服务器，则第一次使用ssh免密钥登录时，会出现如下情况
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20190916172120.png ">
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220406213631.png)
+
 输入yes即可，以后使用ssh免密钥登录就不会出现这种情况了
 
 # 关于shell脚本中执行cd命令无效的分析
@@ -1530,7 +1550,9 @@ source命令又称为点命令，因为source命名可用 . 来代替作用：�
 # 设置DNS
 常用DNS提供商
 `114.114.114.114 / 114.114.115.115`这款国内的 DNS 有着访问速度快，以及稳定的好名声，而且在各省都有服务器
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191220110711.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220406213648.png)
+
 linux查看DNS一般位于/etc/resolv.conf文件中
 
 ## Ubuntu
@@ -1608,11 +1630,13 @@ ufw disable
 # 设置固定ip
 1. 修改/etc/network/interfaces文件
 在终端输入命令：vim  /etc/network/interfaces，修改文件的内容如下：
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191129214055.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220406213701.png)
 
 2. 修改/etc/resolv.conf文件
 在终端输入命令：vim /etc/resolv.conf，向其中修改如下的内容：
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191129214127.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220406213715.png)
 
 3. 重启网络服务
 ```

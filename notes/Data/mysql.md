@@ -254,21 +254,24 @@ de DECIMAL(5,2) DEFAULT NULL
 INSERT INTO test1(f,d,de) VALUES(1.23,1.23,1.23);
 ```
 数据插入正确：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210711221923.png" width="200px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408182540.png)
 
 测试2:
 ```sql
 INSERT INTO test1(f,d,de) VALUES(1.234,1.234,1.23);
 ```
 数据插入都正确，但是f和d由于标度的限制，舍去了最后一位。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210711221953.png" width="200px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408182549.png)
 
 测试3.
 ```sql
 INSERT INTO test1(f,d,de) VALUES(1.234,1.234,1.234);
 ```
 插入成功,但是有警告
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210711222108.png" width="200px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408182600.png)
 
 测试4:
 把f，d,de的精度和标度去掉。
@@ -277,7 +280,8 @@ INSERT INTO test1(f,d,de) VALUES(1.234,1.234,1.234);
 ```
 插入正确【f和d的数据正确插入，而de被截断】，同时也会有3一样的提示！
 浮点数如果不写精度和标度，则会按照实际显示，如果有精度和标度，则会将数据四舍五入后插入，系统不报错，定点数如果不设置精度和标度，刚按照默认的（10,0）进行操作，如果数据超过了精度和标度值，则会警告!
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210711222136.png" width="200px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408182612.png)
 
 
 测试5：
@@ -285,7 +289,8 @@ INSERT INTO test1(f,d,de) VALUES(1.234,1.234,1.234);
 ```sql
 SELECT SUM(f),SUM(d),SUM(de) FROM test1;
 ```
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210711222204.png" width="200px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408182622.png)
 
 测试6：
 float列类型默认长度查不到结果，必须指定精度
@@ -383,45 +388,52 @@ insert into business (name, orderdate, cost) values("mart","2017-04-13",94)$
 
 **开窗函数使聚合函数发生的变化有如下2个**
 - 开窗函数会使得聚合函数对分组或没分组后的表的每行数据都执行一次，而不是每个组执行一次
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210403105322.png" width="700px"/>
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210403105711.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408182632.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408182640.png)
 
 - 首先，开窗函数相当于重新赋予聚合函数所要操作的数据集的范围(窗口范围)，且窗口范围可能会随着行的变化而变化
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210403094959.png" width="700px"/>
 
-需求一：
-查询在2017年4月份购买过的顾客及总人数
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210403105902.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408182648.png)
+
+需求一：查询在2017年4月份购买过的顾客及总人数
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408182658.png)
 
 **设置分区**
 `over(partition by 属性名1，属性名2...)`
 
 当没有设置分区时，则默认分区是整个表
 
-需求：
-查询顾客的购买明细即购买总额
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210403110728.png" width="700px"/>
-需求:
-查询顾客的购买明细及月购买总额
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210403112108.png" width="700px"/>
+需求：查询顾客的购买明细即购买总额
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408182705.png)
+
+需求: 查询顾客的购买明细及月购买总额
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408182719.png)
 
 **分区内部排序**
 `over(order by 属性名 [desc])`
 > 注：
 当order by指定时，但没有指定窗口范围，则默认的窗口范围是从分区的起点到当前行,即默认是`rows between unbounded preceding and current row`
 当既没有使用order by, 也没有指定窗口范围时，则默认的窗口范围是分区的起点到终点，即默认是`rows between unbounded preceding and unbounded following`
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210403125703.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408182737.png)
 
 <font color="red">分区与窗口范围是不同的, 窗口范围是指的聚合函数能使用一个分区中的哪些数据</font>
 
 需求：
 查询顾客的购买明细且将每个顾客的cost按照日期进行累加
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210403113835.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408182749.png)
 
 **注：order by相同值问题**
 当使用`over(order by age)`, 则会把age相同的多行数据看成同一行数据
 如下：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210403130908.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408182758.png)
 
 **设置窗口范围**
 语法: `rows between 行1 and 行2`
@@ -430,7 +442,8 @@ insert into business (name, orderdate, cost) values("mart","2017-04-13",94)$
 - `n following`: 往后n行数据
 - `unbounded preceding`: 表示从前面的起点
 - `unbounded following`: 表示从后面的终点
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210403121056.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408182807.png)
 
 注：
 `over()`中如果`oder by`关键字与`rows`关键字同时出现，则`rows`关键字**必须**要在`order by`关键值后面
@@ -442,13 +455,13 @@ insert into business (name, orderdate, cost) values("mart","2017-04-13",94)$
 
 上面的函数必要要与开窗函数over()一起使用。
 
-需求：
-查询每个顾客上次的购买时间
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210403132236.png" width="700px"/>
+需求：查询每个顾客上次的购买时间
 
-需求：
-查询前20%时间的订单信息
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210403134210.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408182816.png)
+
+需求：查询前20%时间的订单信息
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408182826.png)
 
 ## 排名函数
 <font color='red'>必须要与over()一起使用</font>
@@ -457,7 +470,8 @@ insert into business (name, orderdate, cost) values("mart","2017-04-13",94)$
 - rank()：排序相同时会重复，总数不会变
 - dense_rank()：排序相同时会重复，总数会减少
 - row_number()：会根据顺序计算
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210403135654.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408182837.png)
 
 # MySQL UNION 操作符
 MySQL UNION 操作符用于连接两个以上的 SELECT 语句的结果组合到一个结果集合中。多个 SELECT 语句会删除重复的数据。
@@ -510,16 +524,19 @@ mysql> SELECT * FROM apps;
 
 ## SQL UNION 实例
 下面的 SQL 语句从 "Websites" 和 "apps" 表中选取所有不同的country（只有不同的值）：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210708150112.png" width="400px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408182848.png)
 注释：UNION 不能用于列出两个表中所有的country。如果一些网站和APP来自同一个国家，每个国家只会列出一次。UNION 只会选取不同的值。请使用 UNION ALL 来选取重复的值！
 
 ## SQL UNION ALL 实例
 下面的 SQL 语句使用 UNION ALL 从 "Websites" 和 "apps" 表中选取所有的country（也有重复的值）：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210708150147.png" width="400px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408182857.png)
 
 ## 带有 WHERE 的 SQL UNION ALL
 下面的 SQL 语句使用 UNION ALL 从 "Websites" 和 "apps" 表中选取所有的中国(CN)的数据（也有重复的值）：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210708150257.png" width="400px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408182909.png)
 
 # Mysql中使用count加条件统计
 ## 前言
@@ -553,7 +570,7 @@ mysql> select * from a;
 +----+------+
 6 rows in set (0.09 sec)
 ```
-调用count()函数看效果，如果使用count(*)会查询出所有的记录数，但如果使用count(num)发现只有4条数据，num为NULL的记录并没有统计上
+调用count()函数看效果，如果使用`count(*)`会查询出所有的记录数，但如果使用count(num)发现只有4条数据，num为NULL的记录并没有统计上
 ```sql
 mysql> select count(*) from a;
 +----------+
@@ -641,7 +658,8 @@ GROUP BY province_code
 
 # 索引
 MySQL官方对索引的定义为：索引（index）是帮助MySQL高效获取数据的数据结构（有序）。在数据之外，数据库系统还维护者满足特定查找算法的数据结构，这些数据结构以某种方式引用（指向）数据， 这样就可以在这些数据结构上实现高级查找算法，这种数据结构就是索引。如下面的==示意图==所示 : 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210402202336.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408182920.png)
 
 左边是数据表，一共有两列七条记录，最左边的是数据记录的物理地址（注意逻辑上相邻的记录在磁盘上也并不是一定物理相邻的）。为了加快Col2的查找，可以维护一个右边所示的二叉查找树，每个节点分别包含索引键值和一个指向对应数据记录物理地址的指针，这样就可以运用二叉查找快速获取到相应数据。
 一般来说索引本身也很大，不可能全部存储在内存中，因此索引往往以索引文件的形式存储在磁盘上。索引是数据库中用来提高性能的最常用的工具。
@@ -726,7 +744,8 @@ index_col_name : column_name[(length)][ASC | DESC]
 ```
 
 示例 ： 为city表中的city_name字段创建索引 ；
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210402203819.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408182936.png)
 ​	
 
 **查看索引**
@@ -735,7 +754,8 @@ index_col_name : column_name[(length)][ASC | DESC]
 show index from  表名;
 ```
 示例：查看city表中的索引信息；
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210402203855.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408182947.png)
 
 
 **删除索引**
@@ -744,7 +764,8 @@ show index from  表名;
 DROP INDEX 索引名 ON 表名;
 ```
 示例 ： 想要删除city表上的索引idx_city_name，可以操作如下：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210402203952.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408182956.png)
 
 **修改索引**
 ```sql
@@ -794,17 +815,21 @@ select t.*,c.country_name from country c , city t where c.country_id = t.country
 ```
 
 查询视图 : 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210402205558.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408183006.png)
 
 **查看视图**
 ​	从 MySQL 5.1 版本开始，使用 SHOW TABLES 命令的时候不仅显示表的名字，同时也会显示视图的名字，而不存在单独显示视图的 SHOW VIEWS 命令。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210402205631.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408183017.png)
 
 同样，在使用 SHOW TABLE STATUS 命令的时候，不但可以显示表的信息，同时也可以显示视图的信息。	
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210402205646.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408183028.png)
 
 如果需要查询某个视图的定义，可以使用 SHOW CREATE VIEW 命令进行查看 ： 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210402205706.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408183038.png)
 
 **删除视图**
 语法 : 
@@ -881,7 +906,8 @@ FROM
 - 查值: `select @用户变量`
 
 **用户变量的高级使用**
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210402234919.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408183047.png)
 
 **局部变量**
 - 作用域：仅仅在定义它的begin end中有效，并且应声明在begin end中的第一句
@@ -1593,7 +1619,8 @@ select * from tbSpKc where incode in (select * from xinxi)
 # MyISAM与InnoDB
 MySQL5.5版本开始Innodb已经成为Mysql的默认引擎(之前是MyISAM)
 可以通过`show variables like '%engine%'`语句来查看当前sql引擎 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210521104749.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408183056.png)
 
 
 ## 区别
@@ -1601,7 +1628,8 @@ MySQL5.5版本开始Innodb已经成为Mysql的默认引擎(之前是MyISAM)
 2. InnoDB支持外键，而MyISAM不支持。对一个包含外键的InnoDB表转为MYISAM会失败； 
 3.  InnoDB是聚集索引，使用B+Tree作为索引结构，数据文件是和（主键）索引绑在一起的（表数据文件本身就是按B+Tree组织的一个索引结构），必须要有主键，通过主键索引效率很高。但是辅助索引需要两次查询，先查询到主键，然后再通过主键查询到数据。因此，主键不应该过大，因为主键太大，其他索引也都会很大。MyISAM是非聚集索引，也是使用B+Tree作为索引结构，索引和数据文件是分离的，索引保存的是数据文件的指针。主键索引和辅助索引是独立的。
 也就是说：InnoDB的B+树主键索引的叶子节点就是数据文件，辅助索引的叶子节点是主键的值；而MyISAM的B+树主键索引和辅助索引的叶子节点都是数据文件的地址指针。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210418163537.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408183104.png)
 
 4. InnoDB不保存表的具体行数，执行`select count(*) from table`时需要全表扫描。而MyISAM用一个变量保存了整个表的行数，执行上述语句时只需要读出该变量即可，速度很快（注意不能加有任何WHERE条件）
 5. Innodb不支持全文索引，而MyISAM支持全文索引，在涉及全文索引领域的查询效率上MyISAM速度更快高；PS：5.7以后的InnoDB支持全文索引了
@@ -1698,7 +1726,8 @@ SQL92 ANSI/ISO标准中给出了数据库开发者开发数据库时，该数据
 注：以上只是ANSI/ISO标准建议数据库开发者这样开发数据库，但真正的实现还是要看数据库开发者；
 
 ### MySQL InnoDB中事务隔离级别
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210521112930.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408183114.png)
 
 注：在mysql InnoDB中，`Repeatable Read`就解决了幻读的问题
 
@@ -2212,7 +2241,8 @@ explain select * from student s1 right join score s2 on s1.no = s2.no
 explain select * from student s1 inner join score s2 on s1.no = s2.no
 ```
 **执行计划输出中靠前的表是驱动表**，我们看下面三种图中，是不是全度符合情况一，第一张图中s1是驱动表，第二张图中s2是驱动表，第三种途中s2是驱动表
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210708162805.png" width="400px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408183125.png)
 
 其次第二种情况，还是上面三种SQL语句，我们分别加上where条件，再来看看执行计划的结果是什么样呢？
 ```sql
@@ -2224,7 +2254,8 @@ explain select * from student s1 right join score s2 on s1.no = s2.no where s1.n
 explain select * from student s1 inner join score s2 on s1.no = s2.no where s1.no = 1
 ```
 我们看下面三种执行计划结果，全都以where条件为准了，而且跟上面情况一的都相反了,因此情况二也是得到了验证.
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210708162906.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408183135.png)
 
 # 连接的原理
 搞数据库一个避不开的概念就是Join，翻译成中文就是连接。相信很多小伙伴在初学连接的时候有些一脸懵逼，理解了连接的语义之后又可能不明白各个表中的记录到底是怎么连起来的，以至于在使用的时候常常陷入下边两种误区：
@@ -2300,7 +2331,8 @@ InnoDB二级索引的叶子节点存储主键值。
 5, lisi, m, A
 9, wangwu, f, B
 ```
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210708173900.png" width="200px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408183148.png)
 
 两个B+树索引分别如上图：
 （1）id为PK，聚集索引，叶子节点存储行记录；
@@ -2314,7 +2346,9 @@ InnoDB二级索引的叶子节点存储主键值。
 select * from t where name='lisi';　
 ```
 是如何执行的呢？
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210708174012.png" width="200px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408183156.png)
+
 如粉红色路径，需要扫码两遍索引树：
 （1）先通过二级索引定位到主键值id=5；
 （2）在通过聚集索引定位到行记录；
@@ -2336,7 +2370,8 @@ create table user (
 ```
 
 第一个SQL语句：　　
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210708174659.png" width="500px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408183207.png)
 
 ```sql
 select id,name from user where name='shenjian';　
@@ -2344,7 +2379,8 @@ select id,name from user where name='shenjian';　
 能够命中name索引，索引叶子节点存储了主键id，通过name的索引树即可获取id和name，无需回表，符合索引覆盖，效率较高。
 
 第二个SQL语句：                 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210708174742.png" width="500px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408183218.png)
 
 ```sql
 select id,name,sex from user where name='shenjian';
@@ -2360,7 +2396,8 @@ create table user (
     index(name, sex)
 )engine=innodb;
 ```
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210708175535.png" width="500px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408183228.png)
 
 可以看到：
 ```sql
@@ -2372,7 +2409,8 @@ select id,name,sex ... where name='shenjian';
 
 ## 哪些场景可以利用索引覆盖来优化SQL
 **场景1：全表count查询优化**
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210708175705.png" width="500px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408183240.png)
 
 原表为：
 ```sql

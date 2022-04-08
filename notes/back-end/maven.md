@@ -16,7 +16,8 @@
 ![](https://raw.githubusercontent.com/NaisWang/images/master/20220222144233.png)
 
 ## 运行原理图
-<img src="https://gitee.com/naiswang/images/raw/master/20190815180345.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408234938.png)
 
 1. 本地仓库：计算机中的一个文件夹，通过setting.xml来自定义是哪个文件夹
 ```xml
@@ -420,7 +421,8 @@ modules里的每一个module都可以用来指定一个被聚合模块，这里�
 optional是maven依赖jar时的一个选项,表示该依赖是不是可选的.会不会被依赖传递，默认值为false,即表示不是可选的，会被依赖传递
 
 画个图说明问题:
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210408092943.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408234948.png)
 
 一个项目会依赖于 被依赖的项目 中所有`<optional>false</optional>`的依赖。例如上图，project D会依赖于project C中所有`<optional>false</optional>`的依赖。但是对于project D来说，不一定依赖于project A与proejct B, 所以我们应该在project C中的将project A与project B的optional设置成true。此时proejct A, project B就不会出现传递依赖。如果project D需要使用project A与project B，则在project D中显式引入即可
 
@@ -561,7 +563,8 @@ Scope依赖作用域也可称作依赖范围：maven中的依赖，会根据程�
 3. test：仅在测试时有效；
 4. runtime：测试、运行、打包时有效；
 5. system：不推荐使用，使用system作用域不会去本地仓库寻找依赖，要指定本地路径；
-	<img src="https://gitee.com/naiswang/images/raw/master/20190815180917.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220408235007.png)
 
 ```xml
 <dependency>

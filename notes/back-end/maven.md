@@ -392,6 +392,8 @@ Maven中的dependencyManagement元素提供了一种管理依赖版本号的方�
 **注意事项**
 dependencyManagement中定义的只是依赖的声明，并不实现引入，因此子项目需要显式的声明需要用的依赖。
 
+> dependencyManagement的另一个作用：见 `使用import scope解决maven继承（单）问题` 标题
+
 ### 聚合相关标签
 Maven聚合（或者称为多模块），是为了能够使用一条命令就构建多个模块，例如已经有两个模块，分别为account-email,account-persist，我们需要创建一个额外的模块（假设名字为account-aggregator，然后通过该模块，来构建整个项目的所有模块，accout-aggregator本身作为一个Maven项目，它必须有自己的POM,不过作为一个聚合项目，其POM又有特殊的地方，看下面的配置：
 ```xml
@@ -557,6 +559,8 @@ relativePath标签的作用:
 - `<relativePath/>`表示不从relativePath找, 直接从本地仓库找,找不到再从远程仓库找
 
 ### Scope标签
+scope标签，他有自己的生存空间，他只能生活在<dependency>标签范围内，想去其他地方，不好意思，去不了。
+
 Scope依赖作用域也可称作依赖范围：maven中的依赖，会根据程序所处的阶段和场景发生变化，所以maven用scope 属性来做限制；
 1. compile（默认值）：在编译、运行、测试、打包都有效；
 2. provided：编译、测试时有效，运行、打包无效；
@@ -609,7 +613,7 @@ Scope依赖作用域也可称作依赖范围：maven中的依赖，会根据程�
 	</dependencyManagement>
 </project>
 ```
-然后我就可以通过非继承的方式来引入这段依赖管理配置
+然后其他模块就可以在中通过非继承的方式来引入这段依赖管理配置
 ```xml
 <dependencyManagement>
 	<dependencies>
@@ -623,6 +627,7 @@ Scope依赖作用域也可称作依赖范围：maven中的依赖，会根据程�
 	</dependencies>
 </dependencyManagement>
  
+<!-- 添加com.test.sample.base-parent1模块中dependencyManagement标签中声明了的依赖, 如:junit, log4j。其中版本号不需要，会自动继承 -->
 <dependency>
 	<groupId>junit</groupId>
 	<artifactid>junit</artifactId>
@@ -631,6 +636,7 @@ Scope依赖作用域也可称作依赖范围：maven中的依赖，会根据程�
 	<groupId>log4j</groupId>
 	<artifactid>log4j</artifactId>
 </dependency>
+
 ```
 **注意：import scope只能用在dependencyManagement里面**
 这样，父模块的pom就会非常干净，由专门的packaging为pom来管理依赖，也契合的面向对象设计中的单一职责原则。此外，我们还能够创建多个这样的依赖管理pom，以更细化的方式管理依赖。这种做法与面向对象设计中使用组合而非继承也有点相似的味道。

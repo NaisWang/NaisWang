@@ -37,7 +37,8 @@ public class SwaggerConfig{
 }
 ```
 启动程序，访问`localhost:8080/swagger-ui.html`会出现下面页面：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210408155534.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123040.png)
 
 ## 修改Swagger配置
 **SwaggerConfig配置文件**
@@ -140,9 +141,10 @@ public class User {
 }
 ```
 效果如下：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210408190936.png" width="700px"/>
 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210408191933.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123052.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123102.png)
 
 ## swagger包含的注解
 ### @Api
@@ -155,7 +157,8 @@ public class TestController {
     ....
 }
 ```
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210514225536.png" width="500px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123113.png)
 
 ### @ApiOperation
 - 作用：用来对接口中具体方法做描述
@@ -170,7 +173,8 @@ public String login(String... index) {
 - value：用来对接口的总体描述
 - notes：用来对接口的详细描述
 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210514225636.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123123.png)
 
 ### @ApiImplicitParams
 - 作用：用来对接口中参数进行说明
@@ -189,7 +193,8 @@ public String login(String... index) {
     - 默认query：对应方式一
     - path：对应方式二
     - body：对应方式三
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210514225852.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123132.png)
 
 **方式一：url？id=1&user='qlh'后面参数**
 ```js
@@ -252,7 +257,8 @@ public String index(@RequestBody Map<String, Object> map) {
 @ApiResponse(code = 10002, message = "sql错误"),
 @ApiResponse(code = 10003, message = "服务怠机,请稍后重试"),
 ```
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210514230147.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123141.png)
 
 ### @ApiIgnore
 - 作用：忽略类，方法，参数。（忽略的意思：在swagger-ui.html中不显示）

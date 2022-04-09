@@ -402,5 +402,6 @@ class TestingAStackDemo {
     }
 }
 ```
-![](https://gitee.com/NaisWang/images/raw/master/img/20211016233140.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409122532.png)
 

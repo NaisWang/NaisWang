@@ -371,7 +371,9 @@ person:
 - classpath:/resources
 - classpath:/META-INF/resources
 接下来，在main/resources下新建static、public和resources三个文件夹，分别放入a.png、b.png和c.png三张图片，如下：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210530171249.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409125112.png)
+
 启动项目，分别访问：
 ```
 http://localhost:8083/a.png
@@ -381,7 +383,8 @@ http://localhost:8083/c.png
 发现都能正常访问相应的图片资源。那么说明，Spring Boot 默认会挨个从 public、resources和static 里面找是否存在相应的资源，如果有则直接返回。
 
 **再例如：**
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210530185608.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409125124.png)
 
 访问该empImg目录下的1.png图像的url为`localhost:8080/empImg/1.png`
 

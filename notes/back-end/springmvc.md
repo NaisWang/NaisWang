@@ -131,7 +131,8 @@ DispatcherServlet截获请求后，就通过控制器上 @RequestMapping 提供�
 
 ## 映射请求参数、请求方法或请求头
 标准的 HTTP 请求报头
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210104095435.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124512.png)
 
 @RequestMapping 除了可以使用请求 URL 映射请求外，还可以使用请求方法、请求参数及请求头映射请求
 @RequestMapping 的 value、method、params 及 headers 分别表示请求 URL、请求方法、请求参数及请求头的映射条件，他们之间是与的关系，联合使用多个条件可让请求映射更加精确化。
@@ -846,21 +847,24 @@ public class SpringMVCTest{
 请求处理方法执行完成后，最终返回一个 ModelAndView对象。对于那些返回 String，View 或 ModeMap 等类型的处理方法，Spring MVC 也会在内部将它们装配成一个ModelAndView 对象，它包含了逻辑名和模型对象的视图
 • Spring MVC 借助视图解析器（ViewResolver）得到最终的视图对象（View），最终的视图可以是 JSP ，也可能是Excel、JFreeChart 等各种表现形式的视图
 • 对于最终究竟采取何种视图对象对模型数据进行渲染，处理器并不关心，处理器工作重点聚焦在生产模型数据的工作上，从而实现 MVC 的充分解耦
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210104102008.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124522.png)
 
 ## 视图
 视图的作用是渲染模型数据，将模型里的数据以某种形式呈现给客户
 为了实现视图模型和具体实现技术的解耦，Spring 在org.springframework.web.servlet 包中定义了一个高度抽象的View接口
 视图对象由视图解析器负责实例化。由于视图是无状态的，所以他们不会有线程安全的问题
 常用的视图实现类
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210104102105.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124532.png)
 
 ## 视图解析器
 SpringMVC 为逻辑视图名的解析提供了不同的策略，可以在 Spring WEB 上下文中配置一种或多种解析策略，并指定他们之间的先后顺序。每一种映射策略对应一个具体的视图解析器实现类。
 • 视图解析器的作用比较单一：将逻辑视图解析为一个具体的视图对象。
 • 所有的视图解析器都必须实现 ViewResolver 接口：
 常用的视图解析器实现类
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210104102258.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124542.png)
 
 程序员可以选择一种视图解析器或混用多种视图解析器
 • 每个视图解析器都实现了 Ordered 接口并开放出一个 order 属性，可以通过 order 属性指定解析器的优先顺序，order 越小优先级越高。
@@ -868,7 +872,8 @@ SpringMVC 为逻辑视图名的解析提供了不同的策略，可以在 Spring
 
 ### InternalResourceViewResolver
 JSP 是最常见的视图技术，可以使用InternalResourceViewResolver 作为视图解析器：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210104102416.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124552.png)
 
 若项目中使用了 JSTL，则 SpringMVC 会自动把视图由InternalResourceView 转为 JstlView
 • 若使用 JSTL 的fmt标签则需要在 SpringMVC 的配置文件中配置国际化资源文件
@@ -989,7 +994,8 @@ public interface HttpMessageConverter<T> {
 在SpringMVC中，是通过WebDataBinder机制来获取参数的，它的主要作用是解析http请求的上下文，然后再控制器的调用之前转换参数并且提供验证的功能，为调用控制器的方法做准备。处理器会从HTTP请求中读取数据，然后通过三种接口来进行各类参数转换，者三种接口是Converter，Fomatter，GenericConverter。在SpringMVC的机制中这三种接口的实现类都采用了注册机的机制，默认的情况下SpringMVC已经在注册机内注册了许多的转换器，这样就可以实现大部分的数据类型的转换，所以在大部分的情况下下无需开发者再提供转换器。当下需要自定义转换规则时，只需要在注册机上注册自己的转换器就可以了。
 
 实际上，WebDataBinder机制还有一个重要的功能，那就是验证转换结果。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210625154810.png" width="500px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124601.png)
 
 可以看到控制器的参数是处理器通过Converter、Formatter和GenericConverter这三个接口转换出来的。
 
@@ -999,7 +1005,8 @@ public interface HttpMessageConverter<T> {
 
 ## 转换器注册
 对于数据类型转换，SpringMVC提供了一个服务机制去管理，它就是ConversionService接口。在默认情况下下，会使用这个接口的子类DefaultFormattingConversionService对象来管理这些转换器类。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210625154851.png" width="500px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124610.png)
 
 可以看出，Converter、Formatter和GenericConverter可以通过注册机接口进行注册，这样处理器就可以获取对应的转换器来实现参数的转换。
 
@@ -1107,7 +1114,8 @@ GenericConverter是数组转换器。因为SpringMVC自身提供了一些数组�
 这里参数使用了一个个逗号分隔，StringToCollectionConverter在处理时就通过逗号分隔，然后通过之前自定义的转换器StringToPerson将其变为用户对象，在组成一个列表List传递给控制器。
 
 # 拦截器
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210108154156.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124620.png)
 
 Spring MVC也可以使用拦截器对请求进行拦截处理，用户可以自定义拦截器来实现特定的功能，自定义的拦截器必须实现HandlerInterceptor接口
 – preHandle()：这个方法在业务处理器处理请求之前被调用，在该方法中对用户请求 request 进行处理。如果程序员决定该拦截器对请求进行拦截处理后还要调用其他的拦截器，或者是业务处理器去进行处理，则返回true；如果程序员决定不需要再调用其他的组件去处理请求，则返回false。
@@ -1148,7 +1156,8 @@ afterCompletion: 按照拦截器数组的反向顺序执行
 # 异常处理
 Spring MVC 通过 HandlerExceptionResolver 处理程序的异常，包括 Handler 映射、数据绑定以及目标方法执行时发生的异常。
 SpringMVC 提供的 HandlerExceptionResolver 的实现类
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210108213449.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124634.png)
 
 
 ## SimpleMappingExceptionResolver
@@ -1504,7 +1513,8 @@ public void a(WebDataBinder binder) {
 `@InitBinder("b")`注解表示该方法用来处理和Book和相关的参数,在方法中,给参数添加一个b前缀,即请求参数要有b前缀.
 3. 发送请求
 请求发送时,通过给不同对象的参数添加不同的前缀,可以实现参数的区分.
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210423220158.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124644.png)
 
 # springmvc请求处理源码
 要想分析springmvc源码，得先从最原始方式来创建Controller类，如下：
@@ -1565,9 +1575,12 @@ springmvc.xml
 ```
 
 流程图：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210505114347.png" width="700px"/>
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210505114327.png" width="700px"/>
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210505114410.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124653.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124704.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124714.png)
 
 **其中上述流程图关键方法位于doDispatch方法**
 ```java
@@ -1663,10 +1676,12 @@ doDispatch()方法核心过程如下：
 5. 根据获得到的ModelAndView, 跳转到目标页面，而且ModelAndView中的数据可以从请求域中获取
 
 ## getHandler()细节
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210505120108.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124724.png)
 
 ## getHandlerAdater()细节
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210505132457.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124735.png)
 
 ## springmvc中的九大组件
 springmvc中的九大组件指的是DispatcherServlet类中的9个属性，如下：

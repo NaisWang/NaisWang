@@ -45,7 +45,8 @@ JavaScript中有6种数据类型：数字（number）、字符串（string）、
 
 ## 分类
 从不同的角度对6种数据类型进行分类：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211011123057.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409105958.png)
 
 ## 判断
 ### typeof
@@ -85,7 +86,8 @@ new Person() instanceof Person;//true
 new Person() instanceof Object;//true
 ```
 我们发现，虽然 instanceof 能够判断出 [] 是Array的实例，但它认为 [] 也是Object的实例，为什么呢？ 我们来分析一下[]、Array、Object 三者之间的关系: 从instanceof 能够判断出`[].__proto__`指向 Array.prototype， 而`Array.prototype.__proto__`又指向了Object.prototype，`Object.prototype.__proto__`指向了null,标志着原型链的结束。因此，[]、Array、Object就形成了如下图所示的一条原型链：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211011123236.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409110044.png)
 
 从原型链可以看出，[] 的`__proto__`直接指向Array.prototype, 间接指向Object.prototype, 所以按照 instanceof 的判断规则，[] 就是Object的实例。
 注意:instanceof运算符只能用于对象，不适用原始类型的值。
@@ -717,7 +719,8 @@ ECMAScript函数的参数与大多数其他语言中的函数的参数有所不�
 - 每创建一个函数，解析器都会向函数中添加一个属性`prototype`，这个属性对应着一个对象，这个对象就是原型对象。
 - 当函数以构造函数的形式调用时，它所创建的对象都会有一个隐含的属性`__proto__`, 这个属性指向构造函数的原型对象
 - 原型对象也一个隐含属性`__prote__`, 同样也是指向它的原型对象
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210404175329.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409110054.png)
 
 原型对象的作用：相当于一个公共的区域，所有同一个类的实例都可以访问到这个原型对象，所以我们可以将对象中共有的内容，放到原型对象中
 下面是用实例阐述了原型对象的作用
@@ -774,7 +777,8 @@ call()、apply()都是来修改this的指向。
 # 浏览器加载HTML页面的顺序
 首先我们可以把浏览器加载页面的工作分给`渲染引擎`和`javascript引擎`
 浏览器在解析页面时，是**从上到下的**，我们来看下面这个结构：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210404193325.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409110104.png)
 
 **浏览器加载顺序：**
 1. 解析到head标签内的内部样式表①，渲染引擎加载样式表中的样式，下载引用到的图片，下载等工作可以跟渲染同时进行。
@@ -798,7 +802,8 @@ call()、apply()都是来修改this的指向。
 - 浏览器解析渲染页面
 
 ## 渲染引擎
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210714125220.png" width="200px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409110114.png)
 
 从图中可以看出，一个渲染引擎大致包括HTML解释器、CSS解释器、布局和JavaScript引擎。
 - `HTML解释器`：解释HTML语言的解释器，本质是将HTML文本解释成DOM树（文档对象模型）。
@@ -809,8 +814,10 @@ call()、apply()都是来修改this的指向。
 ## 页面渲染
 浏览器加载，解析，渲染页面
 解析html 构建dom树 -> 构建render树 -> 布局render树 -> 绘制render树 ：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210714124945.png" width="300px"/>
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210714125758.png" width="300px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409110125.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409110206.png)
 
 我们知道浏览器为了体验友好，并不是文档全部都解析才绘制到屏幕上，而是从上至下开始解析html，遇到css 会开启线程下载css；
 解析：
@@ -1000,7 +1007,8 @@ function fn1(){
   return fn2
 }
 ```
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210404203306.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409110219.png)
 
 **闭包的作用**
 - 使函数内部的变量在函数执行完后，仍然存活在内存中(延迟了局部变量的生命周期)
@@ -1453,7 +1461,8 @@ get notifier() {
 
 # console.dir
 在控制台中显示指定JavaScript对象的属性，并通过类似文件树样式的交互列表显示。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211010221952.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409110230.png)
 
 # ES6 中的 Map 和 Set 集合
 下面正式来讨论这两种集合的特点
@@ -1724,7 +1733,8 @@ Promise是JS中进行异步编程的新的解决方案
 只有这2种，且一个promise对象只能改变一次，无论变为成功还是失败，都会有一个结果数据，成功的结果数据一般称为value，失败的结果数据一般称为reason
 
 **Promise的基本流程**
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210404224404.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409110240.png)
 
 <font color="red">每产生一个Promise对象，不管是否调用then方法，都会执行一个异步操作</font>
 
@@ -2237,9 +2247,13 @@ react的生命周期函数、vue的生命周期函数，vue的自定义指令等
 # attribute和property的区别
 property 和 attribute非常容易混淆，两个单词的中文翻译也都非常相近（property：属性，attribute：特性），但实际上，二者是不同的东西，属于不同的范畴。
 在英文系统里，右键单击一个文件，显示是property（中文系统里对应的是"属性“），会显示文件的大小、创建日期等等，这些你是没办法去改变的（当然，你也可以改，但是改就是另外一个文件）
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210717140511.png" width="400px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409110250.png)
+
 而文件“只读”，“隐藏”是算在attribute的，你可以改变他的只读、隐藏属性，不过文件本身不会有变化。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210717140531.png" width="400px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409110300.png)
+
 所以这么理解，property是 物体本身自带属性，不能改变的（一旦改了就是另外一个东西了）attribute，由于 attribute还可以做动词，表示赋予。。。特性，属于人为赋予的可改变的属性。比如，你的头发，可以人为拉直、弯曲，但不管怎么样，都是你的头发，这叫做头发的attribute。但是头发的弹性、硬度，这些没办法改变，改了就不是头发了，这是property.
 
 - property是DOM中的属性，是JavaScript里的对象；
@@ -2253,7 +2267,8 @@ var in1=document.getElementById("div1");
 console.log(in1);
 ```
 对于id为div1的div，它的property内容如下：（部分）
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210515155040.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409110312.png)
 
 可以发现有一个名为“attributes”的属性，类型是NamedNodeMap; 同时有“id”和“className”、”title“等基本的属性，但没有“title1”这个自定义的属性。
 ```js
@@ -2265,7 +2280,9 @@ console.log(in1.title1);       //undefined
 可以发现，标签中的属性，“id”和“className”、”title“会在in1上创建，而“title1”不会被创建。这是由于，每一个DOM对象都会有它默认的基本属性，而在创建的时候，它只会创建这些基本属性，我们在TAG标签中自定义的属性是不会直接放到DOM中的。
 
 那自定义的”title1“去哪里了呢？在attributes属性里可以看到如下：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210515155313.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409110353.png)
+
 “title1”被放在了attributes这个对象里，这个对象按顺序记录了我们在TAG中定义的属性和属性的数量。
 
 从这里就可以看出，**attributes是属于property的一个子集**，它保存了HTML标签上定义属性。如果再进一步探索attitudes中的每一个属性，会发现它们并不是简单的对象，它是一个Attr类型的对象，拥有NodeType、NodeName等属性。关于这一点，稍后再研究。注意，打印attribute属性不会直接得到对象的值，而是获取一个包含属性名和值的字符串，如：
@@ -2281,7 +2298,8 @@ console.log(in1.attibutes.title1);        // divTitle1
 <input id="in_2">
 ```
 在它的property中有如下部分：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210515155454.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409110405.png)
 
 尽管我们没有在TAG中定义“value”，但由于它是DOM默认的基本属性，在DOM初始化的时候它照样会被创建。
 
@@ -2292,7 +2310,9 @@ console.log(in1.attibutes.title1);        // divTitle1
 ```
 这个div里面的“title1”就不会变成Property。
 即，**只要是DOM标签中出现的属性（html代码），都是Attribute**。然后有些常用特性（id、class、title等），会被转化为Property。可以很形象的说，这些特性/属性，是“脚踏两只船”的。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210515155649.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409110415.png)
+
 最后注意：“class”变成Property之后叫做“className”，因为“class”是ECMA的关键字。
 
 ## attribute和property的取值和赋值
@@ -2322,10 +2342,12 @@ div1.setAttribute('title1', 'c');
 div1.setAttribute('title2', 'd');
 ```
 用setAttrbute()赋值，任何Attribute都可以，包括自定义的。而且，赋值的Attribute会立刻表现到DOM元素上。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210515155922.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409113227.png)
 
 如果是标准特性，也会更新它们关联的属性的值：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210515160000.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409113237.png)
 
 **最后注意，setAttribute()的两个参数**，都必须是字符串。即对特性Attribute职能赋值字符串，而对属性Property就可以赋任何类型的值了。
 
@@ -2373,7 +2395,8 @@ console.log(in2.attributes.value); //value='ni'
 - 更改property和attribute上的任意值，都会将更新反映到HTML页面中；
 
 # localStorage与sessionStorage
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210513120832.png" width="300px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409113247.png)
 
 ## localStorage
 localStorage是HTML5新增的特性，这个特性主要是用来本地存储的，解决了Cookie存储空间不足的问题(Cookie中每条Cookie的存储空间为4k)，localStorage存储的内存大小是5M左右。
@@ -2616,7 +2639,7 @@ canvas.height=canvas.height;
 为什么我加引号，因为“私有”这个词不是js的官方说法，js也根本没有“私有变量”这种东西，只是程序员之间模仿其他有私有变量的语言的一种约定俗成的说法。也就是“你懂的”。
 只为代码维护方便，没特别意义。不是说加了下划线就有本质变化了
 
-在JavaScript的变量名或函数名前加“_” 。
+在JavaScript的变量名或函数名前加`“_”` 。
 在变量名或函数名前加下划线，一般表示“私有”。是约定俗成的开发规范，没有强制限制，类似于类名首字母大写。
 
 加下划线，还能有效防止重名。
@@ -2638,7 +2661,8 @@ canvas.height=canvas.height;
 
 ### 后台返回文件流
 后台返回数据为二进制文件(content-type="application/octet-stream")：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210519151949.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409113304.png)
 
 具体方法：
 ```js

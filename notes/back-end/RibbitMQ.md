@@ -18,12 +18,15 @@ RabbitMQ是使用Erlang语言开发的开源消息队列系统，基于AMQP协�
 
 > 基于`AMQP`协议，erlang语言开发，是部署最广泛的开源消息中间件,是最受欢迎的开源消息中间件之一。
 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210424152900.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123216.png)
+
 `官网`: https://www.rabbitmq.com/
 `官方教程`: https://www.rabbitmq.com/#getstarted
 
 >	AMQP（advanced message queuing protocol）`在2003年时被提出，最早用于解决金融领不同平台之间的消息传递交互问题。顾名思义，AMQP是一种协议，更准确的说是一种binary wire-level protocol（链接协议）。这是其和JMS的本质差别，AMQP不从API层进行限定，而是直接定义网络交换的数据格式。这使得实现了AMQP的provider天然性就是跨平台的。以下是AMQP协议模型:
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210424202628.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123229.png)
 
 ## RabbitMQ的安装配置
 **安装步骤**
@@ -34,7 +37,8 @@ sudo apt-get install rabbitmq-server
 
 **RabbitMQ的配置文件**
 在/etc/rabbitmq/目录下有一个rabbitmq-env.conf配置文件，这个配置文件默认内容不是很全，我们可以在官网上下一个比较全的配置文件内容复制到这个文件里
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210424160936.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123238.png)
 
 **开启用户远程访问**
 默认情况下，RabbitMQ的默认的guest用户(密码默认为guest)只允许本机访问， 如果想让guest用户能够远程访问的话，只需要将配置文件中的loopback_users列表置为空即可，如下：
@@ -59,9 +63,12 @@ RabbitMQ 提供了一个 web 管理工具（rabbitmq_management），方便在�
 rabbitmq-plugins enable rabbitmq_management
 ```
 之后在浏览器访问`[http://server-ip:15672/]`, 就会出现如下界面
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210424194208.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123248.png)
+
 输入默认用户guest, 密码为guest后即可进入
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210424161648.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123259.png)
 
 **RabbitMQ管理命令行**
 管理命令行,  用来在不使用web管理界面情况下命令操作RabbitMQ
@@ -73,10 +80,12 @@ rabbitmqctl  help  可以查看更多命令
 ```shell
 rabbitmq-plugins enable|list|disable 
 ```
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210424201432.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123308.png)
 
 # web管理界面介绍
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210424202404.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123316.png)
 
 - `connections`：无论生产者还是消费者，都需要与RabbitMQ建立连接后才可以完成消息的生产和消费，在这里可以查看连接情况
 - `channels`：通道，建立连接后，会形成通道，消息的投递获取依赖通道。
@@ -84,7 +93,8 @@ rabbitmq-plugins enable|list|disable
 - `Queues`：队列，即消息队列，消息存放在队列中，等待消费，消费后被移除队列。
 
 ## 添加用户
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210424203214.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123326.png)
 
 上面的Tags选项，其实是指定用户的角色，可选的有以下几个：
 - `超级管理员(administrator)`：可登陆管理控制台，可查看所有的信息，并且可以对用户，策略(policy)进行操作。
@@ -95,24 +105,31 @@ rabbitmq-plugins enable|list|disable
 
 ## 创建虚拟主机
 为了让各个用户可以互不干扰的工作，RabbitMQ添加了虚拟主机（Virtual Hosts）的概念。其实就是一个独立的访问路径，不同用户使用不同路径，各自有自己的队列、交换机，互相不会影响。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210424203523.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123405.png)
 
 ## 绑定虚拟主机和用户
 创建好虚拟主机，我们还要给用户添加访问权限：
 点击添加好的虚拟主机：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210424203623.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123415.png)
+
 进入虚拟机设置界面:
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210424203644.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123423.png)
 
 ---
 
 # RabbitMQ的第一个程序
 AMQP协议的回顾
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210424203753.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123431.png)
 
 RabbitMQ支持的消息模型
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210424203819.png" width="700px"/>
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210424203837.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123440.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123454.png)
 
 ## 引入依赖
 ```xml
@@ -124,7 +141,8 @@ RabbitMQ支持的消息模型
 ```
 
 ## 第一种模型(直连)
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210426081551.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123506.png)
 
 在上图的模型中，有以下概念：
 - P：生产者，也就是要发送消息的程序
@@ -208,7 +226,8 @@ RabbitMQ支持的消息模型
 
 ## 第二种模型(work quene)
 `Work queues`，也被称为（`Task queues`），任务模型。当消息处理比较耗时的时候，可能生产消息的速度会远远大于消息的消费速度。长此以往，消息就会堆积越来越多，无法及时处理。此时就可以使用work 模型：**让多个消费者绑定到一个队列，共同消费队列中的消息**。队列中的消息一旦消费，就会消失，因此任务是不会被重复执行的。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210426101542.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123516.png)
 
 角色：
 - P：生产者：任务的发布者
@@ -294,8 +313,10 @@ channel.basicConsume("hello",true,new DefaultConsumer(channel){
 ```
 
 ### 测试结果
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210426101652.png" width="700px"/>
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210426101707.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123528.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123539.png)
 
 > 总结:默认情况下，RabbitMQ将按顺序将每个消息发送给下一个使用者。并且每个消费者开启了自动确认机制，导致平均而言，每个消费者都会收到相同数量的消息。这种分发消息的方式称为循环。
 
@@ -333,7 +354,8 @@ channel.basicConsume("hello",false,new DefaultConsumer(channel){
 
 ## 第三种模型(fanout) 
 `fanout 扇出 也称为广播`
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210426110614.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123547.png)
 
 在广播模式下，消息发送流程是这样的：
 -  可以有多个消费者
@@ -462,9 +484,12 @@ channel.basicConsume(queue,true,new DefaultConsumer(channel){
 });
 ```
 ### 测试结果
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210426111127.png" width="700px"/>
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210426111144.png" width="700px"/>
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210426111156.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123557.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123607.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123616.png)
 
 ## Routing之订阅模型-Direct(直连)
 `在Fanout模式中，一条消息，会被所有订阅的队列都消费。但是，在某些场景下，我们希望不同的消息被不同的队列消费。这时就要用到Direct类型的Exchange。`
@@ -475,7 +500,8 @@ channel.basicConsume(queue,true,new DefaultConsumer(channel){
 - Exchange不再把消息交给每一个绑定的队列，而是根据消息的`Routing Key`进行判断，只有队列的`Routingkey`与消息的 `Routing key`完全一致，才会接收到消息
 
 流程:
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210426113335.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123627.png)
 
 图解：
 - P：生产者，向Exchange发送消息，发送消息时，会指定一个routing key。
@@ -531,13 +557,15 @@ channel.basicConsume(queue,true,new DefaultConsumer(channel){
 ```
 
 ### 测试
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210426114102.png" width="700px"/>
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210426114116.png" width="700px"/>
 
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123636.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123645.png)
 
 ## Routing 之订阅模型-Topic
 `Topic`类型的`Exchange`与`Direct`相比，都是可以根据`RoutingKey`把消息路由到不同的队列。只不过`Topic`类型`Exchange`可以让队列在绑定`Routing key` 的时候使用通配符！这种模型`Routingkey` 一般都是由一个或多个单词组成，多个单词之间以”.”分割，例如： `item.insert`
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210426132424.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123657.png)
 
 **统配符**
 - `*`  匹配不多不少恰好1个词
@@ -802,23 +830,29 @@ public class TopCustomer {
 ## 异步处理
 `场景说明：用户注册后，需要发注册邮件和注册短信,传统的做法有两种 1.串行的方式 2.并行的方式`
 - `串行方式:` 将注册信息写入数据库后,发送注册邮件,再发送注册短信,以上三个任务全部完成后才返回给客户端。 这有一个问题是,邮件,短信并不是必须的,它只是一个通知,而这种做法让客户端等待没有必要等待的东西. 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210502082639.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123732.png)
 
 - `并行方式: `将注册信息写入数据库后,发送邮件的同时,发送短信,以上三个任务完成后,返回给客户端,并行的方式能提高处理的时间。 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210502082654.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123740.png)
 
 - `消息队列:`假设三个业务节点分别使用50ms,串行方式使用时间150ms,并行使用时间100ms。虽然并行已经提高的处理时间,但是,前面说过,邮件和短信对我正常的使用网站没有任何影响，客户端没有必要等着其发送完成才显示注册成功,应该是写入数据库后就返回.  `消息队列`: 引入消息队列后，把发送邮件,短信不是必须的业务逻辑异步处理 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210502082930.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123748.png)
 
 由此可以看出,引入消息队列后，用户的响应时间就等于写入数据库的时间+写入消息队列的时间(可以忽略不计),引入消息队列后处理后,响应时间是串行的3倍,是并行的2倍。
 
 ##  应用解耦
 `场景：双11是购物狂节,用户下单后,订单系统需要通知库存系统,传统的做法就是订单系统调用库存系统的接口. `
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210502082947.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123759.png)
 
 这种做法有一个缺点:
 当库存系统出现故障时,订单就会失败。 订单系统和库存系统高耦合.  引入消息队列 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210502082958.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123808.png)
+
 - `订单系统:`用户下单后,订单系统完成持久化处理,将消息写入消息队列,返回用户订单下单成功。
 - `库存系统:`订阅下单的消息,获取下单消息,进行库操作。  就算库存系统出现故障,消息队列也能保证消息的可靠投递,不会导致消息丢失.
 
@@ -827,7 +861,8 @@ public class TopCustomer {
 `作用:` 
 - 可以控制活动人数，超过此一定阀值的订单直接丢弃
 - 可以缓解短时间的高流量压垮应用(应用程序按自己的最大处理能力获取订单) 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210502083112.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123820.png)
 
 1. 用户的请求,服务器收到之后,首先写入消息队列,加入消息队列长度超过最大值,则直接抛弃用户请求或跳转到错误页面.  
 2. 秒杀业务根据消息队列中的请求信息，再做后续处理.
@@ -836,8 +871,10 @@ public class TopCustomer {
 # RabbitMQ的集群
 ## 普通集群(副本集群)
 默认情况下:RabbitMQ代理操作所需的所有数据/状态都将跨所有节点复制。这方面的一个例外是消息队列，默认情况下，消息队列位于一个节点上，尽管它们可以从所有节点看到和访问
+
 架构图:
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210502085149.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123829.png)
 
 核心解决问题: 当集群中某一时刻master节点宕机,可以对Quene中信息,进行备份
 
@@ -887,10 +924,12 @@ Cluster status of node rabbit@mq3 ...
 ```
 
 8. 登录管理界面,展示如下状态:
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210502092254.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123721.png)
 
 # 9.测试集群在node1上,创建队列
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210502092822.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123711.png)
 
 # 10.查看node2和node3节点:
 ```

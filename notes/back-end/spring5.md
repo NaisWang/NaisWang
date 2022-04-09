@@ -1,4 +1,4 @@
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20201231002349.png"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124021.png)
 
 # 课程内容介绍
 1. Spring框架概述
@@ -26,7 +26,8 @@
 （5）方便进行事务操作
 （6）降低API开发难度
 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20201231011033.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124034.png)
 
 # spring入门案例
 1. 创建一个普通类
@@ -69,8 +70,10 @@ public void testdemo(){
 （3）以上的入门案例就是 IOC 实现
 2. IOC 底层原理
 （1）xml解析、工厂模式、反射
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20201231003716.png" width="700px"/>
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20201231004514.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124047.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124058.png)
 
 # IOC 接口
 1. IOC思想基于IOC容器完成， IOC容器底层就是对象工厂
@@ -86,7 +89,8 @@ public void testdemo(){
 ```
 在实际开发中推荐是用ApplicationContext
 3. ApplicationContext 接口有实现类
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20201231005259.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124107.png)
 
 # IOC操作bean管理
 ## 概念
@@ -108,7 +112,8 @@ Bean管理指的是两个操作
 * id 属性：唯一标识
 * class 属性：类全路径（包类路径）, 不能是接口的	
 （3）创建对象时候，默认也是执行无参数构造方法完成对象创建, 若类中没有无参构造方法(每个类都会默认有一个无参构造，除非你重写了一个有参构造从而覆盖了无参构造)， 则会报如下错
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20201231013327.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124118.png)
 
 ### 基于xml方式注入属性
 DI: Dependence injection, 依赖注入, 就是注入属性
@@ -142,7 +147,9 @@ public class Book {
 
 - set注入方法的简化: p名称空间注入 （了解即可）
 1. 添加p名称空间在配置文件中
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20201231020111.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124138.png)
+
 2. 进行属性注入，在 bean 标签里面进行操作
 ```xml
 <bean id="book" class="com.atguigu.spring5.Book" p:bname="九阳神功" p:bauthor="无名氏"></bean>
@@ -303,7 +310,9 @@ public class Stu1{
 ```
 - 把集合注入公共部分提取出来
 先在 spring 配置文件中引入名称空间util
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20201231014851.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124150.png)
+
 然后使用 util 标签完成 list 集合注入提取
 ```xml
 <!--1 提取 list 集合类型属性注入-->
@@ -362,7 +371,9 @@ public void test(){
 
 ### bean作用域 
 在 Spring 里面，设置创建bean实例有两种情况，分别是单实例与多实例， 默认情况下， bean是单实例对象
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20201231013504.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124219.png)
+
 - 设置单实例或多实例的方法
 （1）在 spring 配置文件 bean 标签里面有属性（ scope）用于设置单实例还是多实例
 （2）scope 属性值
@@ -371,7 +382,8 @@ public void test(){
 （3）singleton 和 prototype 区别
 第一 singleton 单实例， prototype 多实例
 第二 设置 scope 值是 singleton 时候，加载 spring 配置文件时候就会创建单实例对象, 设置 scope 值是 prototype 时候，不是在加载 spring 配置文件时候创建 对象，在调用getBean 方法时候创建多实例对象
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20201231013613.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124231.png)
 
 ### bean生命周期
 （1）通过构造器创建 bean 实例（无参数构造）
@@ -436,7 +448,8 @@ public void testBean(){
 <!--配置后置处理器, 配置后该配置文件中的所有bean创建时都会执行后置处理器-->
 <bean id="myBeanPost" class="com.atguigu.spring5.bean.MyBeanPost"></bean>
 ```
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20201231020505.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124240.png)
 
 ### xml自动装配
 自动装配：根据指定装配规则（属性名称或者属性类型）， Spring 自动将匹配的属性值进行注入
@@ -617,17 +630,21 @@ public void testService2() {
 （1）面向切面编程（方面）， 利用 AOP 可以对业务逻辑的各个部分进行隔离，从而使得业务逻辑各部分之间的耦合度降低，提高程序的可重用性，同时提高了开发的效率。
 （2）通俗描述：不通过修改源代码方式，在主干功能里面添加新功能
 （3）使用登录例子说明 AOP
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210104093530.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124250.png)
 
 ## AOP底层原理
 AOP底层使用的是动态代理
 （1）有两种情况动态代理
 第一种 有接口情况，使用 JDK 动态代理
 创建接口实现类代理对象，增强类的方法
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210104084820.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124258.png)
+
 第二种 没有接口情况，使用 CGLIB 动态代理
 创建子类的代理对象，增强类的方法
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210104084837.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124310.png)
 
 ## AOP(JDK动态代理)
 JDK提供了实现动态代理的相关组件。包括如下：
@@ -795,7 +812,8 @@ public class UserProxy{
 <!-- 开启 Aspect 生成代理对象-->
 <aop:aspectj-autoproxy></aop:aspectj-autoproxy>
 ```
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210104094413.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124321.png)
 
 - 相同的切入点提取
 ```java
@@ -1039,10 +1057,12 @@ public void batchAddBook(List<Object[]> batchArgs){
 有两种方式： 编程式事务管理和声明式事务管理（使用） 
 3. Spring事务管理API
 提供一个接口，代表事务管理器，这个接口针对不同的框架提供不同的实现类
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210104091127.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124334.png)
 
 ## 编程式事务管理
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210104090710.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124344.png)
 
 ## 声明式事务管理
 有两种方式：
@@ -1129,13 +1149,16 @@ public class TxConfig {
 ```
 ### 声明式事务管理参数配置
 在 service 类上面添加注解@Transactional，在这个注解里面可以配置事务相关参数
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210104093228.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124355.png)
 
 **1. propagation：事务传播行为**
 事务传播行为指的就是当一个事务方法被另一个事务方法调用时，这个事务方法应该如何进行。 
 例如：methodA事务方法调用methodB事务方法时，methodB是继续在调用者methodA的事务中运行呢，还是为自己开启一个新事务运行，这就是由methodB的事务传播行为决定的。
 Spring定义了七种传播行为
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210104093339.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124403.png)
+
 - required(默认值) ：如果methodA有事务，则methodB使用的时methodA中的事务
 - required_NEW: 无论methodA是否有事务，methodB都会创建新的事务
 
@@ -1145,7 +1168,8 @@ Spring定义了七种传播行为
 - 不可重复读：一个未提交事务读取到另一提交事务修改数据
 - 虚读：一个未提交事务读取到另一提交事务添加数据
 通过设置事务隔离级别，解决读问题
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210104085702.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124415.png)
 
 **3. timeout：超时时间**
 （1）事务需要在一定时间内进行提交，如果没在规定时间提交，则进行回滚
@@ -1398,7 +1422,8 @@ public class JTest5 {
 今天在写业务代码的时候遇到了Spring Bean之间产生循环依赖的问题，报错信息为`the dependencies of some of the beans in the application context form a cycle`。
 
 排查代码，发现是我在A类中通过A类的构造函数注入了B类，而在B类中又通过B类的构造函数注入了A类导致的Spring Bean循环依赖问题。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210404112406.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124425.png)
 
 Spring Bean的循环依赖问题，是指类A通过构造函数注入类B的实例（或者B中声明的Bean），而类B通过构造函数注入类A的实例（或者A中声明的Bean），即将类A和类B的bean配置为相互注入，则Spring IoC容器会在运行时检测到此循环引用，并引发一个`BeanCurrentlyInCreationException`。与典型情况（没有循环依赖）不同，Bean A和Bean B之间的循环依赖关系迫使其中一个Bean在被完全初始化之前被注入到另一个Bean中（典型的一个【先有鸡还是先有蛋】场景）。
 
@@ -1411,7 +1436,8 @@ Spring Bean的循环依赖问题，是指类A通过构造函数注入类B的实�
 
 ## 警告信息
 这个警告，和警告的处理建议，在 IDEA 中是这么写的：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210527075817.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124435.png)
 
 翻译过来是这个意思：
 不建议直接在字段上进行依赖注入。
@@ -1512,7 +1538,9 @@ Exception in thread "main" org.springframework.beans.factory.BeanCreationExcepti
 
 # spring与springboot中，如何在static方法里用@Autowire或者@Resource注入的属性
 问题：我原本想在5的位置用成员变量2，但是因为位置5所在的方法时static的，怎么办？？
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210530120411.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124446.png)
+
 第一步：在位置1写注解@Component 使当前类成为一个bean对象。(@Controller,@service都行)
 第二步：在位置3写个static的变量
 第三步：写个@PostConstruct注解注解注释的方法，在这个方法里，将位置2的值赋值给位置3.

@@ -80,6 +80,9 @@ Range请求头的意思是告诉服务端，这次请求客户端只需要资源
 ```
 读取视频文件的指定位置数据，主要还是用到了JDK提供的java.io.RandomAccessFile类
 视频的请求过程是这样的：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210411003149.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409122308.png)
+
 后端控制台输出：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210411003209.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409122317.png)

@@ -19,7 +19,7 @@ vim中的文本对象可以分为3大类：paragraphs、sentences、words
     - 实战：`{ab_dd}`可以拆分为3个小词，分别是`{`、`ab_dd`、`}`； `{ab&dc}`可以拆分为5个小词，分别是`{`、`ab`、`&`、`dc`、`}`；`{ab否&dd}`可以拆分为6个小词，分别是`{`、`ab`、`否`、`&`、`dd`、`}`
 - `大词`：连在一起字符 不包含`空格` 的词， 例如`fkdjfk_d&**方法*^^**`是一个大词
 
-![](https://gitee.com/NaisWang/images/raw/master/img/20211130183951.png)
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409131430.png)
 
 
 # 用Alt键来映射

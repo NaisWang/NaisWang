@@ -52,7 +52,7 @@ MVVM是前端视图层的概念，主要关注于 视图层分离，也就是说
 </html>
 ```
 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210327161205.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409113348.png)
 
 ## 插值表达式、v-cloak、v-text、v-html
 问题：
@@ -308,7 +308,8 @@ maxApp(e){
 <i @click="maxApp"></i>
 ```
 此时结果打印为：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210515212056.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409113405.png)
 
 
 **加括号时**
@@ -998,7 +999,8 @@ Vue.directive('focus', {
 
 # vue实例的生命周期
 [vue实例的生命周期官网链接](https://cn.vuejs.org/v2/guide/instance.html#实例生命周期)
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191220161235.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409120503.png)
 
 什么是生命周期：从Vue实例创建、运行、到销毁期间，总是伴随着各种各样的事件，这些事件，统称为生命周期！
 [生命周期钩子](https://cn.vuejs.org/v2/api/#选项-生命周期钩子)：就是生命周期事件的别名而已；
@@ -1333,7 +1335,8 @@ postInfo() {
   });
 }
 ```
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191220160733.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409120519.png)
 
 3. 发送JSONP请求获取数据：
 
@@ -1357,7 +1360,8 @@ jsonpInfo() { // JSONP形式从服务器获取数据
 # Vue中的动画
 [官方链接](https://cn.vuejs.org/v2/guide/transitions.html)
 为什么要有动画：动画能够提高用户的体验，帮助用户更好的理解页面中的功能；
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191220160310.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409120529.png)
 
 ```
 v-enter: 【这是一个时间点】 是进入之前，元素的起始状态，此时还没有开始进入
@@ -2474,7 +2478,8 @@ var router = new VueRouter({
 </div>
 ```
 最终的渲染结果如图所示：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210516204123.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409120546.png)
 
 ## 具名插槽
 匿名插槽没有name属性，所以是匿名插槽，那么，插槽加了name属性，就变成了具名插槽。具名插槽可以在一个组件中出现N次，出现在不同的位置。下面的例子，就是一个有两个具名插槽和单个插槽的组件，这三个插槽被父组件用同一套css样式显示了出来，不同的是内容上略有区别。
@@ -2527,7 +2532,8 @@ var router = new VueRouter({
 </template>
 ```
 显示结果如图：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210516204237.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409120558.png)
 
 可以看到，父组件通过html模板上的slot属性关联具名插槽。没有slot属性的html模板默认关联匿名插槽。
 
@@ -2624,7 +2630,8 @@ OK，我们说有html模板的情况，就是父组件会往子组件插模板�
 }
 ```
 结果如图所示：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210516204458.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409121709.png)
 
 
 # 路由
@@ -3069,7 +3076,7 @@ router.afterEach((to, from) => {})
 每个守卫方法接收三个参数：
 1. `to`: (route路由对象)  表示即将要进入的目标的路由对象，to对象下面的属性： path、params、query、hash、fullPath、matched、name、meta（在matched下，但是本例可以直接用）
 2. `from`: (route路由对象)  表示当前导航正要离开的路由对象
-3. `next`: (Function函数)   一定要调用该方法来 resolve 这个钩子。  调用方法：next(参数或者空)   ***必须调用
+3. `next`: (Function函数)   一定要调用该方法来 resolve 这个钩子。  调用方法：next(参数或者空)   必须调用
   - next(): 进行管道中的下一个钩子。如果全部钩子执行完了，则导航的状态就是 confirmed (确认的)。
   - next(false): 中断当前的导航。如果浏览器的 URL 改变了 (可能是用户手动或者浏览器后退按钮)，那么 URL 地址会重置到 from 路由对应的地址。
   - next('/') 或者 next({ path: '/' }): 跳转到一个不同的地址。当前的导航被中断，然后进行一个新的导航。你可以向 next 传递任意位置对象，且允许设置诸如 replace: true、name: 'home' 之类的选项以及任何用在 router-link 的 to prop 或 router.push 中的选项。
@@ -3132,8 +3139,10 @@ beforeRouteEnter (to, from, next) {
 ## 区分route对象与router对象
 `this.$route`是路由参数对象，所有路由中的参数，其中包含params, query都属于它
 `this.$router`是路由导航对象， 用它可以方便的使用JS代码来实现路由的前进、后退、跳转到行的URL 地址
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210513145052.png" width="700px"/>
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210513145226.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409121736.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409121751.png)
 
 ## vue-router原理解析
 我们在页面中使用vue-router一般是这样的：
@@ -3321,14 +3330,19 @@ Test3.vue
 </template>
 ```
 - 此时如果我们在浏览器中输入localhost:3000/test3, 会出现下面情况：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210513142545.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409121802.png)
 
 - 输入localhost:3000/home/test2, 会出现下面情况：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210513143037.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409121812.png)
+
 可见同时渲染了Home组件
 
 - 输入localhost:3000/test1, 会出现下面情况：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210513142719.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409121822.png)
+
 可见同时也渲染了Home组件
 
 ## Vue-router中keep-alive的理解
@@ -3510,7 +3524,8 @@ let vm = new Vue({
 
 # 自定义指令
 除了核心功能默认内置的指令 (v-model 和 v-show)，Vue 也允许注册自定义指令。注意，在 Vue2.0 中，代码复用和抽象的主要形式是组件。然而，有的情况下，你仍然需要对普通 DOM 元素进行底层操作，这时候就会用到自定义指令。举个聚焦输入框的例子，如下：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210718021153.png" width="200px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409121835.png)
 
 当页面加载时，该元素将获得焦点 (注意：autofocus 在移动版 Safari 上不工作)。事实上，只要你在打开这个页面后还没点击过任何内容，这个输入框就应当还是处于聚焦状态。现在让我们用指令来实现这个功能：
 ```js
@@ -3587,10 +3602,8 @@ new Vue({
   }
 })
 ```
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210718021509.png" width="500px"/>
 
-
-
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409121846.png)
 
 # 避免内存泄漏 
 ## 简介
@@ -3663,7 +3676,8 @@ new Vue({
 })
 ```
 为了实际观察一下这个内存泄露，请使用 Chrome 打开这个 CodePen 示例然后打开 Chrome 的任务管理器。Mac 下打开 Chrome 任务管理器的方式是选择 Chrome 顶部导航 > 窗口 > 任务管理；在 Windows 上则是 Shift + Esc 快捷键。现在点击展示/隐藏按钮 50 次左右。你应该在 Chrome 任务管理中发现内存的使用在增加并且从未被回收。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210714132142.png" width="400px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409121859.png)
 
 ## 解决这个内存泄漏问题
 在上述的示例中，我们可以用 hide() 方法在将选择框从 DOM 中移除之前做一些清理工作，来解决内存泄露问题。为了做到这一点，我们会在 Vue 实例的数据对象中保留一个 property，并会使用 Choices API 中的 destroy() 方法将其清除。
@@ -3763,7 +3777,8 @@ Vue 让开发非常棒的响应式的 JavaScript 应用程序变得非常简单�
 
 **项目模板**
 项目目录结构
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210406185309.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409121910.png)
 
 - package.json文件
 ```json
@@ -3952,10 +3967,12 @@ var vm = new Vue({
 ## 运行时可能会遇到的错误
 **webpackvue-loader was used without the corresponding plugin. Make sure to include VueLoaderPlugin**
 新建新项目配置vue-loader打包vue后发现报错
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210511201813.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409121921.png)
 
 查阅文档发现使用v15版的vue-loader时，webpack.config配置需要加个VueLoaderPlugin
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210511201834.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409121930.png)
 
 # 变量前面的$是什么意思
 您会注意到，我们将库代理为以美元符号“$”为前缀的属性名。 你可能还看过其他的属性和方法，例如，`$refs`, `$on`, `$mount`等等也都是以”$”开头。
@@ -3965,7 +3982,8 @@ var vm = new Vue({
 
 # vuex
 vuex 是 Vue 配套的 公共数据管理工具，它可以把一些共享的数据，保存到 vuex 中，方便 整个程序中的任何组件直接获取或修改我们的公共数据；
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191220160705.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409121939.png)
 
 官网：<https://vuex.vuejs.org/>
 
@@ -4120,18 +4138,22 @@ npm run dev
 跟后端对接口，由于有跨域问题前端设置了代理，但是打包放到服务器上之后就会出现404问题，原因是这个代理不会在线上环境生效，只是给开发时使用。于是让后台更改设置，前端需要直接访问后台接口，就需要将后台地址设为全局变量，可以在每个组件中直接访问。查询记录方法如下：
 
 1. 单独新建一个全局变量模块文件，模块中定义一些变量初始状态，用export default 暴露出去。 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210530195540.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409121951.png)
 
 2. 在main.js中引入，并通过Vue.prototype挂载到vue实例上面。供其他模块文件使用； 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210530195552.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409122002.png)
 
 3. 在组件中直接使用；
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210530195602.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409122013.png)
 
 # vue原理
 ## Vue的一些基本概念
 下图从宏观上展现了Vue整体流程：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210514082631.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409122022.png)
 
 从上图中，不难发现一个Vue的应用程序是如何运行起来的，模板通过编译生成AST，再由AST生成Vue的render函数（渲染函数），渲染函数结合数据生成Virtual DOM树，Diff和Patch后生成新的UI。从这张图中，可以接触到Vue的一些主要概念：
 - **模板**：Vue的模板基于纯HTML，基于Vue的模板语法，我们可以比较方便地声明数据和UI的关系。
@@ -4222,7 +4244,8 @@ Vue.component('anchored-heading', {
 </div>
 ```
 当浏览器读到这些代码时，它会建立一个DOM节点树来保持追踪，如果你会画一张家谱树来追踪家庭成员的发展一样。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210514084937.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409122032.png)
 
 每个元素都是一个节点。每片文字也是一个节点。甚至注释也都是节点。一个节点就是页面的一个部分。就像家谱树一样，每个节点都可以有孩子节点 (也就是说每个部分可以包含其它的一些部分)。
 
@@ -4240,21 +4263,25 @@ render: function (createElement) {
 
 ## 虚拟DOM
 在Vue 2.0中，渲染层的实现做了根本性改动，那就是引入了虚拟DOM。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210514085024.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409122041.png)
 
 Vue的编译器在编译模板之后，会把这些模板编译成一个渲染函数。而函数被调用的时候就会渲染并且返回一个虚拟DOM的树。
 
 当我们有了这个虚拟的树之后，再交给一个Patch函数，负责把这些虚拟DOM真正施加到真实的DOM上。在这个过程中，Vue有自身的响应式系统来侦测在渲染过程中所依赖到的数据来源。在渲染过程中，侦测到数据来源之后就可以精确感知数据源的变动。到时候就可以根据需要重新进行渲染。当重新进行渲染之后，会生成一个新的树，将新的树与旧的树进行对比，就可以最终得出应施加到真实DOM上的改动。最后再通过Patch函数施加改动。
 
 简单点讲，在Vue的底层实现上，Vue将模板编译成虚拟DOM渲染函数。结合Vue自带的响应系统，在应该状态改变时，Vue能够智能地计算出重新渲染组件的最小代价并应到DOM操作上。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210514085142.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409122051.png)
 
 
 Vue支持我们通过data参数传递一个JavaScript对象做为组件数据，然后Vue将遍历此对象属性，使用Object.defineProperty方法设置描述对象，通过存取器函数可以追踪该属性的变更，Vue创建了一层Watcher层，在组件渲染的过程中把属性记录为依赖，之后当依赖项的setter被调用时，会通知Watcher重新计算，从而使它关联的组件得以更新,如下图：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210514085208.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409122101.png)
 
 对于Vue自带的响应式系统，并不是咱们今天要聊的东西。我们还是回到Vue的虚拟DOM中来。对于虚拟DOM，咱们来看一个简单的实例，就是下图所示的这个，详细的阐述了`模板 → 渲染函数 → 虚拟DOM树 → 真实DOM`的一个过程
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210514085324.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409122110.png)
 
 其实Vue中的虚拟DOM还是很复杂的，我也是一知半解，如果你想深入的了解，可以阅读@JoeRay61的[《Vue原理解析之Virtual DOM》](https://segmentfault.com/a/1190000008291645)一文。
 
@@ -4287,18 +4314,22 @@ render: function (createElement) {
 ```
 
 ## Vue的渲染机制
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210514085758.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409122123.png)
+
 上图展示的是独立构建时的一个渲染流程图。
 
 继续使用上面用到的模板到真实DOM过程的一个图：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210514085324.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409122133.png)
 
 这里会涉及到Vue的另外两个概念：
 - 独立构建：包含模板编译器，渲染过程HTML字符串 → render函数 → VNode → 真实DOM节点
 - 运行时构建：不包含模板编译器，渲染过程render函数 → VNode → 真实DOM节点
 
 运行时构建的包，会比独立构建少一个模板编译器。在`$mount`函数上也不同。而`$mount`方法又是整个渲染过程的起始点。用一张流程图来说明：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210514085919.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409122147.png)
 
 由此图可以看到，在渲染过程中，提供了三种渲染模式，自定义render函数、template、el均可以渲染页面，也就是对应我们使用Vue时，三种写法：
 **1. 自定义render函数**
@@ -4361,11 +4392,18 @@ let app = new Vue({
 # 利用HBuilder打包Vue开发的webapp为app
 1. 首先使用`webpack`命令vue项目进行打包，放在dist目录中【注： 不要使用`webpack-dev-server`命令， 因为这个命令不会再本地生成打包文件，而是生成在内存中】
 2. 在HBuilder中创建一个`5+APP`项目
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191228165907.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409122157.png)
+
 3. 创建好了空白的移动App模板之后，我们可以看到我们的文件夹路径变为这样（可以删除css、js、img等文件夹）
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191228170003.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409122208.png)
+
 4. 将webpack打包好的dist目录下的东西移动该空包APP模板下，然后将打包好的index.html替换到空包APP中的index中去
 注意看下index.html中引用其他包的路径是否正确
 5. 将其进行云打包
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191228170256.png"/>
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191228170356.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409122222.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409122234.png)
+

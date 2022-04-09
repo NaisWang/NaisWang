@@ -157,7 +157,8 @@ jdbc.url=jdbc:mysql://localhost:3306/ssm_crudserverTimezone=GMT&useSSL=false
 ```
 
 # XPATH
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210605164323.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409131256.png)
 
 XPath (XML Path Language) 是一门在 XML 文档中查找信息的语言，可用来在 XML 文档中对元素和属性进行遍历。
 W3School官方文档：http://www.w3school.com.cn/xpath/index.asp
@@ -209,15 +210,15 @@ XPath 使用路径表达式来选取 XML 文档中的节点或者节点集。这
 XPath 通配符可用来选取未知的 XML 元素。
 | 通配符 | 描述                 |
 | ------ | -------------------- |
-| *      | 匹配任何元素节点。   |
-| @*     | 匹配任何属性节点。   |
+| `*`      | 匹配任何元素节点。   |
+| `@*`     | 匹配任何属性节点。   |
 | node() | 匹配任何类型的节点。 |
 
 在下面的表格中，我们列出了一些路径表达式，以及这些表达式的结果：
 | 路径表达式    | 结果                              |
 | ------------- | --------------------------------- |
-| /bookstore/*  | 选取 bookstore 元素的所有子元素。 |
-| //*           | 选取文档中的所有元素。            |
+| `/bookstore/*`  | 选取 bookstore 元素的所有子元素。 |
+| `//*`           | 选取文档中的所有元素。            |
 | `//title[@*]` | 选取所有带有属性的 title 元素。   |
 
 ## 选取若干路径
@@ -232,4 +233,5 @@ XPath 通配符可用来选取未知的 XML 元素。
 
 ## XPath的运算符
 下面列出了可用在 XPath 表达式中的运算符：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210605133100.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409131304.png)

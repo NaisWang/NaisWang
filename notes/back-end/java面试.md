@@ -16,7 +16,8 @@ java源代码 --> 编译器 --> jvm可执行的java字节码(即虚拟指令) --
 - java有自动内存管理机制，不需要程序员手动释放无用内存
 
 ## java中的数据类型与类型转换
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210408210810.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123915.png)
 
 Java基本类型基本： byte,short,char  <  int  <  long  <  float  <  double
 表达式中的类型会自动提升到表达式中类型最高的一级
@@ -196,7 +197,9 @@ Cookie存储在客户端、类型只能为字符串
 
 ## HashMap 底层是如何实现的？
 在 JDK 1.7 中 HashMap 是以数组加链表的形式组成的，JDK 1.8 之后新增了红黑树的组成结构，当链表大于 8 并且哈希表长度大于 64 时，链表结构会转换成红黑树结构
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210424132455.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123927.png)
+
 JDK 1.8 之所以添加红黑树是因为一旦链表过长，会严重影响 HashMap 的性能，而红黑树具有快速增删改查的特点，这样就可以有效的解决链表过长时操作比较慢的问题
 
 ### 什么是加载因子？加载因子为什么是 0.75？
@@ -246,17 +249,22 @@ static int indexFor(int h, int length){
 }
 ```
 indexFor代码，正好解释了为什么HashMap的数组长度要取2的整次幂。因为这样（数组长度-1）正好相当于一个“低位掩码”。“与”操作的结果就是散列值的高位全部归零，只保留低位值，用来做数组下标访问。以初始长度16为例，16-1=15。2进制表示是00000000 00000000 00001111。和某散列值做“与”操作如下，结果就是截取了最低的四位值。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210424135852.png" width="400px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123937.png)
+
 但这时候问题就来了，这样就算我的散列值分布再松散，要是只取最后几位的话，碰撞也会很严重。更要命的是如果散列本身做得不好，分布上成等差数列的漏洞，恰好使最后几个低位呈现规律性重复，就无比蛋疼。
 这时候“扰动函数”的价值就体现出来了，说到这里大家应该猜出来了。看下面这个图，
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210424135913.png" width="400px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123949.png)
+
 右位移16位，正好是32bit的一半，自己的高半区和低半区做异或，就是为了混合原始哈希码的高位和低位，以此来加大低位的随机性。而且混合后的低位掺杂了高位的部分特征，这样高位的信息也被变相保留下来。
 JDK 7做了4次右移，估计是边际效应的原因，JDK8就只做了一次右移。
 另外 JDK8在链表长度超过8的时候，就使用红黑树做存储。这一改变大大优化了很多性能。
 
 ### HashMap 是如何导致死循环的
 HashMap会导致死循环是在jdk1.7中，由于扩容时的操作是使用头插法，在多线程的环境下可能产生循环链表，由此导致了死循环。在jdk1.8中改为使用尾插法，避免了该死循环的情况。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210424140238.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409123959.png)
 
 ## ArrayList
 ArrayList作为List的典型实现，完全实现了List的全部接口功能，它是基于数组实现的List类，它封装了一个`Object[]`类型的数组，长度可以动态的增长。通过无参数构造方法创建对象时，JDK1.7初始长度是10；JDK1.8中初始长度是0，在第一次添加元素时再给出长度10。 它默认创建一个长度为10的数组，当新添加的元素已经没有位置存放的时候, ArrayList就会自动进行扩容，扩容的长度为原来长度的1.5倍。它的线程是不安全的。

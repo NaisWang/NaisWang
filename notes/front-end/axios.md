@@ -199,11 +199,14 @@ axios({
 
 ## axios配置拦截器
 **axios的基础配置**
+
 项目目录如下图所示：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210512115349.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409131459.png)
 
 其中，api一般存放的为页面的请求，这些请求都需要统一经过请求拦截器的处理，这部分不是重点，随便拿出一个文件来进行展示，一看就能懂
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210512115408.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409131510.png)
 
 重点在于request文件的编写，一下request.js文件代码， 分为3部分：axios基础配置、请求拦截器配置、响应拦截器配置
 ```js

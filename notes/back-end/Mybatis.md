@@ -100,7 +100,8 @@ SqlSession可以直接调用方法的id进行数据库操作，但是我们一�
 
 # MyBatis全局配置文件
 MyBatis 的配置文件包含了影响 MyBatis 行为甚深的设置（settings）和属性（properties）信息。文档的顶层结构如下：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210109155222.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124807.png)
 
 ## properties属性
 xml中使用${}方式获取property值: 使用`<properties>`标签
@@ -127,7 +128,8 @@ jdbc.driver=com.mysql.jdbc.Driver
 
 ## setting属性
 这是 MyBatis 中极为重要的调整设置，它们会改变MyBatis 的运行时行为。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210109155504.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124815.png)
 
 ```xml
 <settings>
@@ -156,12 +158,14 @@ public class Employee{
 
 ## typeHandlers类型处理器
 无论是 MyBatis 在预处理语句（PreparedStatement）中设置一个参数时，还是从结果集中取出一个值时， 都会用类型处理器将获取的值以合适的方式转换成 Java 类型。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210111112242.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124825.png)
 
 ### 日期类型的处理
 日期和时间的处理，JDK1.8以前一直是个头疼的问题。我们通常使用JSR310规范领导者Stephen Colebourne创建的Joda-Time来操作。1.8已经实现全部的JSR310规范了。
 日期时间处理上，我们可以使用MyBatis基于JSR310（Date and Time API）编写的各种日期时间类型处理器。 MyBatis3.4以前的版本需要我们手动注册这些处理器，以后的版本都是自动注册的
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210111112337.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124834.png)
 
 ### 自定义类型处理器
 我们可以重写类型处理器或创建自己的类型处理器来处理不支持的或非标准的类型。 
@@ -259,7 +263,8 @@ class: 引用(注册)接口
 - select – 映射查询语句
 
 ## insert、update、delete元素
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210111130749.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124843.png)
 
 ## CRUD
 Emp.java
@@ -405,7 +410,8 @@ Select元素来定义查询操作。
 - Id：唯一标识符。用来引用这条语句，需要和接口的方法名一致
 - parameterType：参数类型。 可以不传，MyBatis会根据TypeHandler自动推断
 - resultType：返回值类型。 别名或者全类名，如果返回的是集合，定义集合中元素的类型。不能和resultMap同时使用
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210111145607.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124852.png)
 
 ### select查询的几种情况
 ```java
@@ -780,7 +786,9 @@ MyBatis系统中默认定义了两级缓存。
 一级缓存(local cache), 即本地缓存, 作用域默认为sqlSession。当Session flush 或 close 后, 该Session 中的所有 Cache 将被清空。
 本地缓存不能被关闭, 但可以调用 clearCache() 来清空本地缓存, 或者改变缓存的作用域.
 在mybatis3.1之后, 可以配置本地缓存的作用域. 在 mybatis.xml 中配置
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210112153006.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124902.png)
+
 同一次会话期间只要查询过的数据都会保存在当前SqlSession的一个Map， 其中key:hashCode+查询的SqlId+编写的sql查询语句+参数
 
 **一级缓存失效的四种情况**
@@ -830,7 +838,7 @@ readOnly：只读，true/false
 - 增删改默认flushCache=true。sql执行以后，会同时清空一级和二级缓存。查询默认flushCache=false。 
 - sqlSession.clearCache()： – 只是用来清除一级缓存。 • 5、当在某一个作用域 (一级缓存Session/二级缓存Namespaces) 进行了 C/U/D 操作后，默认该作用域下所 有 select 中的缓存将被clear
 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210112163756.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124917.png)
 
 ## 第三方缓存整合
 EhCache 是一个纯Java的进程内缓存框架，具有快速、精干等特点，是Hibernate中默认的CacheProvider。
@@ -881,7 +889,7 @@ l memoryStoreEvictionPolicy - 当内存缓存达到最大，有新的element加�
 ```
 3. 配置cache标签`<cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>`
 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210112164936.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124929.png)
 
 # MyBatis-逆向工程
 MyBatis Generator： • 简称MBG，是一个专门为MyBatis框架使用者定制的代码生成器，可以快速的根据表生成对应的映射文件，接口，以及bean类。支持基本的增删改查，以及QBC风格的条件查询。但是表连接、存储过程等这些复杂sql的定义需要我们手工编写
@@ -971,7 +979,8 @@ public void test01(){
 ```
 
 **MyBatis-工作原理**
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210113091958.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124940.png)
 
 ## 通过Mybatis-plus的代码生成器
 [官网](https://mp.baomidou.com/guide/generator.html#%E6%B7%BB%E5%8A%A0%E4%BE%9D%E8%B5%96)
@@ -1143,8 +1152,10 @@ public class CodeGenerator {
 ```
 - **运行程序，输入要生成的表明**
 运行程序结果如下：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210408142321.png" width="700px"/>
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210408141203.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124950.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409124959.png)
 
 # MyBatis-Spring整合
 ```xml
@@ -1167,7 +1178,8 @@ public class CodeGenerator {
 ```
 
 # MyBatis-工作原理
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210113135024.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409125008.png)
 
 # MyBatis-插件开发
 MyBatis在四大对象的创建过程中，都会有插件进行介入。插件可以利用动态代理机制一层层的包装目标对象，而实现在目标对象执行目标方法之前进行拦截的效果。
@@ -1259,7 +1271,8 @@ openSession 方法的ExecutorType类型的参数，枚举类型:
 - ExecutorType.SIMPLE: 这个执行器类型不做特殊的事情（这是默认装配的）。它为每个语句的执行创建一个新的预处理语句。
 - ExecutorType.REUSE: 这个执行器类型会复用预处理语句。
 - ExecutorType.BATCH: 这个执行器会批量执行所有更新语句
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210113140502.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409125021.png)
 
 批量操作我们是使用MyBatis提供的BatchExecutor进行的，他的底层就是通过jdbc攒sql的方式进行的。我们可以让他攒够一定数量后发给数据库一次。
 ```java
@@ -1293,10 +1306,12 @@ public void test01() {
 
 # Mybatis注解开发
 **增删改查相关注解**
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210408105534.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409125030.png)
 
 **结果集映射相关注解**
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210408105555.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409125043.png)
 
 ## 示例
 **表结构**

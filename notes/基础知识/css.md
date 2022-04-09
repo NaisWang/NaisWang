@@ -427,7 +427,8 @@ div[id^="i_"]:not(#i_0) > input.typing {
 
 # css标签名选择器注意点
 css标签名选择器不可能为第三方css库中的自定义的标签，因为第三方自定义标签最终还是会转换成原有标签。例如：使用`element-ui`中的`el-input`标签时，最终会转换成一个class属性包含`el-input`的div标签，如下：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210515081600.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409105939.png)
 
 所以此时如果css标签名选择器为`el-input{}`，是无法选中该el-input标签的。
 

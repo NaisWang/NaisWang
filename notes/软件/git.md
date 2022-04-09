@@ -7,7 +7,8 @@
 
 ## git三个分区
 这会让我们的 Git 项目拥有三个分区：工作区、暂存区（索引区）以及 Git 目录。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211010162305.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409105016.png)
 
 `工作区`操作系统上的文件，所有代码开发编辑都在这上面完成。
 `索引区`可以理解为一个暂存区域，
@@ -277,7 +278,8 @@ $ git cat-file -p 99f1a6d12cb4b6f19c8655fca46c3ecf317074e0
 在 ZSH 中，字符 ^ 被用在通配模式（globbing）中，因此你必须将整个表达式用引号引起来：git cat-file -p "master^{tree}"。
 
 从概念上讲，Git 内部存储的数据有点像这样：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210123201704.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409105310.png)
 
 
 你可以轻松创建自己的树对象。 通常，Git 根据某一时刻暂存区（即 index 区域，下同）所表示的状态创建并记录一个对应的树对象， 如此重复便可依次记录（某个时间段内）一系列的树对象。 因此，为创建一个树对象，首先需要通过暂存一些文件来创建一个暂存区。 可以通过底层命令`git update-index`为一个单独文件——我们的`test.txt`文件的首个版本——创建一个暂存区。 利用该命令，可以把`test.txt`文件的首个版本人为地加入一个新的暂存区。 必须为上述命令指定`--add`选项，因为此前该文件并不在暂存区中（我们甚至都还没来得及创建一个暂存区呢）； 同样必需的还有`--cacheinfo`选项，文件模式、`SHA-1`与文件名,因为将要添加的文件位于 Git 数据库中，而不是位于当前目录下。如果将要添加的文件不位于Git数据库中，而在当前目录下，那么只需要写上文件名即可,例`git update-index --add new.txt`
@@ -324,7 +326,8 @@ $ git cat-file -p 3c4e9cd789d88d8d89c1073707c3585e41b0e614
 100644 blob 1f7a7a472abf3dd9643fd615f6da379c4acb3e3a      test.txt
 ```
 如果基于这个新的树对象创建一个工作目录，你会发现工作目录的根目录包含两个文件以及一个名为`bak`的子目录，该子目录包含`test.txt`文件的第一个版本。 可以认为Git内部存储着的用于表示上述结构的数据是这样的：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210123202146.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409105027.png)
 
 ### 提交对象
 如果你做完了以上所有操作，那么现在就有了三个树对象，分别代表我们想要跟踪的不同项目快照。 然而问题依旧：若想重用这些快照，你必须记住所有三个`SHA-1`哈希值。 并且，你也完全不知道是谁保存了这些快照，在什么时刻保存的，以及为什么保存这些快照。 而以上这些，正是提交对象（commit object）能为你保存的基本信息。
@@ -398,7 +401,8 @@ $ find .git/objects -type f
 .git/objects/fd/f4fc3344e67ab068f836878b6c4951e3b15f3d # commit 1
 ```
 如果跟踪所有的内部指针，将得到一个类似下面的对象关系图：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210123203427.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409105037.png)
 
 
 ### Blob对象与树对象与提交对象的区别
@@ -407,7 +411,8 @@ blob对象与树对象与提交对象都会以文件的形式存放在.git/objec
 - tree对象：保存目录结构、文件权限、文件名、其他tree对象、blob对象的引用
 - commit对象：保存上一个commit、对应快照、作者、提交信息、其他tree对象blob对象的引用
 其关系图如下：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210123184239.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409105047.png)
 
 
 #### 为什么要把文件的权限和文件名储存在tree object里面而不是blob object呢？
@@ -493,7 +498,8 @@ Git 支持多种数据传输协议。 上面的例子使用的是`https://`协�
 工作目录中除已跟踪文件外的其它所有文件都属于未跟踪文件，它们既不存在于上次快照的记录中，也没有被放入暂存区。 初次克隆某个仓库的时候，工作目录中的所有文件都属于已跟踪文件，并处于未修改状态，因为 Git 刚刚检出了它们， 而你尚未编辑过它们。
 
 编辑过某些文件之后，由于自上次提交后你对它们做了修改，Git 将它们标记为已修改文件。 在工作时，你可以选择性地将这些修改过的文件放入暂存区，然后提交所有已暂存的修改，如此反复。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210124090109.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409105058.png)
 
 ### 检查当前文件状态
 可以用`git status`命令查看哪些文件处于什么状态。 如果在克隆仓库后立即使用此命令，会看到类似这样的输出：
@@ -1103,7 +1109,9 @@ $ diff -u f1 f2
 ### git diff 命令常用技巧
 #### git diff
 当我们直接修改了工作区中的文件之后，在添加到暂存区之前，想要看看修改了那些内容，保证修改正确性。这时候运行 git diff 即可，将会显示暂存区与工作区文件的差异。如下图就是一个示例：
-![](https://gitee.com/NaisWang/images/raw/master/img/20211029102330.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409105111.png)
+
 可以看到工作区的 test.txt 文件比暂存区 test.txt 文件新增了一行内容。
 
 #### git diff commit
@@ -1128,7 +1136,9 @@ $ diff -u f1 f2
 
 前面介绍的 4 中比较差异的场景，我们可以通过比较差异的命令加上`> patch`这样的方式导出补丁文件。这里的 patch 就是自定义的补丁名。
 我们来进行一个示例。使用`git diff HEAD~ HEAD`> patch 导出上一次提交和这一次提交差异的补丁。
-![](https://gitee.com/NaisWang/images/raw/master/img/20211029103259.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409105123.png)
+
 运行上述命令之后，会生成一个叫 patch 补丁文件。
 
 怎么用这个补丁呢？示例：
@@ -1256,17 +1266,19 @@ $ git commit -m 'The initial commit of my project'
 当使用`git commit`进行提交操作时，Git 会先计算每一个子目录（本例中只有项目根目录）的校验和， 然后在 Git 仓库中这些校验和保存为树对象。随后，Git 便会创建一个提交对象， 它除了包含上面提到的那些信息外，还包含指向这个树对象（项目根目录）的指针。 如此一来，Git 就可以在需要的时候重现此次保存的快照。
 
 现在，Git 仓库中有五个对象：三个`blob`对象（保存着文件快照）、一个`树`对象 （记录着目录结构和 blob 对象索引）以及一个`提交`对象（包含着指向前述树对象的指针和所有提交信息）。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210124165155.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409105138.png)
 
 做些修改后再次提交，那么这次产生的提交对象会包含一个指向上次提交对象（父对象）的指针。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210124165215.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409105150.png)
 
 <font color="red">Git 的分支，其实本质上仅仅是指向提交对象的可变指针。</font> Git 的默认分支名字是 master。 在多次提交操作之后，你其实已经有一个指向最后那个提交对象的 master 分支。 master 分支会在每次提交时自动向前移动。
 
 >Note
 Git 的 master 分支并不是一个特殊分支。 它就跟其它分支完全没有区别。 之所以几乎每一个仓库都有 master 分支，是因为 git init 命令默认创建它，并且大多数人都懒得去改动它。
 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210124165415.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409105200.png)
 
 ### 分支创建
 Git 是怎么创建新分支的呢？ 很简单，它只是为你创建了一个可以移动的新的指针。 比如，创建一个 testing 分支， 你需要使用`git branch`命令：
@@ -1274,10 +1286,12 @@ Git 是怎么创建新分支的呢？ 很简单，它只是为你创建了一个
 $ git branch testing
 ```
 这会在当前所在的提交对象上创建一个指针。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210124165733.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409105210.png)
 
 那么，Git 又是怎么知道当前在哪一个分支上呢？ 也很简单，它有一个名为`HEAD`的特殊指针。 请注意它和许多其它版本控制系统（如 Subversion 或 CVS）里的 HEAD 概念完全不同。 在 Git 中，它是一个指针，指向当前所在的本地分支（译注：将`HEAD`想象为当前分支的别名）。 在本例中，你仍然在`master`分支上。 因为`git branch`命令仅仅 创建 一个新分支，并不会自动切换到新分支中去。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210124165843.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409105222.png)
 
 你可以简单地使用`git log`命令查看各个分支当前所指的对象。 提供这一功能的参数是`--decorate`。
 ```shell
@@ -1294,20 +1308,23 @@ f30ab (HEAD -> master, testing) add feature #32 - ability to add new formats to 
 $ git checkout testing
 ```
 这样 HEAD 就指向 testing 分支了。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210124170617.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409105233.png)
 
 那么，这样的实现方式会给我们带来什么好处呢？ 现在不妨再提交一次：
 ```shell
 $ vim test.rb
 $ git commit -a -m 'made a change'
 ```
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210124170646.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409105243.png)
 
 如图所示，你的`testing`分支向前移动了，但是`master`分支却没有，它仍然指向运行`git checkout`时所指的对象。 这就有意思了，现在我们切换回`master`分支看看：
 ```shell
 $ git checkout master
 ```
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210124170731.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409105254.png)
 
 这条命令做了两件事。 一是使`HEAD`指回`master`分支，二是将工作目录恢复成`master`分支所指向的快照内容。 也就是说，你现在做修改的话，项目将始于一个较旧的版本。 本质上来讲，这就是忽略`testing`分支所做的修改，以便于向另一个方向进行开发。
 
@@ -1329,7 +1346,8 @@ $ vim test.rb
 $ git commit -a -m 'made other changes'
 ```
 现在，这个项目的提交历史已经产生了分叉（参见 项目分叉历史）。 因为刚才你创建了一个新分支，并切换过去进行了一些工作，随后又切换回`master`分支进行了另外一些工作。 上述两次改动针对的是不同分支：你可以在不同分支间不断地来回切换和工作，并在时机成熟时将它们合并起来。 而所有这些工作，你需要的命令只有`branch`、`checkout`和`commit`。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210124170847.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104740.png)
 
 你可以简单地使用 git log 命令查看分叉历史。 运行`git log --oneline --decorate --graph --all`，它会输出你的提交历史、各个分支的指向以及项目的分支分叉情况。
 ```shell
@@ -1366,7 +1384,8 @@ $ git log --oneline --decorate --graph --all
 
 ### 新建分支
 首先，我们假设你正在你的项目上工作，并且在`master`分支上已经有了一些提交。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210124171652.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104058.png)
 
 现在，你已经决定要解决你的公司使用的问题追踪系统中的 #53 问题。 想要新建一个分支并同时切换到那个分支上，你可以运行一个带有`-b`参数的`git checkout`命令：
 ```shell
@@ -1378,14 +1397,16 @@ Switched to a new branch "iss53"
 $ git branch iss53
 $ git checkout iss53
 ```
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210124171811.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104109.png)
 
 你继续在 #53 问题上工作，并且做了一些提交。 在此过程中，`iss53`分支在不断的向前推进，因为你已经检出到该分支 （也就是说，你的`HEAD`指针指向了`iss53`分支）
 ```shell
 $ vim index.html
 $ git commit -a -m 'added a new footer [issue 53]'
 ```
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210124171855.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104118.png)
 
 现在你接到那个电话，有个紧急问题等待你来解决。 有了 Git 的帮助，你不必把这个紧急问题和`iss53`的修改混在一起， 你也不需要花大力气来还原关于 53# 问题的修改，然后再添加关于这个紧急问题的修改，最后将这个修改提交到线上分支。 你所要做的仅仅是切换回`master`分支。
 
@@ -1405,7 +1426,8 @@ $ git commit -a -m 'fixed the broken email address'
 [hotfix 1fb7853] fixed the broken email address
  1 file changed, 2 insertions(+)
 ```
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210124171957.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104128.png)
 
 你可以运行你的测试，确保你的修改是正确的，然后将 hotfix 分支合并回你的 master 分支来部署到线上。 你可以使用 git merge 命令来达到上述目的：
 ```shell
@@ -1419,7 +1441,8 @@ Fast-forward
 在合并的时候，你应该注意到了`“快进（fast-forward）”`这个词。 由于你想要合并的分支`hotfix`所指向的提交 C4 是你所在的提交 C2 的直接后继， 因此 Git 会直接将指针向前移动。换句话说，当你试图合并两个分支时， 如果顺着一个分支走下去能够到达另一个分支，那么 Git 在合并两者的时候， 只会简单的将指针向前推进（指针右移），因为这种情况下的合并操作没有需要解决的分歧——这就叫做 `“快进（fast-forward）”`。
 
 现在，最新的修改已经在`master`分支所指向的提交快照中，你可以着手发布该修复了。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210124172125.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104154.png)
 
 关于这个紧急问题的解决方案发布之后，你准备回到被打断之前时的工作中。 然而，你应该先删除`hotfix`分支，因为你已经不再需要它了 ——`master`分支已经指向了同一个位置。 你可以使用带`-d`选项的`git branch`命令来删除分支：
 ```shell
@@ -1435,7 +1458,8 @@ $ git commit -a -m 'finished the new footer [issue 53]'
 [iss53 ad82d7a] finished the new footer [issue 53]
 1 file changed, 1 insertion(+)
 ```
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210124172241.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104204.png)
 
 你在`hotfix`分支上所做的工作并没有包含到`iss53`分支中。 如果你需要拉取`hotfix`所做的修改，你可以使用`git merge master`命令将`master`分支合并入`iss53`分支，或者你也可以等到`iss53`分支完成其使命，再将其合并回`master`分支。
 
@@ -1451,10 +1475,12 @@ index.html |    1 +
 ```
 
 这和你之前合并`hotfix`分支的时候看起来有一点不一样。 在这种情况下，你的开发历史从一个更早的地方开始分叉开来（diverged）。** 因为，`master`分支所在提交并不是`iss53`分支所在提交的直接祖先，Git 不得不做一些额外的工作。 出现这种情况的时候，Git 会使用两个分支的末端所指的快照（C4 和 C5）以及这两个分支的公共祖先（C2），做一个简单的三方合并**。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210124175546.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104214.png)
 
 和之前将分支指针向前推进所不同的是，Git 将此次三方合并的结果做了一个新的快照并且自动创建一个新的提交指向它。 这个被称作一次合并提交，它的特别之处在于他有不止一个父提交。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210124175606.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104223.png)
 
 既然你的修改已经合并进来了，就不再需要`iss53`分支了。 现在你可以在任务追踪系统中关闭此项任务，并删除这个分支。
 ```shell
@@ -1470,11 +1496,16 @@ CONFLICT (content): Merge conflict in index.html
 Automatic merge failed; fix conflicts and then commit the result.
 ```
 此时 Git 做了合并，但是没有自动地创建一个新的合并提交对象, 如下
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211010184826.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104233.png)
+
 此时我在test分支上，使用`git merge master`, 发生了冲突，此时的提交的历史如下, 可以发现提交历史没有发生改变：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211010184906.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104242.png)
+
 此时需要手动解决合并产生的冲突。解决完冲突且commit后，git会自动完成未完成merge操作，以下是解决完冲突且commit后的log
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211010185025.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104257.png)
 
 你可以在合并冲突后的任意时刻使用`git status`命令来查看那些因包含合并冲突而处于未合并（unmerged）状态的文件：
 ```shell
@@ -1568,10 +1599,12 @@ Conflicts:
 ### fast-forward(快速合并)
 其实指的是源分支和目标分支之间没有分叉（单词 diverge），这种情况下合并**一定**是没有冲突的。且这种情况下合并**一定**是快速合并, 并且快速合并只发生在这种情况下
 如下图中的master分支与feature分支合并是快速合并
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211010185607.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104306.png)
 
 如果是下图中的场景，无法通过 HEAD 的快速移动实现分支的合并！
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211010185707.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104315.png)
 
 ### cherry-pick
 对于多分支的代码库，将代码从一个分支转移到另一个分支是常见需求。
@@ -1642,9 +1675,13 @@ $ git cherry-pick --continue
 
 变基的基本操作
 请回顾之前在 分支的合并 中的一个例子，你会看到开发任务分叉到两个不同分支，又各自提交了更新。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211010214845.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104325.png)
+
 之前介绍过，整合分支最容易的方法是 merge 命令。 它会把两个分支的最新快照（C3 和 C4）以及二者最近的共同祖先（C2）进行三方合并，合并的结果是生成一个新的快照（并提交）。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211010214907.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104335.png)
+
 其实，还有一种方法：你可以提取在 C4 中引入的补丁和修改，然后在 C3 的基础上应用一次。 在 Git 中，这种操作就叫做 变基（rebase）。 你可以使用 rebase 命令将提交到某一分支上的所有修改都移至另一分支上，就好像“重新播放”一样。
 
 在这个例子中，你可以检出 experiment 分支，然后将它变基到 master 分支上：
@@ -1655,14 +1692,17 @@ First, rewinding head to replay your work on top of it...
 Applying: added staged command
 ```
 它的原理是首先找到这两个分支（即当前分支 experiment、变基操作的目标基底分支 master） 的最近共同祖先 C2，然后对比当前分支相对于该祖先的历次提交，提取相应的修改并存为临时文件， 然后将当前分支指向目标基底 C3, 最后以此将之前另存为临时文件的修改依序应用。 （译注：写明了 commit id，以便理解，下同）
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211010214950.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104345.png)
 
 现在回到 master 分支，进行一次快进合并。
 ```shell
 $ git checkout master
 $ git merge experiment
 ```
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211010215005.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104357.png)
+
 此时，C4' 指向的快照就和 the merge example 中 C5 指向的快照一模一样了。 这两种整合方法的最终结果没有任何区别，但是变基使得提交历史更加整洁。 你在查看一个经过变基的分支的历史记录时会发现，尽管实际的开发工作是并行的， 但它们看上去就像是串行的一样，提交历史是一条直线没有分叉。
 
 一般我们这样做的目的是为了确保在向远程分支推送时能保持提交历史的整洁——例如向某个其他人维护的项目贡献代码时。 在这种情况下，你首先在自己的分支里进行开发，当开发完成时你需要先将你的代码变基到 origin/master 上，然后再向主项目提交修改。 这样的话，该项目的维护者就不再需要进行整合工作，只需要快进合并便可。
@@ -1677,7 +1717,8 @@ git merge文件是以行为单位进行一行一行进行合并的，但是有�
 Two-way merge解决的问题是：如何把两个文件进行合并。
 
 举个例子，假设你和另外一个人同时修改了一个文件，这时merging算法看到了这两个文件，如下图：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211010185938.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104407.png)
 
 merging算法发现两个文件大部分都一样，只有30行不一样，
 - 在Yours的版本里内容是：Print("hello")
@@ -1701,7 +1742,9 @@ Three-way merge是在Two-way merge的基础上又增加了一个信息，即两�
 - Mine：需要合并的一个文件
 - Yours：另一个需要合并的文件
 - Base：两个文件修改前的版本
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211010190037.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104422.png)
+
 这时merging算法发现：
 - 修改前的Base版本里的内容是：Print("bye")
 - 在Yours的版本里内容是：Print("hello")
@@ -1712,12 +1755,16 @@ Three-way merge是在Two-way merge的基础上又增加了一个信息，即两�
 
 #### Three-way merge的一个复杂案例
 我们来看一个更加复杂的案例，如下图：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211010190124.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104433.png)
+
 按行对比两个文件后，merging算法发现有3个地方不一样，分别是：
 - 30行：上文描述的冲突案例
 - 51行：有一个for循环被同时修改
 - 70行：Mine的版本里面新增了一行
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211010190149.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104446.png)
+
 我们来看一下这三种冲突改怎么解决：
 - 30行：只有Yours修改了，因此使用Yours的版本
 - 51行：Yours和Mine都修改了，需要手工解决冲突
@@ -1733,9 +1780,12 @@ $ git checkout task001
 $ git merge main
 ```
 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211010190850.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104459.png)
+
 merge后结果如下
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211010190931.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104509.png)
+
 merge的过程其实就是使用Three-way merge，其中
 - Base = commit 1
 - Mine = commit 4
@@ -1746,7 +1796,9 @@ merge后会生成一个新的merge节点commit 5，并且commit 5会同时依赖
 #### Recursive three-way merge
 一般情况下Base会选择Yours和Mine节点的最近的公共祖先。
 但是有的时候最近的公共祖先不是唯一的，例如出现如下图所示的情况：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211010191419.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104519.png)
+
 merge X'' Y'和X' Y''的时候发现有两个节点都符合最近的公共祖先，即：
 - X' Y
 - X Y'
@@ -1754,7 +1806,8 @@ merge X'' Y'和X' Y''的时候发现有两个节点都符合最近的公共祖�
 1. 先把候选的两个最近的公共祖先递归调用merge，生成成一个虚拟的节点
 2. 然后让这个虚拟节点作为Base
 如下：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211010191528.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104529.png)
 
 <font color="red">git软件中使用的就是Recursive three-way merge算法。</font>
 
@@ -1814,7 +1867,8 @@ $ git branch --no-merged master
 git branch -f master HEAD~3
 ```
 上面的命令会将 master 分支强制指向 HEAD 的第 3 级父提交。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211010211011.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104538.png)
 
 ## 分支开发工作流
 现在你已经学会新建和合并分支，那么你可以或者应该用它来做些什么呢？ 在本节，我们会介绍一些常见的利用分支进行开发的工作流程。而正是由于分支管理的便捷， 才衍生出这些典型的工作模式，你可以根据项目实际情况选择一种用用看。
@@ -1826,9 +1880,12 @@ git branch -f master HEAD~3
 许多使用 Git 的开发者都喜欢使用这种方式来工作，比如只在 master 分支上保留完全稳定的代码——有可能仅仅是已经发布或即将发布的代码。 他们还有一些名为 develop 或者 next 的平行分支，被用来做后续开发或者测试稳定性——这些分支不必保持绝对稳定，但是一旦达到稳定状态，它们就可以被合并入 master 分支了。 这样，在确保这些已完成的主题分支（短期分支，比如之前的 iss53 分支）能够通过所有测试，并且不会引入更多 bug 之后，就可以合并入主干分支中，等待下一次的发布。
 
 事实上我们刚才讨论的，是随着你的提交而不断右移的指针。 稳定分支的指针总是在提交历史中落后一大截，而前沿分支的指针往往比较靠前。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210130124640.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104548.png)
+
 通常把他们想象成流水线（work silos）可能更好理解一点，那些经过测试考验的提交会被遴选到更加稳定的流水线上去。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210130124700.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104601.png)
 
 你可以用这种方法维护不同层次的稳定性。 一些大型项目还有一个 proposed（建议） 或 pu: proposed updates（建议更新）分支，它可能因包含一些不成熟的内容而不能进入 next 或者 master 分支。 这么做的目的是使你的分支具有不同级别的稳定性；当它们具有一定程度的稳定性后，再把它们合并入具有更高级别稳定性的分支中。 再次强调一下，使用多个长期分支的方法并非必要，但是这么做通常很有帮助，尤其是当你在一个非常庞大或者复杂的项目中工作时。
 
@@ -1838,10 +1895,12 @@ git branch -f master HEAD~3
 你已经在上一节中你创建的 iss53 和 hotfix 主题分支中看到过这种用法。 你在上一节用到的主题分支（iss53 和 hotfix 分支）中提交了一些更新，并且在它们合并入主干分支之后，你又删除了它们。 这项技术能使你快速并且完整地进行上下文切换（context-switch）——因为你的工作被分散到不同的流水线中，在不同的流水线中每个分支都仅与其目标特性相关，因此，在做代码审查之类的工作的时候就能更加容易地看出你做了哪些改动。 你可以把做出的改动在主题分支中保留几分钟、几天甚至几个月，等它们成熟之后再合并，而不用在乎它们建立的顺序或工作进度。
 
 考虑这样一个例子，你在 master 分支上工作到 C1，这时为了解决一个问题而新建 iss91 分支，在 iss91 分支上工作到 C4，然而对于那个问题你又有了新的想法，于是你再新建一个 iss91v2 分支试图用另一种方法解决那个问题，接着你回到 master 分支工作了一会儿，你又冒出了一个不太确定的想法，你便在 C10 的时候新建一个 dumbidea 分支，并在上面做些实验。 你的提交历史看起来像下面这个样子：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210130124722.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104611.png)
 
 现在，我们假设两件事情：你决定使用第二个方案来解决那个问题，即使用在 iss91v2 分支中方案。 另外，你将 dumbidea 分支拿给你的同事看过之后，结果发现这是个惊人之举。 这时你可以抛弃 iss91 分支（即丢弃 C5 和 C6 提交），然后把另外两个分支合并入主干分支。 最终你的提交历史看起来像下面这个样子：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210130124743.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104620.png)
 
 我们将会在 分布式 Git 中向你揭示更多有关分支工作流的细节， 因此，请确保你阅读完那个章节之后，再来决定你的下个项目要使用什么样的分支策略（branching scheme）。
 请牢记，当你做这么多操作的时候，这些分支全部都存于本地。 当你新建和合并分支的时候，所有这一切都只发生在你本地的 Git 版本库中 —— 没有与服务器发生交互。
@@ -2425,18 +2484,24 @@ origin
 远程仓库名字 “origin” 与分支名字 “master” 一样，在 Git 中并没有任何特别的含义一样。 同时 “master” 是当你运行 git init 时默认的起始分支名字，原因仅仅是它的广泛使用， “origin” 是当你运行 git clone 时默认的远程仓库名字。 如果你运行`git clone -o booyah`，那么你默认的远程分支名字将会是`booyah/master`。
 
 克隆之后的服务器与本地仓库。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210130175841.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104629.png)
 
 如果你在本地的 master 分支做了一些工作，在同一段时间内有其他人推送提交到`git.ourcompany.com`并且更新了它的 master 分支，这就是说你们的提交历史已走向不同的方向。 即便这样，只要你保持不与 origin 服务器连接（并拉取数据），你的 origin/master 指针就不会移动。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210130175908.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104637.png)
 
 如果要与给定的远程仓库同步数据，运行`git fetch <remote>`命令（在本例中为`git fetch origin`）。 这个命令查找 “origin” 是哪一个服务器（在本例中，它是 git.ourcompany.com）， 从中抓取本地没有的数据，并且更新本地数据库，移动 origin/master 指针到更新之后的位置。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210130175938.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104650.png)
 
 为了演示有多个远程仓库与远程分支的情况，我们假定你有另一个内部 Git 服务器，仅服务于你的某个敏捷开发团队。 这个服务器位于`git.team1.ourcompany.com`。 你可以运行`git remote add`命令添加一个新的远程仓库引用到当前的项目，这个命令我们会在 Git 基础 中详细说明。 将这个远程仓库命名为`teamone`，将其作为完整 URL 的缩写。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210130180012.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104728.png)
+
 现在，可以运行`git fetch teamone`来抓取远程仓库`teamone`有而本地没有的数据。 因为那台服务器上现有的数据是 origin 服务器上的一个子集， 所以 Git 并不会抓取数据而是会设置远程跟踪分支`teamone/master`指向 teamone 的 master 分支。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210130180044.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104748.png)
 
 ### 推送
 当你想要公开分享一个分支时，需要将其推送到有写入权限的远程仓库上。 本地的分支并不会自动与远程仓库同步——你必须显式地推送想要分享的分支。 这样，你就可以把不愿意分享的内容放到私人分支上，而将需要和别人协作的内容推送到公开分支。
@@ -2706,9 +2771,12 @@ To https://github.com/schacon/simplegit
 HEAD处理游离状态，表示HEAD指向的是某个具体的提交对象而不是分支名
 
 一般我们会使用命令`git checkout <branch_name>`来切换分支，HEAD 就会移动到指定的分支上。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211009231312.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104758.png)
+
 但是，如果我们使用的是`git checkout <commit_id>`来切换到指定的某一次提交，HEAD 就会处于`detached`状态(HEAD detached from XXX)，也就是游离状态。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211009231420.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104808.png)
 
 ## HEAD 游离状态的利弊
 好处：HEAD 处于游离状态时，开发者可以很方便地在历史版本之间互相切换，比如要回到某次提交，只需要 checkout 对应的 commit id 或者 tag 名即可。
@@ -2717,30 +2785,41 @@ HEAD处理游离状态，表示HEAD指向的是某个具体的提交对象而不
 ## 实际情景
 下面我们来看看实际的例子。
 首先查看一下当前的分支情况，当前只有一个 master 分支：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211009232311.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104818.png)
 
 再来查看下近期的 log 日志：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211009232331.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104833.png)
 
 然后假设我要回到倒数第二条 commit 时候的状态，顺便查看下本地工作目录状态以及分支状态：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211009232349.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104843.png)
 
 可以看到，我还没有修改和提交的情况下，切换完成就给我新建了一个分支，并且指明 HEAD 正游离在 2772886 的`<commit id>`上。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211009232412.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104855.png)
+
 如果不做任何修改，想回到 master 分支，直接 git checkout master 即可，而不要 checkout master 主干所对应的`<commit id>`。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211009232431.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104906.png)
 
 顺利回到主干的话，HEAD 的游离状态会取消，原临时游离分支也会消失。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211009232447.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104917.png)
 
 如果是在游离状态做了修改和提交，则：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211009232506.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104929.png)
+
 切换会 master 分支时，在游离状态所做的修改和提交无法追溯：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211009232524.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104943.png)
 
 ## 如何解决
 其实很简单，刚才有仔细看终端提示的同学就会知道，在切换到游离状态的时候应该新建一个分支，然后我们所有的操作修改和提交都会保存到该分支，HEAD 也就指向了该分支最新提交的 commit id 处，而不会再处于游离状态。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20211009232548.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409104956.png)
 
 当在新建分支上修改提交完毕时，就切换回 master 分支，将原分支合并到 master 分支就万事大吉了。 到这里就不再操作演示了，大家都懂。
 

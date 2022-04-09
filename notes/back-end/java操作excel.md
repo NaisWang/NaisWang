@@ -71,7 +71,8 @@ public static void testWrite() throws Exception{
 ```
 
 **效果**
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210506162330.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409122437.png)
 
 
 **读核心代码：**
@@ -111,7 +112,8 @@ java.lang.IllegalArgumentException:Invalid row number（65536）outside allowabl
 
 **注意：**
 过程中会产生临时文件，如下，
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210506164113.png" width="300px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409122447.png)
 
 我们可以在在关闭输出流之后，使用下面代码来清除临时文件
 ```java
@@ -128,12 +130,14 @@ SXSSFWorkbook-来至官方的解释：实现“BigGridDemo”策略的流式XSSF
 EasyExcel是阿里巴巴开源的一个excel处理框架，以使用简单、节省内存著称。
 EasyExcel能大大减少占用内存的主要原因是在解析Excel时没有将文件数据一次性全部加载到内存中，而是从磁盘上一行行读取数据，逐个解析。
 下图是EasyExcel和POI在解析Excel时的对比图。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210506155224.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409122458.png)
 
 官方文档：https://www.yuque.com/easyexcel/doc/easyexcel
 
 EasyExcle将excel文件看成如下接口：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210506162815.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409122508.png)
 
 # EasyPOI
 为了解决上述poi的缺点，国内有很多开源项目对poi进行了封装，大大减少代码量，使其能够更简单的被我们使用并提高开发效率，例如EasyPoi,Excel4]等优秀的开源项目。我们这次以EasyPoi为例

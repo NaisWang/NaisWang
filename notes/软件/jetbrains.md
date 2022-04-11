@@ -5,17 +5,17 @@
 | ------------------------------------------ | -------- |
 | Back                                       | ctrl+o       |
 | Forward                                    |  ctrl+i      |
-| find usage                                 | gR       |
-| show usage                                 | gr       |
+| find usage                                 | gL       |
+| show usage                                 | gl       |
+| 跳转到声明处                               | gd       |
 | 跳转到上一个方法Previousmethod             | gk       |
 | 跳转到下一个方法Nextmethod                 | gj       |
 | 上一个错误或警告                           | g[       |
 | 下一个错误或警告                           | g]       |
 | 跳转到方法的实现                           | gi       |
 | 跳转到父类方法处go to super method         | gs       |
-| JumpToLastChange                           | ',       |
-| 跳转到声明处(如果是声明处，则跳转到使用处) | ctrl+]       |
-| 全局查找                                   | gF       |
+| JumpToLastChange                           | g,       |
+| 全局查找                                   | gF或command-shift-f       |
 | 翻半页(保留vim操作)                        | ctrl+u/d |
 
 ## 提示/查找快捷键
@@ -36,6 +36,7 @@
 | Surround with                     | ctrl+s     |
 | 完成当前行(自动在行末加;)         | ctrl+enter |
 | 快速导包                          | ctrl+o     |
+| 折叠/展开全部                          | zao/zac     |
 
 ## 有关窗口的快捷键
 
@@ -44,7 +45,6 @@
 | 显示/关闭资源目录窗口    | command+p        |
 | 关闭窗口                 | command+w        |
 | 显示/关闭其他非编辑窗口  | command+m        |
-| 左右切换编辑窗口         | command+>/<  |
 | 光标聚集到编辑窗口       | Esc          |
 
 ---

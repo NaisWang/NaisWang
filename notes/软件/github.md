@@ -18,7 +18,8 @@ language:java    用Java编写的项目
 
 # 比较不同提交对象之间的不同
 在你的项目地址url后加上compare即可
-![](https://gitee.com/NaisWang/images/raw/master/img/20211101180041.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409162609.png)
 
 每个仓库的比较视图包含两个下拉菜单：base 和 compare。
 base 应被视为比较的起点，而 compare 被视为终点。 在比较期间，可随时通过单击 Edit（编辑）来更改 base 和 compare 点。

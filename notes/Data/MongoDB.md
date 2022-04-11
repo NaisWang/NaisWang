@@ -129,13 +129,16 @@ db  -> 显示当前所在的数据库
 
 ## Robomongo安装以及使用
 直接到[官网https://robomongo.org/](https://robomongo.org/)下载安装，安装成功后运行，第一次运行，需要新创建一个连接，如图创建test，点击save保存连接。
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191221134831.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409163412.png)
 
 选择test，点击connect连接数据库。robomongo会自己搜索你系统里面安装的mongodb并与其连接。如图
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191221134911.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409163422.png)
 
 连接成功后，显示你的数据库，在这个节目可以对数据库进行操作。如图：
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191221134927.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409163432.png)
 
 ## Mongoose安装与加载
 首先假定你已经安装了 Node.js，命令行工具输入：
@@ -149,9 +152,10 @@ $ npm install mongoose -g
 ## 使用基本步骤
 
 Mongose基于mongodb的原生方法，自己定义了一套操作MongoDB数据库的接口，比原生方法更加简单方便。为了更加直观，下面的步骤结合例子来讲。假如我需要做一个教务系统，需要存储学生Student的信息，学生信息通常包含姓名name，学号id，电话phone，登录日期date等。我把学生的信息存在mongodb的myDB数据库中，集合的名字叫students。如图：
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191221134956.png"/>
 
-_id这个域你可以自己定义，但如果你没有定义，系统会自动给你加上。下面先介绍在node中通过mongoose对mongodb进行操作的必须前提步骤：
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409163441.png)
+
+id这个域你可以自己定义，但如果你没有定义，系统会自动给你加上。下面先介绍在node中通过mongoose对mongodb进行操作的必须前提步骤：
 **1.node连接数据库**
 ```js
 mongoose.connect('mongodb://user:pass@ip:port/database');
@@ -177,7 +181,8 @@ db.connection.on("open", function () {
 ```
 
 没有mongoose.Promise = global.Promise会出现如下错误（这个错误没有什么影响）：
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191221135014.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409163459.png)
 
 意思是mongoose自带的promise过期了，然后需要使用v8引擎的promise。
 
@@ -205,8 +210,9 @@ mongoose.model("Student", Student_Schema);
 
 > <font color="red">mongoose是通过model来创建mongodb中对应的collection的，mongoose在内部创建collection时将我们传递的collection名（‘friendimpression’）小写化，同时如果小写化的名称后面没有字母——s,则会在其后面添加一s,针对我们刚建的collection,则会命名为：friendimpressions。并且其复数变化规则遵循英语语法，例如category会变成categories,而不是categorys</font>
 
-{versionKey: false}是干嘛用？如果不加这个设置，我们通过mongoose第一次创建某个集合时，它会给这个集合设定一个versionKey属性值，这个属性值包含这个文档的内部版本，数据库中显示为_v，如图：
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191221135031.png"/>
+{versionKey: false}是干嘛用？如果不加这个设置，我们通过mongoose第一次创建某个集合时，它会给这个集合设定一个versionKey属性值，这个属性值包含这个文档的内部版本，数据库中显示为v，如图：
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409163508.png)
 
 通过{versionKey: false}可以配置这个参数，让数据库不再添加这个属性，格式是：new Schema({..}, { versionKey: false });
 
@@ -296,7 +302,8 @@ sam.save(function(err) {});
 ```
 
 通过robomongo查看数据库，可以看到数据已经存放成功，如图
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191221135109.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409163521.png)
 
 ### read
 ```js
@@ -313,9 +320,12 @@ MyStudent.find({}, function(err, docs) {});
 ```
 
 比如数据库students集合中，有如下数据：
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191221135154.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409163530.png)
+
 运行上面代码，结果console.log输出显示如下：
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191221135243.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409163542.png)
 
 模型还可以调用其他很多查询的函数，比如
 ```js
@@ -346,10 +356,12 @@ var MyStudent = mongoose.model("Student");
 MyStudent.update({name:"sam976"},{id:456,phone:"12345678910"}, function(error){});
 ```
 运行如上代码前，如图
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191221135314.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409163600.png)
 
 运行如上代码后，如图
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191221135331.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409163610.png)
 
 ### delete
 ```js
@@ -379,7 +391,9 @@ db.emp.find({},{ename:1 , _id:0 , sal:1});
 
 ## 示例
 test.comments
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191221135411.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409163620.png)
+
 ```js
 //发表评论功能
 router.post('/api/postcomment/:id',function(req, res){
@@ -409,7 +423,8 @@ router.post('/api/postcomment/:id',function(req, res){
 ```
 
 输出：
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191221135437.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409163631.png)
 
 ## 练习
 ```js

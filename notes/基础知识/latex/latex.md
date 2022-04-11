@@ -146,7 +146,8 @@ latex-workshop.latex.tools 下面的是编译工具，latex-workshop.latex.recip
 ｝
 ```
 然后就可以进行编译了：
-![](https://gitee.com/NaisWang/images/raw/master/img/20211124110955.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409163703.png)
 
 # 使用 BibTeX 生成参考文献列表
 LaTeX 是一些理工专业论文排版的事实标准。既然是论文排版，就不可避免会涉及到参考文献的处理。Oren Patashnik 和 Leslie Lamport 在 1985 年开发的 BibTeX 是在 LaTeX 社区相当流行的参考文献格式化工具。
@@ -276,7 +277,8 @@ latex foo.tex
 相比上一次的 foo.aux，在读入 BibTeX 之后，LaTeX 向 aux 文件写入了更多的信息。这里 \bibcite{baz}{1} 将 baz 这一参考文献标记（label）与参考文献编号（数字 1）绑定起来了。
 
 接下来，我们看看 dvi 文件的内容：
-![](https://gitee.com/NaisWang/images/raw/master/img/20211129103709.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409163719.png)
 
 不难发现，由于读入了 foo.bbl 文件，参考文献列表已经正确展现出来了。然而，正文中依然有一个问号。
 
@@ -455,7 +457,7 @@ LaTeX 的数学模式有两种：行内模式 (inline) 和行间模式 (display)
 \end{equation}
 ```
 行内公式也可以使用`\(...\)`或者 \begin{math} ... \end{math} 来插入，但略显麻烦。
-无编号的行间公式也可以使用 \begin{displaymath} ... \end{displaymath} 或者 \begin{equation*} ... \end{equation*} 来插入，但略显麻烦。（equation* 中的 * 表示环境不编号）
+无编号的行间公式也可以使用`\begin{displaymath} ... \end{displaymath}` 或者 `\begin{equation*} ... \end{equation*}` 来插入，但略显麻烦。`（equation* 中的 * 表示环境不编号）`
 也有 plainTeX 风格的 $$ ... $$ 来插入不编号的行间公式。但是在 LaTeX 中这样做会改变行文的默认行间距，不推荐。请参考[我的回答](https://www.zhihu.com/question/27589739/answer/37237684)。
 
 ## 上下标
@@ -475,7 +477,7 @@ E=mc^2.
 ```
 在这里提一下关于公式标点使用的规范。行内公式和行间公式对标点的要求是不同的：行内公式的标点，应该放在数学模式的限定符之外，而行间公式则应该放在数学模式限定符之内。
 
-在数学模式中，需要表示上标，可以使用 ^ 来实现（下标则是 _）。它默认只作用于之后的一个字符，如果想对连续的几个字符起作用，请将这些字符用花括号 {} 括起来，例如：
+在数学模式中，需要表示上标，可以使用 ^ 来实现（下标则是`_`）。它默认只作用于之后的一个字符，如果想对连续的几个字符起作用，请将这些字符用花括号 {} 括起来，例如：
 ```latex
 \[ z = r\cdot e^{2\pi i}. \]
 ```
@@ -531,7 +533,8 @@ $ \sum\limits _{i=1}^n i\quad \prod\limits _{i=1}^n $
 \[ \Biggl\lVert\biggl\lVert\Bigl\lVert\bigl\lVert\lVert x
 \rVert\bigr\rVert\Bigr\rVert\biggr\rVert\Biggr\rVert \]
 ```
-![](https://gitee.com/NaisWang/images/raw/master/img/20211129110538.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409163731.png)
 
 ## 省略号
 省略号用 \dots, \cdots, \vdots, \ddots 等命令表示。\dots 和 \cdots 的纵向位置不同，前者一般用于有下标的序列。
@@ -550,14 +553,16 @@ amsmath 的 pmatrix, bmatrix, Bmatrix, vmatrix, Vmatrix 等环境可以在矩阵
 \begin{Vmatrix} a&b\\c&d \end{Vmatrix} \]
 ```
 效果图：
-![](https://gitee.com/NaisWang/images/raw/master/img/20211129110615.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409163830.png)
 
 使用 smallmatrix 环境，可以生成行内公式的小矩阵。
 ```latex
 Marry has a little matrix $ ( \begin{smallmatrix} a&b\\c&d \end{smallmatrix} ) $.
 ```
 效果图：
-![](https://gitee.com/NaisWang/images/raw/master/img/20211129110636.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409163853.png)
 
 ## 多行公式
 有的公式特别长，我们需要手动为他们换行；有几个公式是一组，我们需要将他们放在一起；还有些类似分段函数，我们需要给它加上一个左边的花括号。
@@ -572,9 +577,10 @@ d+e+f+g
 \end{multline}
 ```
 效果：
-![](https://gitee.com/NaisWang/images/raw/master/img/20211129110716.png)
 
-如果不需要编号，可以使用 multline* 环境代替。
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409163903.png)
+
+如果不需要编号，可以使用 `multline*` 环境代替。
 
 #### 对齐
 需要对齐的公式，可以使用 aligned 次环境来实现，它必须包含在数学环境之内。
@@ -585,7 +591,8 @@ x ={}& a+b+c+{} \\
 \end{aligned}\]
 ```
 效果图：
-![](https://gitee.com/NaisWang/images/raw/master/img/20211129110742.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409163919.png)
 
 ### 公式组
 无需对齐的公式组可以使用 gather 环境，需要对齐的公式组可以使用 align 环境。他们都带有编号，如果不需要编号可以使用带星花的版本。
@@ -600,7 +607,8 @@ x &= y+z
 \end{align}
 ```
 效果：
-![](https://gitee.com/NaisWang/images/raw/master/img/20211129110812.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409163928.png)
 
 请注意，不要使用 eqnarray 环境。
 
@@ -613,7 +621,8 @@ x,\quad x>0
 \end{cases} \]
 ```
 效果图：
-![](https://gitee.com/NaisWang/images/raw/master/img/20211129110903.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409163939.png)
 
 # 插入图片和表格
 ## 图片
@@ -651,7 +660,8 @@ Mac OS & MacTeX & TeXShop \\
 \end{tabular}
 ```
 效果：
-![](https://gitee.com/NaisWang/images/raw/master/img/20211129111102.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220409163951.png)
 
 ## 浮动体
 插图和表格通常需要占据大块空间，所以在文字处理软件中我们经常需要调整他们的位置。figure 和 table 环境可以自动完成这样的任务；这种自动调整位置的环境称作浮动体(float)。我们以 figure 为例。

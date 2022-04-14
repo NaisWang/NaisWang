@@ -5,8 +5,8 @@
 | ------------------------------------------ | -------- |
 | Back                                       | ctrl+o       |
 | Forward                                    |  ctrl+i      |
-| find usage                                 | gL       |
-| show usage                                 | gl       |
+| find usage                                 | gR       |
+| show usage                                 | gr       |
 | 跳转到声明处                               | gd       |
 | 跳转到上一个方法Previousmethod             | gk       |
 | 跳转到下一个方法Nextmethod                 | gj       |
@@ -15,16 +15,18 @@
 | 跳转到方法的实现                           | gi       |
 | 跳转到父类方法处go to super method         | gs       |
 | JumpToLastChange                           | g,       |
-| 全局查找                                   | gF或command-shift-f       |
+| 全局查找                                   | gF或ctrl-shift-f       |
 | 翻半页(保留vim操作)                        | ctrl+u/d |
 
 ## 提示/查找快捷键
 
 | 功能                               | Jetbrain  |
 | -----------------------------      | --------- |
-| 显示方法参数信息                   | command+[    |
-| 错误/警告描述ErrorDescription      | command+'     |
-| show context actions               | command+enter |
+| 显示方法参数信息                   | ctrl+p    |
+| quick Documentation               | ctrl+k |
+| external Documentation               | ctrl+shift+k |
+| 错误/警告描述ErrorDescription      | ctrl+d     |
+| show context actions               | ctrl+f |
 
 ## 编辑快捷键
 
@@ -201,3 +203,12 @@ artifact你把它理解成“生成的东西”就差不多了。这个词强调
 上图选项中有web application exploded，这个是以文件夹形式（War Exploded）发布项目，选择这个，发布项目时就会自动生成文件夹在指定的output directory,
 
 如果选 web application archive，就是war包形式，每次都会重新打包全部的,将项目打成一个war包在指定位置
+
+# 插件
+- Alibaba Java Coding
+- Free Mybatis plugin
+- IDE Eval Reset
+- IdeaVim
+- JRebel and XRebel
+- Material Theme UI
+- RestfulTool

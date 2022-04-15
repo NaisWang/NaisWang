@@ -179,3 +179,18 @@ autocmd FileType javascript,python,c,cpp,java,vim,shell let g:indentLine_conceal
 - `g*`: 向下 普通匹配
 - `g#`: 向上 普通匹配
 
+```
+:s/Ubuntu/Debian/g
+```
+当前行替换
+
+```
+:%s/<search_term>/<replace_term>/g
+```
+全文替换
+
+```
+:'<,'>s/<search_term>/<replace_term>/g
+```
+可视化模式下替换
+

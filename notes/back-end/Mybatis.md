@@ -434,7 +434,7 @@ public Map<Integer, Employee> getAllEmpsReturnMap();
 autoMappingBehavior默认是PARTIAL，开启自动映射的功能, 此时唯一的要求是列名和javaBean属性名一致，如果autoMappingBehavior设置为null则会取消自动映射。数据库字段命名规范，POJO属性符合驼峰命名法，比如说数据库中字段为last_name,而实体类的属性为lastName。我们可以开启自动驼峰命名规则映射功能，mapUnderscoreToCamelCase=true，默认是开启的。
 - 自定义resultMap，实现高级结果集映射
 
-**resultMap**
+#### resultMap
 - id： 用来设置主键的映射关系，底层会优化
 - result: 设置非主键的映射关系
 - association – 一个复杂的类型关联;许多结果将包成这种类型嵌入结果映射 – 结果映射自身的关联,或者参考一个
@@ -463,7 +463,7 @@ autoMappingBehavior默认是PARTIAL，开启自动映射的功能, 此时唯一�
 			<result column="dname" property="dname"/>	
 	   </association>
 
-	   <!-- select: 分步查询的SQL的id， 即 接口的全限定名.方法名
+	   <!-- select: 分步查询的SQL的id， 即 接口的全限定名.方法名, 或者是当前xml文件中selct或者sql标签的id
 	        column: 即将指定列的值传入目标方法中，注：此列必须在第一次sql查询中查询过，否则会报错 -->
 	   <association property ="school" select="com.atguitu.mapper.DeptMapper.getSchoolByDid" column="sid"/>
 	   <collection property ="compa" select="com.atguitu.mapper.CompaMapper.getCompaByDid" column="cid"/>
@@ -479,7 +479,7 @@ autoMappingBehavior默认是PARTIAL，开启自动映射的功能, 此时唯一�
 </select>
 ```
 
-**resultMap继承**
+#### resultMap继承
 ```xml
 <resultMap id="CocBeanResult" type="CocBean">  
     <result property="name" column="NAME"/>  
@@ -493,7 +493,33 @@ autoMappingBehavior默认是PARTIAL，开启自动映射的功能, 此时唯一�
 </resultMap>
 ```
 
-**collection**
+#### Subquery
+Subquery/Inner query/Nested query is a query within another SQL query and embedded within the WHERE clause.
+```sql
+select * from author where userID in (select id from user)
+```
+So there are in fact two statements here. Let’s define each select statement and resultMap:
+
+```sql
+<resultMap id="AuthorSubMap" type="Author">
+	<id property="id" column="author.id" />
+	<result property="realName" column="realName" />
+	<result property="IDCard" column="IDCard" />
+	<association property="user" column="userID" javaType="User" select="findById"/>
+</resultMap>
+<select id="findById" parameterType="int" resultType="User">
+	select * from user where id=#{id}
+</select>
+<select id="selectAuthorSub" resultMap="AuthorSubMap">
+	select * from author 
+</select>
+```
+In the above settings, `<association>` will pass `userID` as parameter to `findById`.
+
+#### collection
+
+`<collection>` element works almost identically to `<association>`. But it is used to map a set of nested results like List.
+
 专门用于处理一对多和多对多的关系
 ```xml
 <!-- 
@@ -513,7 +539,7 @@ autoMappingBehavior默认是PARTIAL，开启自动映射的功能, 此时唯一�
 </collection>
 ```
 
-**分步查询延迟加载**
+#### 分步查询延迟加载
 只有collection与association标签才能使用分步查询
 延时加载是针对分步查询而使用的
 开启延时加载后，当使用分段查询时，如果要得到的数据可以不通过执行分布查询的sql而得到， 那么这个分步查询中的sql就不会执行
@@ -556,6 +582,8 @@ fetchType属性有两个属性值, 分别是eager(立即加载)与lazy(延时加
    ...
 </select>
 ```
+
+
 
 ### Mybatis返回对象中包含多个List属性
 数据库数据

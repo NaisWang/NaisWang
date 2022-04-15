@@ -25,7 +25,7 @@
 | 显示方法参数信息                   | ctrl+p    |
 | quick Documentation               | ctrl+k |
 | external Documentation               | ctrl+shift+k |
-| 错误/警告描述ErrorDescription      | ctrl+d     |
+| 错误/警告描述ErrorDescription      | ctrl+e     |
 | show context actions               | ctrl+f |
 
 ## 编辑快捷键

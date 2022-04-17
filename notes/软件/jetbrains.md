@@ -37,7 +37,7 @@
 | 快速生成函数注释(Fix doc comment) | ctrl+c     |
 | Surround with                     | ctrl+s     |
 | 完成当前行(自动在行末加;)         | ctrl+enter |
-| 快速导包                          | ctrl+o     |
+| 快速导包                          | ctrl+m     |
 | 折叠/展开全部                          | zao/zac     |
 
 ## 有关窗口的快捷键

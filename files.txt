@@ -49,7 +49,6 @@
   },
   "软件": {
     "markdown.md": "markdown.md",
-    "vim.md": "vim.md",
     "nmap.md": "nmap.md",
     "Cisco.md": "Cisco.md",
     "nginx.md": "nginx.md",

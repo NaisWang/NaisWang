@@ -1053,6 +1053,17 @@ curl https://www.coonote.com/robot.txt -o filename.iso --progress
 ######################################### 100.0%
 ```
 
+#### 快速将请求导成curl格式
+
+**方式一：在浏览器中**
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/Screen%20Shot%202022-04-17%20at%2015.30.03.jpg)
+
+**方式二：在postman中**
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/Screen%20Shot%202022-04-17%20at%2015.32.41.jpg)
+
+
 ## SSH
 ### ssh基础使用
 ssh客户端是一种使用Secure Shell(ssh)协议连接到运行了ssh服务端的远程服务器上。ssh是目前较可靠，专为远程登录会话和其他网络服务提供安全性的协议。它有如下优点：

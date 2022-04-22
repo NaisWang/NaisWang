@@ -1270,7 +1270,7 @@ scp root@www.runoob.com:/home/root/others/music /home/space/music/1.mp3
 scp -r www.runoob.com:/home/root/others/ /home/space/music/
 ```
 
-## 说明
+### 说明
 1. 如果远程服务器防火墙有为scp命令设置了指定的端口，我们需要使用 -P 参数来设置命令的端口号，命令格式如下：
 ```shell
 #scp 命令使用端口号 4588

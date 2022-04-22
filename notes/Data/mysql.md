@@ -552,6 +552,182 @@ mysql> SELECT YEAR('98-02-03');
 +---------------------------------------------------------+
 ```
 
+# 4 Ways to Replace NULL with a Different Value in MySQL
+In MySQL, sometimes you don’t want NULL values to be returned as NULL. Sometimes you want NULL values to be returned with a different value, such as “N/A”, “Not Applicable”, “None”, or even the empty string “”.
+
+Fortunately there are several ways to do this in MySQL.
+
+Here are four:
+- The `IFNULL()` function
+- The `COALESCE()` function
+- The `IF()` function combined with the IS NULL (or IS NOT NULL) operator
+- The `CASE` expression combined with the `IS NULL` (or `IS NOT NULL`) operator
+Examples of these options are below.
+
+## Sample Data
+First, let’s grab some sample data:
+```sql
+USE Solutions;
+SELECT TaskCode
+From Tasks;
+```
+Result:
+```
++----------+
+| TaskCode |
++----------+
+| gar123   |
+| NULL     |
+| NULL     |
+| dog456   |
+| NULL     |
+| cat789   |
++----------+
+```
+So we have three NULL values and three `non-NULL` values.
+
+## The IFNULL() Function
+Given its name, this is probably the most obvious option for replacing NULL values in MySQL. This function is basically the equivalent of `ISNULL()` in SQL Server.
+
+The `IFNULL()` function allows you to provide two arguments. The first argument is returned only if it is not NULL. If it is NULL, then the second argument is returned instead.
+
+Here’s an example of using `IFNULL()` against our sample data set:
+```sql
+SELECT IFNULL(TaskCode, 'N/A') AS Result 
+FROM Tasks;
+```
+Result:
+
+```
++--------+
+| Result |
++--------+
+| gar123 |
+| N/A    |
+| N/A    |
+| dog456 |
+| N/A    |
+| cat789 |
++--------+
+```
+Here, we simply replaced NULL values with N/A.
+
+## The COALESCE() Function
+This function is similar to the `IFNULL()` function, but slightly different. This function adheres to the ANSI  SQL standard, and it is widely deployed across various RDBMSs .
+
+The way it works is, you provide as many arguments as you need. `COALESCE()` will then return the first `non-NULL` value in the list, or NULL if there are no `non-NULL` values.
+
+Like this:
+```sql
+SELECT COALESCE(TaskCode, 'N/A') AS Result 
+FROM Tasks;
+```
+Result:
+```
++--------+
+| Result |
++--------+
+| gar123 |
+| N/A    |
+| N/A    |
+| dog456 |
+| N/A    |
+| cat789 |
++--------+
+```
+So we get exactly the same result as previously.
+
+However, the difference with this function is that, as mentioned, you can provide a list of arguments. The `COALESCE()` function will take whichever is the first non-NULL value.
+
+So for example, we could add `NULL` as the first argument and place `None` before `N/A` and look what happens:
+
+```sql
+SELECT COALESCE(NULL, TaskCode, 'None', 'N/A') AS Result 
+FROM Tasks;
+```
+
+Result:
+```
++--------+
+| Result |
++--------+
+| gar123 |
+| None   |
+| None   |
+| dog456 |
+| None   |
+| cat789 |
++--------+
+```
+It skipped the first `NULL` as expected, then it skipped any NULL values in the `TaskCode` column, before settling on `None`.  The `N/A` value didn’t get used in this case because `None` came first and it’s a non-NULL value.
+
+
+## The IF() Function Combined with IS NULL/IS NOT NULL
+The `IS NULL` and `IS NOT NULL` operators allow you to test for NULL values, and present a different value depending on the outcome.
+
+We can use these operators inside the `IF()` function, so that non-NULL values are returned, and NULL values are replaced with a value of our choosing.
+
+Example:
+```sql
+SELECT IF(TaskCode IS NOT NULL, TaskCode, 'N/A') AS Result 
+FROM Tasks;
+```
+
+Result:
+```
++--------+
+| Result |
++--------+
+| gar123 |
+| N/A    |
+| N/A    |
+| dog456 |
+| N/A    |
+| cat789 |
++--------+
+```
+So the same result as with the `IFNULL()` and `COALESCE()` functions.
+
+And of course, we could swap `IS NOT NULL` with `IS NULL`. If we do that, we would need to swap the subsequent arguments too:
+
+```sql
+SELECT IF(TaskCode IS NULL, 'N/A', TaskCode) AS Result 
+FROM Tasks;
+```
+
+## The CASE Expression Combined with IS NULL/IS NOT NULL
+Another way to do it is to use the `CASE` expression:
+```sql
+SELECT 
+    CASE 
+        WHEN TaskCode IS NOT NULL THEN TaskCode 
+        ELSE 'N/A' 
+    END AS Result
+FROM Tasks;
+```
+Result:
+```
++--------+
+| Result |
++--------+
+| gar123 |
+| N/A    |
+| N/A    |
+| dog456 |
+| N/A    |
+| cat789 |
++--------+
+```
+As with the previous example, this could be rewritten to use `IS NULL` instead of `IS NOT NULL`:
+```
+SELECT 
+    CASE 
+        WHEN TaskCode IS NULL THEN 'N/A' 
+        ELSE TaskCode 
+    END AS Result
+FROM Tasks;
+```
+
 # MySQL的语句执行顺序
 sql执行顺序：
 - from 
@@ -2663,6 +2839,6 @@ select id,name,sex ... order by name limit 500,100;
 将单列索引(name)升级为联合索引(name, sex)，也可以避免回表。
 
 # Mysql优化
-## 查询中尽量避免使用`SELECT *`以及加上LIMIT限制
+## 查询中尽量避免使用SELECT 星号以及加上LIMIT限制
 当服务器响应客户端请求时，客户端必须完整的接收整个返回结果，而不能简单的只取前面几条结果，然后让服务器停止发送。查询应尽可能只返回必要数据，减小通信数据包大小和数量，提高效率。
 

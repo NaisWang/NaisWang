@@ -1192,6 +1192,232 @@ $ ssh-add -K ~/.ssh/gcp
 ```
 完成以上配置后，连接服务器只需使用 ssh tu即可。
 
+
+## scp命令
+- Linux scp 命令用于 Linux 之间复制文件和目录。
+- scp 是 secure copy 的缩写, scp 是 linux 系统下基于 ssh 登陆进行安全的远程文件拷贝命令。
+- scp 是加密的，rcp 是不加密的，scp 是 rcp 的加强版。
+
+### 语法
+```shell
+scp [-1246BCpqrv] [-c cipher] [-F ssh_config] [-i identity_file]
+[-l limit] [-o ssh_option] [-P port] [-S program]
+[[user@]host1:]file1 [...] [[user@]host2:]file2
+```
+简易写法:
+```shell
+scp [可选参数] file_source file_target 
+```
+参数说明：
+- -1： 强制scp命令使用协议ssh1
+- -2： 强制scp命令使用协议ssh2
+- -4： 强制scp命令只使用IPv4寻址
+- -6： 强制scp命令只使用IPv6寻址
+- -B： 使用批处理模式（传输过程中不询问传输口令或短语）
+- -C： 允许压缩。（将-C标志传递给ssh，从而打开压缩功能）
+- -p：保留原文件的修改时间，访问时间和访问权限。
+- -q： 不显示传输进度条。
+- -r： 递归复制整个目录。
+- -v：详细方式显示输出。scp和ssh(1)会显示出整个过程的调试信息。这些信息用于调试连接，验证和配置问题。
+- -c cipher： 以cipher将数据传输进行加密，这个选项将直接传递给ssh。
+- `-F ssh_config`： 指定一个替代的ssh配置文件，此参数直接传递给ssh。
+- `-i identity_file`： 从指定文件中读取传输时使用的密钥文件，此参数直接传递给ssh。
+- `-l limit`： 限定用户所能使用的带宽，以Kbit/s为单位。
+- `-o ssh_option`： 如果习惯于使用`ssh_config(5)`中的参数传递方式，
+- -P port：注意是大写的P, port是指定数据传输用到的端口号
+- -S program： 指定加密传输时所使用的程序。此程序必须能够理解ssh(1)的选项。
+
+### 实例
+1. 从本地复制到远程
+命令格式：
+```shell
+scp local_file remote_username@remote_ip:remote_folder 
+#或者 
+scp local_file remote_username@remote_ip:remote_file 
+#或者 
+scp local_file remote_ip:remote_folder 
+#或者 
+scp local_file remote_ip:remote_file 
+```
+- 第1,2个指定了用户名，命令执行后需要再输入密码，第1个仅指定了远程的目录，文件名字不变，第2个指定了文件名；
+- 第3,4个没有指定用户名，命令执行后需要输入用户名和密码，第3个仅指定了远程的目录，文件名字不变，第4个指定了文件名；
+应用实例：
+```shell
+scp /home/space/music/1.mp3 root@www.runoob.com:/home/root/others/music 
+scp /home/space/music/1.mp3 root@www.runoob.com:/home/root/others/music/001.mp3 
+scp /home/space/music/1.mp3 www.runoob.com:/home/root/others/music 
+scp /home/space/music/1.mp3 www.runoob.com:/home/root/others/music/001.mp3 
+```
+复制目录命令格式：
+```
+scp -r local_folder remote_username@remote_ip:remote_folder 
+#或者 
+scp -r local_folder remote_ip:remote_folder 
+```
+- 第1个指定了用户名，命令执行后需要再输入密码；
+- 第2个没有指定用户名，命令执行后需要输入用户名和密码；
+应用实例：
+```
+scp -r /home/space/music/ root@www.runoob.com:/home/root/others/ 
+scp -r /home/space/music/ www.runoob.com:/home/root/others/ 
+```
+上面命令将本地 music 目录复制到远程 others 目录下。
+
+2. 从远程复制到本地
+从远程复制到本地，只要将从本地复制到远程的命令的后2个参数调换顺序即可，如下实例
+```
+scp root@www.runoob.com:/home/root/others/music /home/space/music/1.mp3 
+scp -r www.runoob.com:/home/root/others/ /home/space/music/
+```
+
+## 说明
+1. 如果远程服务器防火墙有为scp命令设置了指定的端口，我们需要使用 -P 参数来设置命令的端口号，命令格式如下：
+```shell
+#scp 命令使用端口号 4588
+scp -P 4588 remote@www.runoob.com:/usr/local/sin.sh /home/administrator
+```
+2. 使用scp命令要确保使用的用户具有可读取远程服务器相应文件的权限，否则scp命令是无法起作用的。
+
+## rsync命令
+rsync 是一个常用的 Linux 应用程序，用于文件同步。
+
+它可以在本地计算机与远程计算机之间，或者两个本地目录之间同步文件（但不支持两台远程计算机之间的同步）。它也可以当作文件复制工具，替代`cp`和`mv`命令。
+
+它名称里面的`r`指的是 remote，rsync 其实就是"远程同步"（remote sync）的意思。与其他文件传输工具（如 FTP 或 scp）不同，rsync 的最大特点是会检查发送方和接收方已有的文件，仅传输有变动的部分（默认规则是文件大小或修改时间有变动）。
+
+### 安装
+如果本机或者远程计算机没有安装 rsync，可以用下面的命令安装。
+```shell
+# Debian
+$ sudo apt-get install rsync
+
+# Red Hat
+$ sudo yum install rsync
+
+# Arch Linux
+$ sudo pacman -S rsync
+```
+注意，传输的双方都必须安装 rsync。
+
+### 基本用法
+#### -r参数
+本机使用 rsync 命令时，可以作为`cp`和`mv`命令的替代方法，将源目录同步到目标目录。
+```shell
+$ rsync -r source destination
+```
+上面命令中，`-r`表示递归，即包含子目录。注意，`-r`是必须的，否则 `rsync` 运行不会成功。`source`目录表示源目录，`destination`表示目标目录。
+
+如果有多个文件或目录需要同步，可以写成下面这样。
+```shell
+$ rsync -r source1 source2 destination
+```
+上面命令中，`source1`、`source2`都会被同步到`destination`目录。
+
+#### -a参数
+`-a`参数可以替代`-r`，除了可以递归同步以外，还可以同步元信息（比如修改时间、权限等）。由于 rsync 默认使用文件大小和修改时间决定文件是否需要更新，所以`-a`比`-r`更有用。下面的用法才是常见的写法。
+```shell
+$ rsync -a source destination
+```
+目标目录`destination`如果不存在，rsync 会自动创建。执行上面的命令后，源目录`source`被完整地复制到了目标目录`destination`下面，即形成了`destination/source`的目录结构。
+
+如果只想同步源目录`source`里面的内容到目标目录`destination`，则需要在源目录后面加上斜杠。
+```shell
+$ rsync -a source/ destination
+```
+上面命令执行后，`source`目录里面的内容，就都被复制到了`destination`目录里面，并不会在`destination`下面创建一个`source`子目录。
+
+#### -n参数
+如果不确定 rsync 执行后会产生什么结果，可以先用`-n`或`--dry-run`参数模拟执行的结果。
+```shell
+$ rsync -anv source/ destination
+```
+上面命令中，`-n`参数模拟命令执行的结果，并不真的执行命令。`-v`参数则是将结果输出到终端，这样就可以看到哪些内容会被同步。
+
+####  --delete参数
+默认情况下，rsync 只确保源目录的所有内容（明确排除的文件除外）都复制到目标目录。它不会使两个目录保持相同，并且不会删除文件。如果要使得目标目录成为源目录的镜像副本，则必须使用`--delete`参数，这将删除只存在于目标目录、不存在于源目录的文件。
+```shell
+$ rsync -av --delete source/ destination
+```
+上面命令中，`--delete`参数会使得`destination`成为`source`的一个镜像。
+
+### 排除文件
+#### --exclude参数
+有时，我们希望同步时排除某些文件或目录，这时可以用`--exclude`参数指定排除模式。
+```shell
+$ rsync -av --exclude='*.txt' source/ destination
+# 或者
+$ rsync -av --exclude '*.txt' source/ destination
+```
+上面命令排除了所有 TXT 文件。
+
+注意，rsync 会同步以"点"开头的隐藏文件，如果要排除隐藏文件，可以这样写`--exclude=".*"`。
+
+如果要排除某个目录里面的所有文件，但不希望排除目录本身，可以写成下面这样。
+```shell
+$ rsync -av --exclude 'dir1/*' source/ destination
+```
+多个排除模式，可以用多个`--exclude`参数。
+```shell
+$ rsync -av --exclude 'file1.txt' --exclude 'dir1/*' source/ destination
+```
+多个排除模式也可以利用 Bash 的大扩号的扩展功能，只用一个`--exclude`参数。
+```shell
+$ rsync -av --exclude={'file1.txt','dir1/*'} source/ destination
+```
+如果排除模式很多，可以将它们写入一个文件，每个模式一行，然后用`--exclude-from`参数指定这个文件。
+```shell
+$ rsync -av --exclude-from='exclude-file.txt' source/ destination
+```
+
+#### --include参数
+`--include`参数用来指定必须同步的文件模式，往往与`--exclude`结合使用。
+```shell
+$ rsync -av --include="*.txt" --exclude='*' source/ destination
+```
+上面命令指定同步时，排除所有文件，但是会包括 TXT 文件。
+
+### 远程同步
+#### SSH 协议
+rsync 除了支持本地两个目录之间的同步，也支持远程同步。它可以将本地内容，同步到远程服务器。
+```shell
+$ rsync -av source/ username@remote_host:destination
+```
+也可以将远程内容同步到本地。
+```shell
+$ rsync -av username@remote_host:source/ destination
+```
+rsync 默认使用 SSH 进行远程登录和数据传输。
+
+由于早期 rsync 不使用 SSH 协议，需要用`-e`参数指定协议，后来才改的。所以，下面`-e ssh`可以省略。
+```shell
+$ rsync -av -e ssh source/ user@remote_host:/destination
+```
+但是，如果 ssh 命令有附加的参数，则必须使用`-e`参数指定所要执行的 SSH 命令。
+```shell
+$ rsync -av -e 'ssh -p 2234' source/ user@remote_host:/destination
+```
+上面命令中，`-e`参数指定 SSH 使用2234端口。
+
+#### rsync 协议
+除了使用 SSH，如果另一台服务器安装并运行了 rsync 守护程序，则也可以用`rsync://`协议（默认端口873）进行传输。具体写法是服务器与目标目录之间使用双冒号分隔`::`。
+```shell
+$ rsync -av source/ 192.168.122.32::module/destination
+```
+注意，上面地址中的module并不是实际路径名，而是 rsync 守护程序指定的一个资源名，由管理员分配。
+如果想知道 rsync 守护程序分配的所有 module 列表，可以执行下面命令。
+```shell
+$ rsync rsync://192.168.122.32
+```
+rsync 协议除了使用双冒号，也可以直接用`rsync://`协议指定地址。
+```shell
+$ rsync -av source/ rsync://192.168.122.32/module/destination
+```
+
+### rsync和scp区别
+- scp是相当于复制，黏贴，如果有的话是覆盖，比较耗时间，不智能。
+- rsync是复制，如果有重复的文件，会直接跳过，而且他自己的算法优化。
+- scp是把文件全部复制过去，当文件修改后还是把所有文件复制过去，rsync 第一次是把所有文件同步过去，当文件修改后，只把修改的文件同步过去。
+
 # 管道相关命令
 ## xargs
 - xargs（英文全拼： eXtended ARGuments）是给命令传递参数的一个过滤器，也是组合多个命令的一个工具。
@@ -1770,7 +1996,7 @@ Homebrew Bundle works like every other package manager. To install the listed ap
 brew bundle --file ~/my-folder/Brewfile
 ```
 
-# vim 
+# vim
 ## vim命令的组成
 vim中命令是由`重复次数 + 命令 + 范围`组成的。
 
@@ -1930,7 +2156,7 @@ vim中的文本对象可以分为3大类：paragraphs、sentences、words
 ![](https://raw.githubusercontent.com/NaisWang/images/master/20220415205707.png)
 
 ## normal命令
-Vim normal命令的使用形式为`:{range}norm[al][!] {commands}`，表示在 `{range}`指定的范围内的每行执行若干 普通模式命令 `{commands}`。`{commands}` 不能以空格开始，除非在空格前面加个计数 1。
+Vim normal命令的使用形式为`:{range}norm[al][!] {commands}`，表示在 `{range}`指定的范围内的每行执行若干普通模式命令 `{commands}`。若未指定，则表示在当前行执行命令。`{commands}` 不能以空格开始，除非在空格前面加个计数 1。
 
 例如:
 - `:normal ggdd` 会将光标移动到文件的第一行( gg) 并删除它( dd )
@@ -2175,6 +2401,57 @@ const something = 'else';
 
 import { Lib3 }
 // and more...
+```
+
+## vim正则表达式
+毋庸多言，在vim中正则表达式得到了十分广泛的应用。 最常用的`/` 和 `:s` 命令中，正则表达式都是不可或缺的。 下面对vim中的正则表达式的一些难点进行说明。
+
+### 关于magic
+vim中有个magic的设定。设定方法为：
+```
+:set magic " 设置magic 
+:set nomagic " 取消magic
+```
+
+vim毕竟是个编辑器，正则表达式中包含的大量元字符如果原封不动地引用（像perl 那样）， 势必会给不懂正则表达式的人造成麻烦，比如 `/foo(1)` 命令， 大多数人都用它来查找`foo(1)`这个字符串， 但如果按照正则表达式来解释，被查找的对象就成了`foo1` 了。
+
+于是，vim就规定，正则表达式的元字符必须用反斜杠进行转义才行， 如上面的例子，如果确实要用正则表达式，就应当写成 `/foo\(1\)` 。 但是，像 `.` `*` 这种极其常用的元字符，都加上反斜杠就太麻烦了。 而且，众口难调，有些人喜欢用正则表达式，有些人不喜欢用……
+
+为了解决这个问题，vim设置了 `magic` 这个东西。简单地说， magic就是设置哪些元字符要加反斜杠哪些不用加的。 简单来说：
+
+- `magic (\m)`：除了 `$` `.` `*` `^` 之外其他元字符都要加反斜杠。
+- `nomagic (\M)`：除了 `$` `^` 之外其他元字符都要加反斜杠。
+
+这个设置也可以在正则表达式中通过 `\m` `\M` 开关临时切换。 
+- `\m` 后面的正则表达式会按照 `magic` 处理
+- `\M` 后面的正则表达式按照 nomagic 处理， 而忽略实际的magic设置。
+
+
+例如：
+- `/\m.*` # 查找任意字符串
+- `/\M.*` # 查找字符串 `.*` （点号后面跟个星号）
+
+另外还有更强大的 `\v` 和 `\V`。
+- `\v` （即 `very magic` 之意）：任何元字符都不用加反斜杠
+- `\V` （即 `very nomagic` 之意）：任何元字符都必须加反斜杠
+
+例如：
+- `/\v(a.c){3}$` # 查找行尾的`abcaccadc`
+- `/\m(a.c){3}$` # 查找行尾的`(abc){3}`
+- `/\M(a.c){3}$` # 查找行尾的`(a.c){3}`
+- `/\V(a.c){3}$` # 查找任意位置的`(a.c){3}$`
+
+默认设置是 magic，vim也推荐大家都使用magic的设置，在有特殊需要时，直接通过 `\v\m\M\V` 即可。
+
+## 搜索替换中的&
+在搜索替换中&前面匹配到的内容，如下例子:
+
+```
+abcdef
+```
+对于以上文本，使用`:s/abc/&123`后，内容会变成如下：
+```
+abc123def
 ```
 
 # tmux

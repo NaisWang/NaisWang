@@ -12,9 +12,9 @@ service mysql restart
 
 ![](https://raw.githubusercontent.com/NaisWang/images/master/20220423184902.png)
 
-以上Local Address为`127.0.0.1:3306`,表示mysql-server应用只监听了本机的loopback地址的3306端口(如果某个服务只监听了回环地址，那么只能在本机进行访问，无法通过tcp/ip 协议进行远程访问), 所以此时只能进行本地连接mysql，而不能进行远程连接。
+以上Local Address为`127.0.0.1:3306`,表示mysql-server服务只监听了本机的loopback地址的3306端口(如果某个服务只监听了回环地址，那么只能在本机进行访问，无法通过tcp/ip 协议进行远程访问), 所以此时只能进行本地连接mysql，而不能进行远程连接。
 
-若此时我不是本地以root用户连接mysql，会报如下错误：
+若此时我不是本地以root用户连接mysql(mysql部署在1.117.40.114服务器上)，会报如下错误：
 
 ![](https://raw.githubusercontent.com/NaisWang/images/master/20220423191514.png)
 
@@ -22,9 +22,9 @@ service mysql restart
 
 ![](https://raw.githubusercontent.com/NaisWang/images/master/20220423185752.png)
 
-此时发现Local Address变为来`:::3306`，表示监听了该本机的所有ip地址的3306端口
+此时发现Local Address变为来`:::3306`，表示有服务监听了该本机的所有ip地址的3306端口
 
-此时我们向服务器的3306端口发送请求，能被mysql-server监听到，并做一些处理。但是现在有一个问题就是mysql有用户权限管理，即设置哪些ip能使用什么mysql用户来进行访问。
+此时我们向服务器的3306端口发送请求，就能被mysql-server监听到，并做一些处理。但是现在有一个问题就是mysql有用户权限管理，即设置哪些ip能使用什么mysql用户来进行访问。
 
 通过如下可以看到mysql的用户权限管理：
 

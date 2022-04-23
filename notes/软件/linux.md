@@ -814,31 +814,314 @@ $ diff -u f1 f2
 ## lsof
 lsof（list open files）是一个查看当前系统文件的工具。在linux环境下，任何事物都以文件的形式存在，通过文件不仅仅可以访问常规数据，还可以访问网络连接和硬件。如传输控制协议 (TCP) 和用户数据报协议 (UDP) 套接字等，系统在后台都为该应用程序分配了一个文件描述符，该文件描述符提供了大量关于这个应用程序本身的信息。
 
-lsof 查看端口占用语法格式：
-- lsof -i:8080：查看8080端口占用
-- lsof abc.txt：显示开启文件abc.txt的进程
-- lsof -c abc：显示abc进程现在打开的文件
-- lsof -c -p 1234：列出进程号为1234的进程所打开的文件
-- lsof -g gid：显示归属gid的进程情况
-- lsof +d /usr/local/：显示目录下被进程开启的文件
-- lsof +D /usr/local/：同上，但是会搜索目录下的目录，时间较长
-- lsof -d 4：显示使用fd为4的进程
-- lsof -i -U：显示所有打开的端口和UNIX domain文件
 
-实例： 查看服务器 8000 端口的占用情况：
+### 常用选项
+- -a 指示其它选项之间为与的关系
+- -c <进程名> 输出指定进程所打开的文件
+- -d <文件描述符> 列出占用该文件号的进程
+- +d <目录>  输出目录及目录下被打开的文件和目录(不递归)
+- +D <目录>  递归输出及目录下被打开的文件和目录
+- -i <条件>  输出符合条件与网络相关的文件
+- -n 不解析主机名
+- -p <进程号> 输出指定 PID 的进程所打开的文件
+- -P 不解析端口号
+- -t 只输出 PID
+- -u 输出指定用户打开的文件
+- -U 输出打开的 UNIX domain socket 文件
+- -h 显示帮助信息
+- -v 显示版本信息
+
+### 基本输出
+如果不带任何选项执行 lsof 命令，会输出系统中所有 active 进程打开的所有文件，结果就是我们被输出的信息所淹没，这没有任何的意义。我们先让 lsof 命令输出当前 Bash 进程打开的文件，并截取其中的一部分结果来介绍输出内容中都包含哪些信息：
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220423230908.png)
+
+- COMMAND：程序的名称 
+- PID：进程标识符
+- USER：进程所有者
+- FD：文件描述符，应用程序通过文件描述符识别该文件
+- TYPE：文件类型，如 DIR、REG 等
+- DEVICE：以逗号分隔设备编号
+- SIZE：文件的大小(bytes)
+- NODE：索引节点(文件在磁盘上的标识)
+- NAME：打开文件的确切名称
+
+下面简单介绍一下 FD 列和 TYPE 列中的常见内容。
+
+FD 列中的常见内容有 cwd、rtd、txt、mem 和一些数字等等。其中 cwd 表示当前的工作目录；rtd 表示根目录；txt 表示程序的可执行文件；mem 表示内存映射文件：
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220423233617.png)
+
+还有一部分 FD 是以数字表示的，比如标准输入输出文件：
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220423233629.png)
+
+数字后面的字母表示进程对该文件的读写模式，比如上图中的 u 表示该文件被打开并处于读取/写入模式。除了 u，还有 r 表示只读模式，w 表示只写模式，还可以同时应用 W 表示该进程拥有对文件写操作的锁。下图是截取的 docker daemon 进程打开的文件列表，其中显示了 FD 的不同模式：
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220423233702.png)
+
+TYPE 列中常见的 REG 和 DIR 分别表示普通文件和目录。而 CHR 和 BLK 则分别表示字符和块设备，unix、fifo 和 IPv4/IPv6 分别表示 UNIX domain 套接字、先进先出(FIFO)队列和 IPv4/IPv6 套接字。
+
+### 查看哪些进程打开了某个文件
+直接指定文件的名称作为 lsof 的参加就可以查看哪些进程打开了这个文件，下面的命令查询打开了 /bin/bash 文件的进程：
+
 ```bash
-# lsof -i:8000
-COMMAND   PID USER   FD   TYPE   DEVICE SIZE/OFF NODE NAME
-nodejs  26993 root   10u  IPv4 37999514      0t0  TCP *:8000 (LISTEN)
+$ sudo lsof /bin/bash
 ```
-可以看到 8000 端口已经被轻 nodejs 服务占用。
 
-lsof -i 需要 root 用户的权限来执行，如下图：
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220423233819.png)
 
-![](https://raw.githubusercontent.com/NaisWang/images/master/20220423112710.png)
+除了普通文件，也可以是设备等文件(下面命令的输出很长，图示只是截取的一小部分)：
 
+```bash
+$ sudo lsof /dev/sda1
+```
 
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220423233845.png)
 
+### 查看哪些进程打开了某个目录及目录下的文件
+这里分两种情况，+d 选项不执行递归查询，只查找那些打开了指定目录以及指定目录下文件和目录的进程，比如：
+
+```bash
+$ sudo lsof +d /var/log
+```
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220423233923.png)
+
+而 +D 选项则会对指定的目录进行递归：
+
+```bash
+$ sudo lsof +D /var/log
+```
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220423233949.png)
+
+在卸载文件系统时，如果有进程打开了该文件系统中的文件或目录，卸载操作就会失败。因此最好在卸载文件系统前通过 lsof +D 检查文件系统的挂载点，杀掉相关的进程然后再执行卸载操作。
+
+### 查看某个进程打开的所有文件
+通过 -p 选项并指定进程的 PID 可以输出该进程打开的所有文件。比如我们想要查看 cron 程序打开的文件，可以先用 ps -C cron 命令查出进程的 PID：
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220423234007.png)
+
+然后把该 PID 传递给 lsof 命令的 -p 选项：
+```bash
+$ sudo lsof -p 1152
+```
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220423234028.png)
+
+### 组合多个选项
+如果为 lsof 命令指定多个选项，这些选项间默认是或的关系。也就是说满足任何一个选项的结果都会被输出。可以添加额外的 -a 选项，它的作用就是让其它选项之间的关系变为与，比如下面的命令：
+
+```bash
+$ sudo lsof -a -p $$ -d0,1,2
+```
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220423234057.png)
+
+其中的 -p 选项指定了当前进程的 PID，而 -d 选项则用来指定进程打开的文件描述符(可以通过逗号分隔多个文件描述符)。添加 -a 选项后，结果输出为当前进程打开的文件描述符为 0、1、2 的文件。
+
+### 查看指定名称的程序打开的文件
+通过 -c 选项可以匹配进程运行的程序(可执行文件)名称。比如我们要查找以字母 cr 开头的程序打开的文件列表：
+
+```bash
+$ sudo lsof -c cr
+```
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220423234125.png)
+
+还可以同时指定多个 -c 选项，它们之间是或的关系。
+
+如果想对 -c 选项的条件取反，只要在字符串前添加符号 ^ 就可以了，比如：
+```bash
+$ sudo lsof -c ^cr
+```
+-c 选项也支持正则表达式，比如下面的命令可以过滤出以 cra 和 cro 开头的程序打开的文件：
+
+```bash
+$ sudo lsof -c /cr[ao]/
+```
+
+### 查看被打开的与网络相关的文件
+-i 选项用来查看被打开的和网络相关的文件，其参数的格式如下：
+```
+[46][protocol][@hostname|hostaddr][:service|port] 
+```
+- 46 表示 IP 协议的版本
+- protocol 表示网络协议的名称，比如 TCP 或 UDP  
+- hostname 或 hostaddr 表示主机地址
+- service 指 /etc/services 中的名称，比如 smtp 或多个服务的列表
+- port 表示端口号，可以指定一个或多个
+
+-i 选项默认会同时输出 IPv4 和 IPv6 打开的文件：
+```bash
+$ sudo lsof -i
+```
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220423234250.png)
+
+#### 只列出 IPv4 或 IPv6 打开的文件
+```bash
+$ sudo lsof -i 4
+$ sudo lsof -i 6
+```
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220423234326.png)
+
+#### 列出与 22 号端口相关的文件
+```bash
+$ sudo lsof -i:22
+```
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220423234344.png)
+
+#### 列出指定范围内被打开的 TCP 端口
+```bash
+$ sudo -i TCP:1-1024
+```
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220423234421.png)
+
+### 查看某个用户打开的所有文件
+-u 选项可以指定用户名或 user ID，并且和 -c 选项一样，可以通过逗号分隔多个用户名称或 user ID，也可以通过符号 ^ 对条件取反。
+
+#### 查看某个用户打开的所有文件
+```bash
+$ sudo lsof -u syslog
+```
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220423235447.png)
+
+#### 查看用户 nick 打开的网络相关的文件
+```bash
+$ sudo lsof -a -i -u nick
+```
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220423235529.png)
+
+#### 排除某个用户
+```bash
+$ sudo lsof -i -u ^nick
+```
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220423235548.png)
+
+注意：在有排除条件时，不需要指定 -a 选项。
+
+### 通过lsof恢复删除的文件
+如果我们一不小心删除了文件，而又知道这个文本被某个进程打开着，就可以通过 lsof 命令来恢复该文件。具体的原理为：
+- 当进程打开了某个文件时，只要该进程保持打开该文件，即使将文件删除，它依然存在于磁盘中。进程并不知道文件已经被删除，它仍然可以通过打开该文件时提供给它的文件描述符进行读取和写入。除了该进程之外，这个文件是不可见的，因为已经删除了其相应的目录索引节点。
+- 进程打开的文件描述符就存放在 /proc/PID/fd 目录下。/proc 目录挂载的是在内存中所映射的一块区域，所以这些文件和目录并不存在于磁盘中，因此当我们对这些文件进行读取和写入时，实际上是在从内存中获取相关信息。lsof 程序就是使用这些信息和其他关于内核内部状态的信息来产生其输出。所以 lsof 可以显示进程的文件描述符和相关的文件名等信息。也就是说我们通过访问进程的文件描述符可以找到该文件的相关信息。
+
+下面的 demo 演示如何通过 lsof 命令恢复被误删的 /var/log/syslog 文件。
+
+先删除日志文件 /var/log/syslog，记着要提前备份一下这个文件，以防万一：
+```bash
+$ sudo rm /var/log/syslog
+```
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220423235848.png)
+
+从上面的信息可以看到 PID 为 1141 的进程打开着该文件，文件描述符为 7，并且显示该文件已经被删除了。接下来我们通过 1141 号进程的文件文件描述符来查看该文件的内容：
+
+```bash
+$ sudo tail -n 5 /proc/1141/fd/7
+```
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220423235908.png)
+
+上图说明文件 /var/log/syslog 文件的内容还在，并且可以通过文件描述符访问，接下来通过 IO 重定向的方式重新创建 /var/log/syslog 文件就可以了：
+```bash
+$ sudo sh -c 'cat /proc/1141/fd/7 > /var/log/syslog' 
+```
+然后修复文件的权限属性并重启 rsyslog 服务：
+
+```bash
+$ sudo chown syslog:adm /var/log/syslog
+$ sudo systemctl restart rsyslog.service
+```
+这样就完成了 /var/log/syslog 文件的恢复工作。对于许多应用程序，尤其是日志文件和数据库文件，都可以通过这种方式来恢复。
+
+### 以root权限运行
+因为lsof命令会访问核心内存和各种文件，所以lsof有些功能只有在root权限下才能正常执行。
+
+例如：
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220423224838.png)
+
+`lsof -i`命令在非root下没有输出任何东西
+
+## du
+du （英文全拼：disk usage）命令用于显示目录或文件的大小。
+
+du 会显示指定的目录或文件所占用的磁盘空间。
+
+语法
+```
+du [-abcDhHklmsSx][-L <符号连接>][-X <文件>][--block-size][--exclude=<目录或文件>][--max-depth=<目录层数>][--help][--version][目录或文件]
+```
+
+参数说明：
+- -a或-all 显示目录中个别文件的大小。
+- -b或-bytes 显示目录或文件大小时，以byte为单位。
+- -c或--total 除了显示个别目录或文件的大小外，同时也显示所有目录或文件的总和。
+- -D或--dereference-args 显示指定符号连接的源文件大小。
+- -h或--human-readable 以K，M，G为单位，提高信息的可读性。
+- -H或--si 与-h参数相同，但是K，M，G是以1000为换算单位。
+- -k或--kilobytes 以1024 bytes为单位。
+- -l或--count-links 重复计算硬件连接的文件。
+- -L<符号连接>或--dereference<符号连接> 显示选项中所指定符号连接的源文件大小。
+- -m或--megabytes 以1MB为单位。
+- -s或--summarize 仅显示总计。
+- -S或--separate-dirs 显示个别目录的大小时，并不含其子目录的大小。
+- -x或--one-file-xystem 以一开始处理时的文件系统为准，若遇上其它不同的文件系统目录则略过。
+- -X<文件>或--exclude-from=<文件> 在<文件>指定目录或文件。
+- --exclude=<目录或文件> 略过指定的目录或文件。
+- --max-depth=<目录层数> 超过指定层数的目录后，予以忽略。
+- --help 显示帮助。
+- --version 显示版本信息。
+
+### 实例
+1. 显示目录或者文件所占空间:
+```bash
+# du
+608     ./test6
+308     ./test4
+4       ./scf/lib
+4       ./scf/service/deploy/product
+4       ./scf/service/deploy/info
+12      ./scf/service/deploy
+16      ./scf/service
+4       ./scf/doc
+4       ./scf/bin
+32      ./scf
+8       ./test3
+1288    .
+```
+只显示当前目录下面的子目录的目录大小和当前目录的总的大小，最下面的1288为当前目录的总大小
+
+2. 显示指定文件所占空间
+```bash
+# du log2012.log 
+300     log2012.log
+```
+
+3. 方便阅读的格式显示test目录所占空间情况：
+```bash
+# du -h test
+608K    test/test6
+308K    test/test4
+4.0K    test/scf/lib
+4.0K    test/scf/service/deploy/product
+4.0K    test/scf/service/deploy/info
+12K     test/scf/service/deploy
+16K     test/scf/service
+4.0K    test/scf/doc
+4.0K    test/scf/bin
+32K     test/scf
+8.0K    test/test3
+1.3M    test
+```
 
 # 用户相关命令
 ## id命令
@@ -1087,7 +1370,7 @@ netstat [选项]
 
 #### Local Address与Foreign Address
 - Local Address 部分的0.0.0.0:873表示有服务监听该主机上所有ip地址的873端口(0.0.0.0表示本地所有ip)，比如你的主机是有172.172.230.210和172.172.230.11两个ip地址，那么0.0.0.0:873此时表示监听172.172.230.210,172.172.230.211,127.0.0.1三个地址的873端口
-- <font color="red"> 127.0.0.1:25这个表示有服务监听本机的loopback地址的25端口(如果某个服务只监听了回环地址，那么只能在本机进行访问，无法通过tcp/ip 协议进行远程访问)</font>。[实战演练](https://naiswang.github.io/#/notes/Data/mysql.md#启动-mysql-服务)
+- <font color="red"> 127.0.0.1:25这个表示有服务监听本机的loopback地址的25端口(如果某个服务只监听了回环地址，那么只能在本机进行访问，无法通过tcp/ip 协议进行远程访问)</font>。[实战演练-配置mysql允许远程连接的方法](https://naiswang.github.io/#/notes/Data/mysql.md#启动-mysql-服务)
 - 192.168.1.81:2288这是因为我们在启动的时候指定了192.168.1.81:2288参数，如果不指定的话，会监听0.0.0.0：2288
 
 - `Foreign Address`: 与本机端口通信的外部socket。显示规则与Local Address相同
@@ -1121,6 +1404,53 @@ state列共有12中可能的状态，前面11种是按照TCP连接建立的三�
 - netstat -s     # 显示所有端口的统计信息
 - netstat -st    # 显示所有TCP的统计信息
 - netstat -su    # 显示所有UDP的统计信息
+
+## traceroute
+Linux traceroute命令用于显示数据包到主机间的路径。
+
+traceroute指令让你追踪网络数据包的路由途径，预设数据包大小是40Bytes，用户可另行设置。
+
+参数说明：
+- -d 使用Socket层级的排错功能。
+- -f<存活数值> 设置第一个检测数据包的存活数值TTL的大小。
+- -F 设置勿离断位。
+- -g<网关> 设置来源路由网关，最多可设置8个。
+- -i<网络界面> 使用指定的网络界面送出数据包。
+- -I 使用ICMP回应取代UDP资料信息。
+- -m<存活数值> 设置检测数据包的最大存活数值TTL的大小。
+- -n 直接使用IP地址而非主机名称。
+- -p<通信端口> 设置UDP传输协议的通信端口。
+- -r 忽略普通的Routing Table，直接将数据包送到远端主机上。
+- -s<来源地址> 设置本地主机送出数据包的IP地址。
+- -t<服务类型> 设置检测数据包的TOS数值。
+- -v 详细显示指令的执行过程。
+- -w<超时秒数> 设置等待远端主机回报的时间。
+- -x 开启或关闭数据包的正确性检验。
+
+### 实例
+显示到达目的地的数据包路由
+```bash
+# traceroute www.google.com
+traceroute: Warning: www.google.com has multiple addresses; using 66.249.89.99
+traceroute to www.l.google.com (66.249.89.99), 30 hops max, 38 byte packets
+1 192.168.0.1 (192.168.0.1) 0.653 ms 0.846 ms 0.200 ms
+2 118.250.4.1 (118.250.4.1) 36.610 ms 58.438 ms 55.146 ms
+3 222.247.28.177 (222.247.28.177) 54.809 ms 39.879 ms 19.186 ms
+4 61.187.255.253 (61.187.255.253) 18.033 ms 49.699 ms 72.147 ms
+5 61.137.2.177 (61.137.2.177) 32.912 ms 72.947 ms 41.809 ms
+6 202.97.46.5 (202.97.46.5) 60.436 ms 25.527 ms 40.023 ms
+7 202.97.35.69 (202.97.35.69) 40.049 ms 66.091 ms 44.358 ms
+8 202.97.35.110 (202.97.35.110) 42.140 ms 70.913 ms 41.144 ms
+9 202.97.35.14 (202.97.35.14) 116.929 ms 57.081 ms 60.336 ms
+10 202.97.60.34 (202.97.60.34) 54.871 ms 69.302 ms 64.353 ms
+11 * * *
+12 209.85.255.80 (209.85.255.80) 95.954 ms 79.844 ms 76.052 ms
+   MPLS Label=385825 CoS=5 TTL=1 S=0
+13 209.85.249.195 (209.85.249.195) 118.687 ms 120.905 ms 113.936 ms
+14 72.14.236.126 (72.14.236.126) 115.843 ms 137.109 ms 186.491 ms
+15 nrt04s01-in-f99.1e100.net (66.249.89.99) 168.024 ms 140.551 ms 161.127 ms
+```
+
 
 ## SSH
 ### ssh基础使用

@@ -3,7 +3,7 @@
 service 命令用于对系统服务进行管理，比如启动（start）、停止（stop）、重启（restart）、重新加载配置（reload）、查看状态（status）等。不同的 Linux 发行版一般均会带有此命令，比如 RHEL、CentOS、SUSE、Ubuntu、Fedora 等。
 service 命令是系统管理员命令，需要管理员权限才可以执行。service 命令本质上是一个 Shell 脚本，地址一般为 /sbin/service。
 **命令格式**
-```shell
+```bash
 service SCRIPT [start|stop|restart|status] [OPTIONS]
 service --status-all
 service --help | -h | --version
@@ -20,11 +20,11 @@ SCRIPT 表示管理服务的脚本，存放在 /etc/init.d/SCRIPT。服务脚本
 ```
 **常用示例**
 1. 查看所有服务当前的运行状态。
-```shell
+```bash
 service --status-all
 ```
 2. 将 MySQL 注册为系统服务，使用 service 命令管理。需要将MySQL的管理脚本mysql.server更名为mysqld放在 /etc/init.d/目录。
-```shell
+```bash
 # 开启
 service mysqld start
 
@@ -52,30 +52,30 @@ Linux top命令用于实时显示 process 的动态。
 
 ### 实例
 - 显示进程信息
-```shell
+```bash
 # top
 ```
 - 以累积模式显示程序信息
-```shell
+```bash
 # top -S
 ```
 - 设置信息更新次数
-```shell
+```bash
 //表示更新两次后终止更新显示
 top -n 2
 ```
 - 设置信息更新时间
-```shell
+```bash
 //表示更新周期为3秒
 # top -d 3
 ```
 - 显示指定的进程信息
-```shell
+```bash
 //显示进程号为139的进程信息，CPU、内存占用率等
 # top -p 139
 ```
 - 显示更新十次后退出
-```shell
+```bash
 top -n 10
 ```
 
@@ -135,23 +135,23 @@ kill 可将指定的信息送至程序。预设的信息为 SIGTERM(15)，可将
 
 ### 实例
 - 杀死进程
-```shell
+```bash
 # kill 12345
 ```
 - 强制杀死进程
-```shell
+```bash
 # kill -KILL 123456
 ```
 - 发送SIGHUP信号，可以使用一下信号
-```shell
+```bash
 # kill -HUP pid
 ```
 - 彻底杀死进程
-```shell
+```bash
 # kill -9 123456
 ```
 - 显示信号
-```shell
+```bash
 # kill -l
 1) SIGHUP     2) SIGINT     3) SIGQUIT     4) SIGILL     5) SIGTRAP
 6) SIGABRT     7) SIGBUS     8) SIGFPE     9) SIGKILL    10) SIGUSR1
@@ -168,7 +168,7 @@ kill 可将指定的信息送至程序。预设的信息为 SIGTERM(15)，可将
 63) SIGRTMAX-1    64) SIGRTMAX
 ```
 - 杀死指定用户所有进程
-```shell
+```bash
 #kill -9 $(ps -ef | grep hnlinux) //方法一 过滤出hnlinux用户进程 
 #kill -u hnlinux //方法二
 ```
@@ -182,11 +182,11 @@ grep 指令用于查找内容包含指定的范本样式的文件，如果发现
 
 ### 实例
 1. 在当前目录中，查找后缀有 file 字样的文件中包含 test 字符串的文件，并打印出该字符串的行。此时，可以使用如下命令：
-```shell
+```bash
 grep test *file 
 ```
 结果如下所示：
-```shell
+```bash
 $ grep test test* #查找前缀有“test”的文件包含“test”字符串的文件  
 testfile1:This a Linux testfile! #列出testfile1 文件中包含test字符的行  
 testfile_2:This is a linux testfile! #列出testfile_2 文件中包含test字符的行  
@@ -194,11 +194,11 @@ testfile_2:Linux test #列出testfile_2 文件中包含test字符的行
 ```
 
 2. 以递归的方式查找符合条件的文件。例如，查找指定目录/etc/acpi 及其子目录（如果存在子目录的话）下所有文件中包含字符串"update"的文件，并打印出该字符串所在行的内容，使用的命令为：
-```shell
+```bash
 grep -r update /etc/acpi 
 ```
 输出结果如下：
-```shell
+```bash
 $ grep -r update /etc/acpi #以递归的方式查找“etc/acpi”  
 #下包含“update”的文件  
 /etc/acpi/ac.d/85-anacron.sh:# (Things like the slocate updatedb cause a lot of IO.)  
@@ -210,11 +210,11 @@ IO.) Rather than
 
 3. 反向查找。前面各个例子是查找并打印出符合条件的行，通过"-v"参数可以打印出不符合条件行的内容。
 查找文件名中包含 test 的文件中不包含test 的行，此时，使用的命令为：
-```shell
+```bash
 grep -v test *test*
 ```
 结果如下所示：
-```shell
+```bash
 $ grep-v test* #查找文件名中包含test 的文件中不包含test 的行  
 testfile1:helLinux!  
 testfile1:Linis a free Unix-type operating system.  
@@ -229,7 +229,7 @@ testfile_2:Linux is a free unix-type opterating system.
 ## ag命令
 Ag 是类似ack， grep的工具, 它来在文件中搜索相应关键字。
 
-```shell
+```bash
 #在当前目录下寻找内容包含"小明"的文件，并列出所在的行数:
 ag 小明
 
@@ -269,7 +269,7 @@ This's a test
 awk '{[pattern] action}' {filenames}   # 行匹配语句 awk '' 只能用单引号
 ```
 实例：
-```shell
+```bash
 # 每行按空格或TAB分割，输出文本中的1、4项
  $ awk '{print $1,$4}' log.txt
  ---------------------------------------------
@@ -287,11 +287,11 @@ awk '{[pattern] action}' {filenames}   # 行匹配语句 awk '' 只能用单引�
 ``` 
 
 #### 用法二：
-```shell
+```bash
 awk -F  #-F相当于内置变量FS, 指定分割字符
 ```
 实例：
-```shell
+```bash
 # 使用","分割
  $  awk -F, '{print $1,$2}'   log.txt
  ---------------------------------------------
@@ -316,11 +316,11 @@ awk -F  #-F相当于内置变量FS, 指定分割字符
 ```
 
 #### 用法三：
-```shell
+```bash
 awk -v  # 设置变量
 ```
 实例：
-```shell
+```bash
  $ awk -va=1 '{print $1,$1+a}' log.txt
  ---------------------------------------------
  2 3
@@ -350,32 +350,32 @@ Linux find 命令用来在指定目录下查找文件。
 
 ### 实例
 1. 将当前目录及其子目录下所有文件后缀为 .c 的文件列出来:
-```shell
+```bash
 # find . -name "*.c"
 ```
 
 2. 将当前目录及其子目录中的所有文件列出：
-```shell
+```bash
 # find . -type f
 ```
 
 3. 将当前目录及其子目录下所有最近 20 天内更新过的文件列出:
-```shell
+```bash
 # find . -ctime -20
 ```
 
 4. 查找 /var/log 目录中更改时间在 7 日以前的普通文件，并在删除之前询问它们：
-```shell
+```bash
 # find /var/log -type f -mtime +7 -ok rm {} \;
 ```
 
 5. 查找当前目录中文件属主具有读、写权限，并且文件所属组的用户和其他用户具有读权限的文件：
-```shell
+```bash
 # find . -type f -perm 644 -exec ls -l {} \;
 ```
 
 6. 查找系统中所有文件长度为 0 的普通文件，并列出它们的完整路径：
-```shell
+```bash
 # find / -type f -size 0 -exec ls -l {} \;
 ```
 
@@ -386,11 +386,11 @@ which指令会在环境变量$PATH设置的目录里查找符合条件的文件�
 
 ### 实例
 使用指令"which"查看指令"bash"的绝对路径，输入如下命令：
-```shell
+```bash
 $ which bash
 ```
 上面的指令执行后，输出信息如下所示：
-```shell
+```bash
 /bin/bash                   #bash可执行程序的绝对路径 
 ```
 
@@ -400,7 +400,7 @@ whereis命令 用来定位指令的二进制程序、源代码文件和man手册
 和find相比，whereis查找的速度非常快，这是因为linux系统会将 系统内的所有文件都记录在一个数据库文件中，当使用whereis和下面即将介绍的locate时，会从数据库中查找数据，而不是像find命令那样，通 过遍历硬盘来查找，效率自然会很高。 但是该数据库文件并不是实时更新，默认情况下时一星期更新一次，因此，我们在用whereis和locate 查找文件时，有时会找到已经被删除的数据，或者刚刚建立文件，却无法查找到，原因就是因为数据库文件没有被更新。
 
 ### 语法
-```shell
+```bash
 whereis(选项)(参数)
 ```
 
@@ -417,7 +417,7 @@ whereis(选项)(参数)
 
 ### 实例
 将相关的文件都查找出来
-```shell
+```bash
 [root@localhost ~]# whereis tomcat
 tomcat:
 
@@ -427,7 +427,7 @@ svn: /usr/bin/svn /usr/local/svn /usr/share/man/man1/svn.1.gz
 说明：tomcat没安装，找不出来，svn安装找出了很多相关文件
 
 只将二进制文件查找出来 
-```shell
+```bash
 [root@localhost ~]# whereis -b svn
 svn: /usr/bin/svn /usr/local/svn
 
@@ -446,22 +446,22 @@ Linux locate命令用于查找符合条件的文档，他会去保存文档和�
 
 ### 实例
 查找 passwd 文件，输入以下命令：
-```shell
+```bash
 locate passwd
 ```
 搜索 etc 目录下所有以 sh 开头的文件 ：
-```shell
+```bash
 locate /etc/sh
 ```
 忽略大小写搜索当前用户目录下所有以 r 开头的文件 ：
-```shell
+```bash
 locate -i ~/r
 ```
 
 ### 附加说明
 - locate 与 find 不同: find 是去硬盘找，locate 只在 /var/lib/slocate 资料库中找。
 - locate 的速度比 find 快，它并不是真的查找，而是查数据库，一般文件数据库在 /var/lib/slocate/slocate.db 中，所以 locate 的查找并不是实时的，而是以数据库的更新为准，一般是系统自己维护，也可以手工升级数据库 ，命令为：
-```shell
+```bash
 updatedb
 ```
 
@@ -472,7 +472,7 @@ nl可以将输出的文件内容自动的加上行号！其默认的结果与 ca
 
 ### 实例
 1. 实例一用 nl 列出 log.log 的内容命令：
-```shell
+```bash
 [yiibai@localhost test]$ cat log.log
 this is line 1.
 this is line 2.
@@ -496,7 +496,7 @@ this is line 5.
 说明：文件中的空白行，nl 不会加上行号。
 
 2. 实例二用 nl 列出 log.log 的内容，空本行也加上行号。命令：
-```shell
+```bash
 [yiibai@localhost test]$ nl -b a log.log
      1  this is line 1.
      2  this is line 2.
@@ -510,7 +510,7 @@ this is line 5.
 ```
 
 3. 实例三让行号前面自动补上0,统一输出格式。
-```shell
+```bash
 [yiibai@localhost test]$ nl -b a -n rz log.log
 000001  this is line 1.
 000002  this is line 2.
@@ -533,67 +533,6 @@ this is line 5.
 ```
 说明：nl -b a -n rz 命令行号默认为六位，要调整位数可以加上参数 -w 3 调整为3位。
 
-## scp
-Linux scp 命令用于 Linux 之间复制文件和目录。
-
-scp 是 secure copy 的缩写, scp 是 linux 系统下基于 ssh 登陆进行安全的远程文件拷贝命令。scp 是加密的，rcp 是不加密的，scp 是 rcp 的加强版。
-
-### 实例
-1. 从本地复制到远程
-```shell
-scp local_file remote_username@remote_ip:remote_folder 
-或者 
-scp local_file remote_username@remote_ip:remote_file 
-或者 
-scp local_file remote_ip:remote_folder 
-或者 
-scp local_file remote_ip:remote_file 
-```
-- 第1,2个指定了用户名，命令执行后需要再输入密码，第1个仅指定了远程的目录，文件名字不变，第2个指定了文件名；
-- 第3,4个没有指定用户名，命令执行后需要输入用户名和密码，第3个仅指定了远程的目录，文件名字不变，第4个指定了文件名；
-应用实例：
-```shell
-scp /home/space/music/1.mp3 root@www.runoob.com:/home/root/others/music 
-scp /home/space/music/1.mp3 root@www.runoob.com:/home/root/others/music/001.mp3 
-scp /home/space/music/1.mp3 www.runoob.com:/home/root/others/music 
-scp /home/space/music/1.mp3 www.runoob.com:/home/root/others/music/001.mp3 
-```
-
-复制目录命令格式：
-```shell
-scp -r local_folder remote_username@remote_ip:remote_folder 
-或者 
-scp -r local_folder remote_ip:remote_folder 
-```
-- 第1个指定了用户名，命令执行后需要再输入密码；
-- 第2个没有指定用户名，命令执行后需要输入用户名和密码；
-应用实例：
-```shell
-scp -r /home/space/music/ root@www.runoob.com:/home/root/others/ 
-scp -r /home/space/music/ www.runoob.com:/home/root/others/ 
-```
-上面命令将本地 music 目录复制到远程 others 目录下。
-
-2. 从远程复制到本地
-从远程复制到本地，只要将从本地复制到远程的命令的后2个参数调换顺序即可，如下实例
-```shell
-scp root@www.runoob.com:/home/root/others/music /home/space/music/1.mp3 
-scp -r www.runoob.com:/home/root/others/ /home/space/music/
-```
-说明
-- 如果远程服务器防火墙有为scp命令设置了指定的端口，我们需要使用 -P 参数来设置命令的端口号，命令格式如下：
-```shell
-#scp 命令使用端口号 4588
-scp -P 4588 remote@www.runoob.com:/usr/local/sin.sh /home/administrator
-```
-- 使用scp命令要确保使用的用户具有可读取远程服务器相应文件的权限，否则scp命令是无法起作用的。
-
-3. 其他
-```shell
-scp work@192.168.0.10:/home/work/source.txt /home/work/   #把192.168.0.10机器上的source.txt文件拷贝到本地的/home/work目录下
-scp work@192.168.0.10:/home/work/source.txt work@192.168.0.11:/home/work/   #把192.168.0.10机器上的source.txt文件拷贝到192.168.0.11机器的/home/work目录下
-```
-
 ## sort
 Linux sort 命令用于将文本文件内容加以排序。
 
@@ -601,27 +540,27 @@ sort 可针对文本文件的内容，以行为单位来排序。
 
 ### 实例
 在使用 sort 命令以默认的式对文件的行进行排序，使用的命令如下：
-```shell
+```bash
 sort testfile 
 ```
 sort 命令将以默认的方式将文本文件的第一列以 ASCII 码的次序排列，并将结果输出到标准输出。
 
 使用 cat 命令显示 testfile 文件可知其原有的排序如下：
-```shell
+```bash
 $ cat testfile      # testfile文件原有排序  
 test 30  
 Hello 95  
 Linux 85 
 ```
 使用 sort 命令重排后的结果如下：
-```shell
+```bash
 $ sort testfile # 重排结果  
 Hello 95  
 Linux 85  
 test 30 
 ```
 使用 -k 参数设置对第二列的值进行重排，结果如下：
-```shell
+```bash
 $ sort testfile -k 2
 test 30  
 Linux 85 
@@ -635,11 +574,11 @@ Linux wc命令用于计算字数。
 
 ### 实例
 在默认的情况下，wc将计算指定文件的行数、字数，以及字节数。使用的命令为：
-```shell
+```bash
 wc testfile 
 ```
 先查看testfile文件的内容，可以看到：
-```shell
+```bash
 $ cat testfile  
 Linux networks are becoming more and more common, but scurity is often an overlooked  
 issue. Unfortunately, in today’s environment all networks are potential hacker targets,  
@@ -650,17 +589,17 @@ It uses a mix of theory and practicl techniques to teach administrators how to i
 use security applications, as well as how the applcations work and why they are necesary. 
 ```
 使用 wc统计，结果如下：
-```shell
+```bash
 $ wc testfile           # testfile文件的统计信息  
 3 92 598 testfile       # testfile文件的行数为3、单词数92、字节数598 
 ```
 其中，3 个数字分别表示testfile文件的行数、单词数，以及该文件的字节数。
 如果想同时统计多个文件的信息，例如同时统计testfile、testfile_1、testfile_2，可使用如下命令：
-```shell
+```bash
 wc testfile testfile_1 testfile_2   #统计三个文件的信息 
 ```
 输出结果如下：
-```shell
+```bash
 $ wc testfile testfile_1 testfile_2  #统计三个文件的信息  
 3 92 598 testfile                    #第一个文件行数为3、单词数92、字节数598  
 9 18 78 testfile_1                   #第二个文件的行数为9、单词数18、字节数78  
@@ -712,11 +651,11 @@ more 命令类似 cat ，不过会以一页一页的形式显示，更方便使�
 
 ### 实例
 逐页显示 testfile 文档内容，如有连续两行以上空白行则以一行空白行显示。
-```shell
+```bash
 more -s testfile
 ```
 从第 20 行开始显示 testfile 之文档内容。
-```shell
+```bash
 more +20 testfile
 ```
 
@@ -725,15 +664,15 @@ less 与 more 类似，less 可以随意浏览文件，支持翻页和搜索，�
 
 ### 实例
 1、查看文件
-```shell
+```bash
 less log2013.log
 ```
 2、ps查看进程信息并通过less分页显示
-```shell
+```bash
 ps -ef |less
 ```
 3、查看命令历史使用记录并通过less分页显示
-```shell
+```bash
 [root@localhost test]# history | less
 22  scp -r tomcat6.0.32 root@192.168.120.203:/opt/soft
 23  cd ..
@@ -743,7 +682,7 @@ ps -ef |less
 ……省略……
 ```
 4、浏览多个文件
-```shell
+```bash
 less log2013.log log2014.log
 ```
 ## head
@@ -751,15 +690,15 @@ head 命令可用于查看文件的开头部分的内容，有一个常用的参
 
 ### 实例
 要显示 runoob_notes.log 文件的开头 10 行，请输入以下命令：
-```shell
+```bash
 head runoob_notes.log
 ```
 显示 notes.log 文件的开头 5 行，请输入以下命令：
-```shell
+```bash
 head -n 5 runoob_notes.log
 ```
 显示文件前 20 个字节:
-```shell
+```bash
 head -c 20 runoob_notes.log
 ```
 
@@ -770,20 +709,20 @@ tail 命令可用于查看文件的内容，有一个常用的参数 -f 常用�
 
 ### 实例
 要显示 notes.log 文件的最后 10 行，请输入以下命令：
-```shell
+```bash
 tail notes.log         # 默认显示最后 10 行
 ```
 要跟踪名为 notes.log 的文件的增长情况，请输入以下命令：
-```shell
+```bash
 tail -f notes.log
 ```
 此命令显示 notes.log 文件的最后 10 行。当将某些行添加至 notes.log 文件时，tail 命令会继续显示这些行。 显示一直继续，直到您按下（Ctrl-C）组合键停止显示。
 显示文件 notes.log 的内容，从第 20 行至文件末尾:
-```shell
+```bash
 tail -n +20 notes.log
 ```
 显示文件 notes.log 的最后 10 个字符:
-```shell
+```bash
 tail -c 10 notes.log
 ```
 
@@ -810,7 +749,7 @@ diff 以逐行的方式，比较文本文件的异同处。如果指定要比较
 
 ### 实例
 实例1：比较两个文件
-```shell
+```bash
 [root@localhost test3]# diff log2014.log log2013.log 
 3c3
 < 2014-03
@@ -830,11 +769,11 @@ diff 以逐行的方式，比较文本文件的异同处。如果指定要比较
 ### ”合并格式“的diff
 如果两个文件相似度很高，那么上下文格式的diff，将显示大量重复的内容，很浪费空间。1990年，GNU diff率先推出了"合并格式"的diff，将f1和f2的上下文合并在一起显示。
 它的使用方法是加入u参数（代表unified）。
-```shell
+```bash
 $ diff -u f1 f2
 ```
 显示结果如下：
-```shell
+```bash
 　　--- f1 2012-08-29 16:45:41.000000000 +0800
 　　+++ f2 2012-08-29 16:45:51.000000000 +0800
 　　@@ -1,7 +1,7 @@
@@ -848,13 +787,13 @@ $ diff -u f1 f2
 　　 a
 ```
 它的第一部分，也是文件的基本信息。
-```shell
+```bash
 　　--- f1 2012-08-29 16:45:41.000000000 +0800
 　　+++ f2 2012-08-29 16:45:51.000000000 +0800
 ```
 "---"表示变动前的文件，"+++"表示变动后的文件。
 第二部分，变动的位置用两个@作为起首和结束。
-```shell
+```bash
 　　@@ -1,7 +1,7 @@
 ```
 前面的"-1,7"分成三个部分：减号表示第一个文件（即f1），"1"表示第1行，"7"表示连续7行。合在一起，就表示下面是第一个文件从第1行开始的连续7行。同样的，"+1,7"表示变动后，成为第二个文件从第1行开始的连续7行。
@@ -872,12 +811,41 @@ $ diff -u f1 f2
 ```
 除了有变动的那些行以外，也是上下文各显示3行。它将两个文件的上下文，合并显示在一起，所以叫做"合并格式"。每一行最前面的标志位，空表示无变动，减号表示第一个文件删除的行，加号表示第二个文件新增的行。
 
+## lsof
+lsof（list open files）是一个查看当前系统文件的工具。在linux环境下，任何事物都以文件的形式存在，通过文件不仅仅可以访问常规数据，还可以访问网络连接和硬件。如传输控制协议 (TCP) 和用户数据报协议 (UDP) 套接字等，系统在后台都为该应用程序分配了一个文件描述符，该文件描述符提供了大量关于这个应用程序本身的信息。
+
+lsof 查看端口占用语法格式：
+- lsof -i:8080：查看8080端口占用
+- lsof abc.txt：显示开启文件abc.txt的进程
+- lsof -c abc：显示abc进程现在打开的文件
+- lsof -c -p 1234：列出进程号为1234的进程所打开的文件
+- lsof -g gid：显示归属gid的进程情况
+- lsof +d /usr/local/：显示目录下被进程开启的文件
+- lsof +D /usr/local/：同上，但是会搜索目录下的目录，时间较长
+- lsof -d 4：显示使用fd为4的进程
+- lsof -i -U：显示所有打开的端口和UNIX domain文件
+
+实例： 查看服务器 8000 端口的占用情况：
+```bash
+# lsof -i:8000
+COMMAND   PID USER   FD   TYPE   DEVICE SIZE/OFF NODE NAME
+nodejs  26993 root   10u  IPv4 37999514      0t0  TCP *:8000 (LISTEN)
+```
+可以看到 8000 端口已经被轻 nodejs 服务占用。
+
+lsof -i 需要 root 用户的权限来执行，如下图：
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220423112710.png)
+
+
+
+
 # 用户相关命令
 ## id命令
 inux id命令用于显示用户的ID，以及所属群组的ID。
 
 ### 例子
-```shell
+```bash
 [root@localhost ~]# id
 uid=0(root) gid=0(root) groups=0(root),1(bin),2(daemon),3(sys),4(adm),6(disk),10(wheel)
 ```
@@ -913,18 +881,18 @@ usermod命令:用来修改用户帐号的各项设定。
 
 应用举例：
 1. 将 newuser2 添加到组 staff 中
-```shell
+```bash
 #usermod -G staff newuser2
 ```
 
 2. 修改 newuser 的用户名为 newuser1
-```shell
+```bash
 #usermod -l newuser1 newuser
 ```
 
 ## 添加普通用户到 sudo 组
 正常电脑使用或者服务器维护中，我们一般不直接使用 root 账号，如果你现在只有一个 root 账号可以通过下面命令新建一个用户：
-```shell
+```bash
 useradd -m steven   //steven 是我的用户名
 ```
 然后通过下面命令设置密码：
@@ -947,7 +915,7 @@ root    ALL=(ALL:ALL) ALL
 ```
 
 **第二种：直接执行命令添加用户到 sudo**
-```shell
+```bash
 usermod -a -G sudo steven    //注意改成你自己的用户名
 ```
 
@@ -964,31 +932,31 @@ Linux wget命令用来从指定的URL下载文件。wget非常稳定，它在带
 
 ### 实例
 1. 使用wget下载单个文件
-```shell
+```bash
 wget http://www.coonote.com/testfile.zip
 ```
 以下的例子是从网络下载一个文件并保存在当前目录，在下载的过程中会显示进度条，包含（下载完成百分比，已经下载的字节，当前下载速度，剩余下载时间）。
 
 2. 下载并以不同的文件名保存
-```shell
+```bash
 wget -O wordpress.zip http://www.coonote.com/download.aspx?id=1080
 ```
 wget默认会以最后一个符合/的后面的字符来命令，对于动态链接的下载通常文件名会不正确。
 
 错误：下面的例子会下载一个文件并以名称download.aspx?id=1080保存:
-```shell
+```bash
 wget http://www.coonote.com/download?id=1
 ```
 即使下载的文件是zip格式，它仍然以download.php?id=1080命令。
 
 正确：为了解决这个问题，我们可以使用参数-O来指定一个文件名：
-```shell
+```bash
 wget -O wordpress.zip http://www.coonote.com/download.aspx?id=1080
 ```
 
 3. 测试下载链接
 当你打算进行定时下载，你应该在预定时间测试下载链接是否有效。我们可以增加--spider参数进行检查。
-```shell
+```bash
 wget --spider URL
 ```
 如果下载链接正确，将会显示:
@@ -1012,11 +980,11 @@ Remote file does not exist -- broken link!!!
 - 检查网站页面的死链接
 
 4. 下载多个文件
-```shell
+```bash
 wget -i filelist.txt
 ```
 首先，保存一份下载链接文件：
-```shell
+```bash
 cat > filelist.txt
 url1
 url2
@@ -1033,7 +1001,7 @@ Linux curl命令是一个利用URL规则在命令行下工作的文件传输工�
 #### 文件下载
 curl命令可以用来执行下载、发送各种HTTP请求，指定HTTP头部等操作。如果系统没有curl可以使用yum install curl安装，也可以下载安装。curl是将下载文件输出到stdout，将进度信息输出到stderr，不显示进度信息使用--silent选项。
 
-```shell
+```bash
 curl URL --silent
 ```
 
@@ -1041,14 +1009,14 @@ curl URL --silent
 
 使用选项-O将下载的数据写入到文件，必须使用文件的绝对地址：
 
-```shell
+```bash
 curl https://www.coonote.com/robot.txt --silent -O
 
 ```
 
 选项-o将下载数据写入到指定名称的文件中，并使用--progress显示进度条：
 
-```shell
+```bash
 curl https://www.coonote.com/robot.txt -o filename.iso --progress
 ######################################### 100.0%
 ```
@@ -1063,6 +1031,52 @@ curl https://www.coonote.com/robot.txt -o filename.iso --progress
 
 ![](https://raw.githubusercontent.com/NaisWang/images/master/Screen%20Shot%202022-04-17%20at%2015.32.41.jpg)
 
+## netstat
+netstat命令是一个监控TCP/IP网络的非常有用的工具，它可以显示路由表、实际的网络连接以及每一个网络接口设备的状态信息。
+
+语法：
+```bash
+netstat [选项]
+```
+参数：
+- -a或--all：显示所有连线中的Socket；
+- -A<网络类型>或--<网络类型>：列出该网络类型连线中的相关地址；
+- -c或--continuous：持续列出网络状态；
+- -C或--cache：显示路由器配置的快取信息；
+- -e或--extend：显示网络其他相关信息；
+- -F或--fib：显示FIB；
+- -g或--groups：显示多重广播功能群组组员名单；
+- -h或--help：在线帮助；
+- -i或--interfaces：显示网络界面信息表单；
+- -l或--listening：显示监控中的服务器的Socket；
+- -M或--masquerade：显示伪装的网络连线；
+- -n或--numeric：直接使用ip地址，而不通过域名服务器；
+- -N或--netlink或--symbolic：显示网络硬件外围设备的符号连接名称；
+- -o或--timers：显示计时器；
+- -p或--programs：显示正在使用Socket的程序识别码和程序名称；
+- -r或--route：显示Routing Table；
+- -s或--statistice：显示网络工作信息统计表；
+- -t或--tcp：显示TCP传输协议的连线状况；
+- -u或--udp：显示UDP传输协议的连线状况；
+- -v或--verbose：显示指令执行过程；
+- -V或--version：显示版本信息；
+- -w或--raw：显示RAW传输协议的连线状况；
+- -x或--unix：此参数的效果和指定"-A unix"参数相同；
+- -ip或--inet：此参数的效果和指定"-A inet"参数相同。
+
+### 实例1：列出所有端口
+命令：
+- netstat -a      # 列出所有端口
+- netstat -at     # 列出所有TCP端口
+- netstat -au    # 列出所有UDP端口
+- netstat -ax    # 列出所有unix端口
+- netstat -atnlp    # 直接使用ip地址列出所有处理监听状态的TCP端口，且加上程序名
+
+输出：
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220423113523.png)
+
+
 
 ## SSH
 ### ssh基础使用
@@ -1074,7 +1088,7 @@ ssh客户端是一种使用Secure Shell(ssh)协议连接到运行了ssh服务端
 OpenSSH 是 SSH协议的免费开源实现。OpenSSH提供了服务端程序(openssh-server)和客户端工具(openssh-client)。Mac和Linux中默认已安装ssh客户端，可直接在终端中使用ssh命令。Windows则需手动安装ssh客户端，较常用的Windows SSH客户端有PuTTY和XShell。
 
 OpenSSH服务端常用命令
-```shell
+```bash
 # 安装服务端/客户端(Ubuntu)
 $ sudo apt install openssh-server/openssh-client
 
@@ -1085,7 +1099,7 @@ $ netstat -tlp | grep ssh
 $ sudo /etc/init.d/ssh start/stop/restart
 ```
 
-```shell
+```bash
 # 命令格式
 $ ssh [-options] [user@hostname]
 ```
@@ -1095,7 +1109,7 @@ $ ssh [-options] [user@hostname]
 - hostname远程服务器地址。可以是IP/域名/别名
 - exit或logout命令均可退出当前登录
 
-```shell
+```bash
 # 以colin用户登录192.168.1.196的到ssh服务器
 $ ssh colin@192.168.1.196
 
@@ -1129,7 +1143,7 @@ $ scp 123.txt ColinMac:Desktop
 ```
 
 #### 免密登录
-```shell
+```bash
 # 命令格式
 $ ssh-keygen [-options]
 ```
@@ -1140,7 +1154,7 @@ $ ssh-keygen [-options]
 |-C	|注释，将附加在密钥文件尾部|
 
 远程管理命令(如ssh,scp等)每次都需要提供用户密码保证安全。除此之外，我们也可配置使指定加密算法验证密钥文件的方式，避免每次输入密码。配置免密登录后，ssh连接和scp等远程管理命令都不需要再输密码。生成密钥时若指定了文件名，连接服务器时需要通过-i指定要验证的密钥文件,形如：ssh -i file user@host。默认文件名则可省略。默认配置只需以下两步：
-```shell
+```bash
 # 客户端生成密钥对
 $ ssh-keygen
 
@@ -1154,7 +1168,7 @@ $ ssh-copy-id user@hostname   # 文件会自动上传为服务器特定文件 �
 出于安全考虑，大部分服务器提供商如要求使用密钥文件进行远程登录，如GCP和AWS。下面我们以GCP为例来看如何简化连接操作,这搞起来吧...
 
 ##### 生成密钥对
-```shell
+```bash
 $ ssh-keygen -t rsa -f ~/.ssh/[KEY_FILENAME] -C [USERNAME]
 $ chmod 400 ~/.ssh/[KEY_FILENAME]
 ```
@@ -1166,7 +1180,7 @@ $ chmod 400 ~/.ssh/[KEY_FILENAME]
 
 ##### 连接GCP
 使用以下命令登录即可
-```shell
+```bash
 $ ssh -i ~/.ssh/KEY_FILENAME [USERNAME]@[IP_ADDRESS]
 ```
 
@@ -1184,7 +1198,7 @@ Host tu
    IdentityFile ~/.ssh/gcp
 ```
 按照以上配置添加到～/.ssh/config中
-```shell
+```bash
 # 后台运行ssh-agent
 $ eval "$(ssh-agent -s)"
 # 添加密钥到ssh-agent
@@ -1199,13 +1213,13 @@ $ ssh-add -K ~/.ssh/gcp
 - scp 是加密的，rcp 是不加密的，scp 是 rcp 的加强版。
 
 ### 语法
-```shell
+```bash
 scp [-1246BCpqrv] [-c cipher] [-F ssh_config] [-i identity_file]
 [-l limit] [-o ssh_option] [-P port] [-S program]
 [[user@]host1:]file1 [...] [[user@]host2:]file2
 ```
 简易写法:
-```shell
+```bash
 scp [可选参数] file_source file_target 
 ```
 参数说明：
@@ -1230,7 +1244,7 @@ scp [可选参数] file_source file_target
 ### 实例
 1. 从本地复制到远程
 命令格式：
-```shell
+```bash
 scp local_file remote_username@remote_ip:remote_folder 
 #或者 
 scp local_file remote_username@remote_ip:remote_file 
@@ -1242,7 +1256,7 @@ scp local_file remote_ip:remote_file
 - 第1,2个指定了用户名，命令执行后需要再输入密码，第1个仅指定了远程的目录，文件名字不变，第2个指定了文件名；
 - 第3,4个没有指定用户名，命令执行后需要输入用户名和密码，第3个仅指定了远程的目录，文件名字不变，第4个指定了文件名；
 应用实例：
-```shell
+```bash
 scp /home/space/music/1.mp3 root@www.runoob.com:/home/root/others/music 
 scp /home/space/music/1.mp3 root@www.runoob.com:/home/root/others/music/001.mp3 
 scp /home/space/music/1.mp3 www.runoob.com:/home/root/others/music 
@@ -1272,7 +1286,7 @@ scp -r www.runoob.com:/home/root/others/ /home/space/music/
 
 ### 说明
 1. 如果远程服务器防火墙有为scp命令设置了指定的端口，我们需要使用 -P 参数来设置命令的端口号，命令格式如下：
-```shell
+```bash
 #scp 命令使用端口号 4588
 scp -P 4588 remote@www.runoob.com:/usr/local/sin.sh /home/administrator
 ```
@@ -1287,7 +1301,7 @@ rsync 是一个常用的 Linux 应用程序，用于文件同步。
 
 ### 安装
 如果本机或者远程计算机没有安装 rsync，可以用下面的命令安装。
-```shell
+```bash
 # Debian
 $ sudo apt-get install rsync
 
@@ -1302,40 +1316,40 @@ $ sudo pacman -S rsync
 ### 基本用法
 #### -r参数
 本机使用 rsync 命令时，可以作为`cp`和`mv`命令的替代方法，将源目录同步到目标目录。
-```shell
+```bash
 $ rsync -r source destination
 ```
 上面命令中，`-r`表示递归，即包含子目录。注意，`-r`是必须的，否则 `rsync` 运行不会成功。`source`目录表示源目录，`destination`表示目标目录。
 
 如果有多个文件或目录需要同步，可以写成下面这样。
-```shell
+```bash
 $ rsync -r source1 source2 destination
 ```
 上面命令中，`source1`、`source2`都会被同步到`destination`目录。
 
 #### -a参数
 `-a`参数可以替代`-r`，除了可以递归同步以外，还可以同步元信息（比如修改时间、权限等）。由于 rsync 默认使用文件大小和修改时间决定文件是否需要更新，所以`-a`比`-r`更有用。下面的用法才是常见的写法。
-```shell
+```bash
 $ rsync -a source destination
 ```
 目标目录`destination`如果不存在，rsync 会自动创建。执行上面的命令后，源目录`source`被完整地复制到了目标目录`destination`下面，即形成了`destination/source`的目录结构。
 
 如果只想同步源目录`source`里面的内容到目标目录`destination`，则需要在源目录后面加上斜杠。
-```shell
+```bash
 $ rsync -a source/ destination
 ```
 上面命令执行后，`source`目录里面的内容，就都被复制到了`destination`目录里面，并不会在`destination`下面创建一个`source`子目录。
 
 #### -n参数
 如果不确定 rsync 执行后会产生什么结果，可以先用`-n`或`--dry-run`参数模拟执行的结果。
-```shell
+```bash
 $ rsync -anv source/ destination
 ```
 上面命令中，`-n`参数模拟命令执行的结果，并不真的执行命令。`-v`参数则是将结果输出到终端，这样就可以看到哪些内容会被同步。
 
 ####  --delete参数
 默认情况下，rsync 只确保源目录的所有内容（明确排除的文件除外）都复制到目标目录。它不会使两个目录保持相同，并且不会删除文件。如果要使得目标目录成为源目录的镜像副本，则必须使用`--delete`参数，这将删除只存在于目标目录、不存在于源目录的文件。
-```shell
+```bash
 $ rsync -av --delete source/ destination
 ```
 上面命令中，`--delete`参数会使得`destination`成为`source`的一个镜像。
@@ -1343,7 +1357,7 @@ $ rsync -av --delete source/ destination
 ### 排除文件
 #### --exclude参数
 有时，我们希望同步时排除某些文件或目录，这时可以用`--exclude`参数指定排除模式。
-```shell
+```bash
 $ rsync -av --exclude='*.txt' source/ destination
 # 或者
 $ rsync -av --exclude '*.txt' source/ destination
@@ -1353,25 +1367,25 @@ $ rsync -av --exclude '*.txt' source/ destination
 注意，rsync 会同步以"点"开头的隐藏文件，如果要排除隐藏文件，可以这样写`--exclude=".*"`。
 
 如果要排除某个目录里面的所有文件，但不希望排除目录本身，可以写成下面这样。
-```shell
+```bash
 $ rsync -av --exclude 'dir1/*' source/ destination
 ```
 多个排除模式，可以用多个`--exclude`参数。
-```shell
+```bash
 $ rsync -av --exclude 'file1.txt' --exclude 'dir1/*' source/ destination
 ```
 多个排除模式也可以利用 Bash 的大扩号的扩展功能，只用一个`--exclude`参数。
-```shell
+```bash
 $ rsync -av --exclude={'file1.txt','dir1/*'} source/ destination
 ```
 如果排除模式很多，可以将它们写入一个文件，每个模式一行，然后用`--exclude-from`参数指定这个文件。
-```shell
+```bash
 $ rsync -av --exclude-from='exclude-file.txt' source/ destination
 ```
 
 #### --include参数
 `--include`参数用来指定必须同步的文件模式，往往与`--exclude`结合使用。
-```shell
+```bash
 $ rsync -av --include="*.txt" --exclude='*' source/ destination
 ```
 上面命令指定同步时，排除所有文件，但是会包括 TXT 文件。
@@ -1379,37 +1393,37 @@ $ rsync -av --include="*.txt" --exclude='*' source/ destination
 ### 远程同步
 #### SSH 协议
 rsync 除了支持本地两个目录之间的同步，也支持远程同步。它可以将本地内容，同步到远程服务器。
-```shell
+```bash
 $ rsync -av source/ username@remote_host:destination
 ```
 也可以将远程内容同步到本地。
-```shell
+```bash
 $ rsync -av username@remote_host:source/ destination
 ```
 rsync 默认使用 SSH 进行远程登录和数据传输。
 
 由于早期 rsync 不使用 SSH 协议，需要用`-e`参数指定协议，后来才改的。所以，下面`-e ssh`可以省略。
-```shell
+```bash
 $ rsync -av -e ssh source/ user@remote_host:/destination
 ```
 但是，如果 ssh 命令有附加的参数，则必须使用`-e`参数指定所要执行的 SSH 命令。
-```shell
+```bash
 $ rsync -av -e 'ssh -p 2234' source/ user@remote_host:/destination
 ```
 上面命令中，`-e`参数指定 SSH 使用2234端口。
 
 #### rsync 协议
 除了使用 SSH，如果另一台服务器安装并运行了 rsync 守护程序，则也可以用`rsync://`协议（默认端口873）进行传输。具体写法是服务器与目标目录之间使用双冒号分隔`::`。
-```shell
+```bash
 $ rsync -av source/ 192.168.122.32::module/destination
 ```
 注意，上面地址中的module并不是实际路径名，而是 rsync 守护程序指定的一个资源名，由管理员分配。
 如果想知道 rsync 守护程序分配的所有 module 列表，可以执行下面命令。
-```shell
+```bash
 $ rsync rsync://192.168.122.32
 ```
 rsync 协议除了使用双冒号，也可以直接用`rsync://`协议指定地址。
-```shell
+```bash
 $ rsync -av source/ rsync://192.168.122.32/module/destination
 ```
 
@@ -1426,7 +1440,7 @@ $ rsync -av source/ rsync://192.168.122.32/module/destination
 - xargs 默认的命令是 echo，这意味着通过管道传递给 xargs 的输入将会包含换行和空白，不过通过 xargs 的处理，换行和空白将被空格取代。
 - xargs 是一个强有力的命令，它能够捕获一个命令的输出，然后传递给另外一个命令。
 - 之所以能用到这个命令，关键是由于很多命令不支持|管道来传递参数，而日常工作中有有这个必要，所以就有了 xargs 命令，例如：
-```shell
+```bash
 find /sbin -perm +700 |ls -l       #这个命令是错误的
 find /sbin -perm +700 |xargs ls -l   #这样才是正确的
 ```
@@ -1439,7 +1453,7 @@ xargs 一般是和管道一起使用。
 在bash中，$( )与``（反引号）都是用来作命令替换的。
 
 命令替换与变量替换差不多，都是用来重组命令行的，先完成引号里的命令行，然后将其结果替换出来，再重组成新的命令行。
-```shell
+```bash
 [root@localhost ~]# echo today is $(date "+%Y-%m-%d")
 today is 2017-11-07
 [root@localhost ~]# echo today is `date "+%Y-%m-%d"`
@@ -1448,7 +1462,7 @@ today is 2017-11-07
 $( )与｀｀在操作上，这两者都是达到相应的效果，但是建议使用$( )，因为｀｀很容易与''搞混乱，尤其对初学者来说，而$( )比较直观。
 
 最后，$( )的弊端是，并不是所有的类unix系统都支持这种方式，但反引号是肯定支持的。
-```shell
+```bash
 [root@localhost ~]#  echo Linux `echo Shell `echo today is `date "+%Y-%m-%d"```
 Linux Shellecho today is 2017-11-07     #过多使用``会有问题
 [root@localhost ~]# echo Linux `echo Shell $(echo today is $(date "+%Y-%m-%d"))`
@@ -1459,7 +1473,7 @@ Linux Shell today is 2017-11-07    #多个$()同时使用也不会有问题
 
 ### ${ }变量替换
 一般情况下，$var与${var}是没有区别的，但是用${ }会比较精确的界定变量名称的范围
-```shell
+```bash
 [root@localhost ~]# A=Linux
 [root@localhost ~]# echo $AB    #表示变量AB
 
@@ -1526,7 +1540,7 @@ make veryclean
 ## rpm
 ### RPM包的安装
 安装 RPM 的命令格式为：
-```shell
+```bash
 [root@localhost ~]# rpm -ivh /mnt/cdrom/Packages/httpd-2.2.15-15.el6.centos.1.i686.rpm
 Preparing...
 ####################
@@ -1543,13 +1557,13 @@ Preparing...
 注意，直到出现两个 100% 才是真正的安装成功，第一个 100% 仅表示完成了安装准备工作。
 
 此命令还可以一次性安装多个软件包，仅需将包全名用空格分开即可，如下所示：
-```shell
+```bash
 [root@localhost ~]# rpm -ivh a.rpm b.rpm c.rpm
 ```
 
 ### RPM包的升级
 使用如下命令即可实现 RPM 包的升级：
-```shell
+```bash
 [root@localhost ~]# rpm -Uvh 包全名
 -U（大写）选项的含义是：如果该软件没安装过则直接安装；若没安装则升级至最新版本。
 
@@ -1559,7 +1573,7 @@ Preparing...
 
 ### RPM包的卸载
 RPM 软件包的卸载很简单，使用如下命令即可：
-```shell
+```bash
 [root@localhost ~]# rpm -e 包名
 ```
 `-e`选项表示卸载，也就是 erase 的首字母。
@@ -1568,7 +1582,7 @@ RPM 软件包的卸载很简单，使用如下命令即可：
 软件包卸载和拆除大楼是一样的，本来先盖的 2 楼，后盖的 3 楼，那么拆楼时一定要先拆除 3 楼。
 
 如果卸载 RPM 软件不考虑依赖性，执行卸载命令会包依赖性错误，例如：
-```shell
+```bash
 [root@localhost ~]# rpm -e httpd
 error: Failed dependencies:
 httpd-mmn = 20051115 is needed by (installed) mod_wsgi-3.2-1.el6.i686
@@ -1586,7 +1600,7 @@ httpd=0:2.2.15-15.el6.centos.1 is needed by(installed)mod_ssl-1:2.2.15-15.el6.ce
 RPM 软件包的卸载命令支持使用“-nocteps”选项，即可以不检测依赖性直接卸载，但此方式不推荐大家使用，因为此操作很可能导致其他软件也无法征程使用。
 
 ### rpm 命令查询
-```shell
+```bash
 [root@localhost ~]# rpm -qa
 [root@localhost ~]# rpm -q[licdR] 已安装的软件名称
 [root@localhost ~]# rpm -qp[licdR] 未安装的某个文件名称
@@ -1607,7 +1621,7 @@ RPM 软件包的卸载命令支持使用“-nocteps”选项，即可以不检�
 
 ### yum安装命令
 yum 安装软件包的命令基本格式为：
-```shell
+```bash
 [root@localhost yum.repos.d]# yum -y install 包名
 ```
 -y：自动回答 yes。如果不加 -y，那么每个安装的软件都需要手工回答 yes；
@@ -1664,7 +1678,7 @@ dpkg --configure 包名
 选项
 - -S 或 --search：搜索含有指定文件的软件包。文件名可使用通配符
 示例：
-```shell
+```bash
 taicw@taicw-PC:~/Downloads$ dpkg -S apache2.conf
 apache2: /etc/apache2/apache2.conf
 ```
@@ -1721,7 +1735,7 @@ ssh-keygen
 就是这个文件.在ssh/下.这个是公钥.id_rsa是私钥.我们只需要公钥.
 
 3. 发送公钥到linux
-```shell
+```bash
 scp ./id_rsa.pub root@192.168.xxx.xxx:~/.ssh/windows_ras.pub
 ```
 scp是个命令,第一个参数是当前要发送的文件,root是linux用户名@后接IP.然后冒号后接这个文件要存放的位置
@@ -1750,7 +1764,7 @@ shell脚本中使用cd命令进入到指定目录后，然后执行该目录下�
 
 ## 例子：
 编写shell脚本test.sh
-```shell
+```bash
 #!/bin/sh
 cd Tools/vmware-tools-distrib
 pwd
@@ -1895,11 +1909,11 @@ sudo passwd ：修改root密码
 # 修改安装源为国内镜像源
 ## ubuntu
 1. 原文件备份
-```shell
+```bash
 sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
 ```
 2. 编辑源列表文件
-```shell
+```bash
 sudo vim /etc/apt/sources.list
 ```
 3. 将原来的列表删除，添加如下内容（中科大镜像源）
@@ -2022,17 +2036,12 @@ vim中的文本对象可以分为3大类：paragraphs、sentences、words
 
 
 ## 在vim中直接执行linux命令
-:!cmd
-不退出vim 执行命令 cmd
-
-:r !cmd
-不退出vim执行命令cmd,并将cmd的输出内容插入当前文本中。
-
-:shell
-切换到shell里（此时并没有退出vim，可以理解成vim转入后台），你可以在shell中做任何操作，退出shell（比如用exit）后，会切换回原来的vim中
+- `:!cmd`: 不退出vim 执行命令 cmd
+- `:r !cmd`: 不退出vim执行命令cmd,并将cmd的输出内容插入当前文本中。
+- `:shell`: 切换到shell里（此时并没有退出vim，可以理解成vim转入后台），你可以在shell中做任何操作，退出shell（比如用exit）后，会切换回原来的vim中
 
 ## 信息查看
-":messages" 命令可以查看以前给出的消息
+- `:messages`: 命令可以查看以前给出的消息
 
 ## 命令总结
 | 单字母 | 是否作为某命令的前缀 | 类型 | 作用| 在可视块模式中 | 执行完后是否进入插入模式 |  

@@ -1076,7 +1076,51 @@ netstat [选项]
 
 ![](https://raw.githubusercontent.com/NaisWang/images/master/20220423113523.png)
 
+### 输出说明
+#### Proto
+`Proto`:协议名（tcp协议还是udp协议)；
+#### recv-Q与send-Q
+- `recv-Q`:网络接收队列, 表示收到的数据已经在本地接收缓冲，但是还有多少没有被进程取走，recv()如果接收队列Recv-Q一直处于阻塞状态，可能是遭受了拒绝服务 denial-of-service 攻击；
+- `send-Q`:网路发送队列, 对方没有收到的数据或者说没有Ack的, 还是本地缓冲区。 如果发送队列Send-Q不能很快的清零，可能是有应用向外发送数据包过快，或者是对方接收数据包不够快；
 
+这两个值通常应该为0，如果不为0可能是有问题的。packets在两个队列里都不应该有堆积状态。可接受短暂的非0情况。
+
+#### Local Address与Foreign Address
+- Local Address 部分的0.0.0.0:873表示有服务监听该主机上所有ip地址的873端口(0.0.0.0表示本地所有ip)，比如你的主机是有172.172.230.210和172.172.230.11两个ip地址，那么0.0.0.0:873此时表示监听172.172.230.210,172.172.230.211,127.0.0.1三个地址的873端口
+- <font color="red"> 127.0.0.1:25这个表示有服务监听本机的loopback地址的25端口(如果某个服务只监听了回环地址，那么只能在本机进行访问，无法通过tcp/ip 协议进行远程访问)</font>。
+- 192.168.1.81:2288这是因为我们在启动的时候指定了192.168.1.81:2288参数，如果不指定的话，会监听0.0.0.0：2288
+
+- `Foreign Address`: 与本机端口通信的外部socket。显示规则与Local Address相同
+
+#### State
+链路状态，共有11种
+
+state列共有12中可能的状态，前面11种是按照TCP连接建立的三次握手和TCP连接断开的四次挥手过程来描述的。
+- `LISTEN` ：首先服务端需要打开一个socket进行监听，状态为LISTEN. The socket is listening for incoming  connections. 侦听来自远方TCP端口的连接请求
+- `SYN_SENT`：客户端通过应用程序调用connect进行activeopen.于是客户端tcp发送一个SYN以请求建立一个连接.之后状态`SYN_SENT`。The socket is actively attempting to establish aconnection. 在发送连接请求后等待匹配的连接请求
+- `SYN_RECV`：服务端应发出ACK确认客户端的 SYN,同时自己向客户端发送一个SYN.之后状态置为`SYN_RECV`。 A connection request has been received from the network. 在收到和发送一个连接请求后等待对连接请求的确认
+- `ESTABLISHED`：代表一个打开的连接，双方可以进行或已经在数据交互了。 The socket has an established connection. 代表一个打开的连接，数据可以传送给用户
+- `FIN_WAIT1`：主动关闭(activeclose)端应用程序调用close，于是其TCP发出FIN请求主动关闭连接，之后进入`FIN_WAIT1`状态. The socket is closed, and the connection is shutting down. 等待远程TCP的连接中断请求，或先前的连接中断请求的确认
+- `CLOSE_WAIT`：被动关闭(passiveclose)端TCP接到FIN后，就发出ACK以回应FIN请求(它的接收也作为文件结束符传递给上层应用程序),并进入`CLOSE_WAIT`. The remote end has shut down, waiting for the socketto close. 等待从本地用户发来的连接中断请求
+- `FIN_WAIT2`：主动关闭端接到ACK后，就进入了FIN-WAIT-2. Connection is closed, and the socket is waiting for a shutdownfrom the remote end. 从远程TCP等待连接中断请求
+- `LAST_ACK`：被动关闭端一段时间后，接收到文件结束符的应用程 序将调用CLOSE关闭连接。这导致它的TCP也发送一个 FIN,等待对方的ACK.就进入了LAST-ACK. The remote end has shut down, and the socket is closed. Waiting foracknowledgement. 等待原来发向远程TCP的连接中断请求的确认
+- `TIME_WAIT`：在主动关闭端接收到FIN后，TCP 就发送ACK包，并进入TIME-WAIT状态。 Thesocket is waiting after close to handle packets still in the network.等待足够的时间以确保远程TCP接收到连接中断请求的确认
+- `CLOSING`：比较少见. Bothsockets are shut down but we still don’t have all our datasent. 等待远程TCP对连接中断的确认 
+- `CLOSED`：被动关闭端在接受到ACK包后，就进入了closed的状态。连接结束.The socket is not being used. 没有任何连接状态 
+- `UNKNOWN`：未知的Socket状态。Thestate of the socket is unknown.
+
+
+备注
+- SYN: (同步序列编号,SynchronizeSequence Numbers)该标志仅在三次握手建立TCP连接时有效。表示一个新的TCP连接请求。
+- ACK: (确认编号,AcknowledgementNumber)是对TCP请求的确认标志,同时提示对端系统已经成功接收所有数据。
+- FIN: (结束标志,FINish)用来结束一个TCP回话.但对应端口仍处于开放状态,准备接收后续数据。
+
+### 实例2：显示每个协议的统计信息
+
+命令：
+- netstat -s     # 显示所有端口的统计信息
+- netstat -st    # 显示所有TCP的统计信息
+- netstat -su    # 显示所有UDP的统计信息
 
 ## SSH
 ### ssh基础使用

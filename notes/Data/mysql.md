@@ -7,14 +7,46 @@ service mysql status
 service mysql restart
 ```
 
-##  登录MySQL
-mysql 安装完成之后, 会自动生成一个随机的密码, 并且保存在一个密码文件中 : /root/.mysql_secret
-使用`mysql -u root -p`命令登陆
-登录之后, 修改密码 :
-`set password = password('itcast');`
-授权远程访问 : 
-`grant all privileges on *.* to 'root' @'%' identified by 'itcast';`
-`flush privileges;`
+## 配置mysql允许远程连接的方法
+首先使用`netstat -ano | grep 3306`命令来查看
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220423184902.png)
+
+以上Local Address为`127.0.0.1:3306`,表示mysql-server应用只监听了本机的loopback地址的3306端口(如果某个服务只监听了回环地址，那么只能在本机进行访问，无法通过tcp/ip 协议进行远程访问), 所以此时只能进行本地连接mysql，而不能进行远程连接。
+
+若此时我不是本地以root用户连接mysql，会报如下错误：
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220423191514.png)
+
+为了使mysql-server应用监听本机的所有ip地址，我们需要修改`/etc/mysql/mysql.conf.d/mysqld.cnf`文件，找到`bind-address = 127.0.0.1`, mysql-server通过读取bind-address的值来决定监听本机的什么ip地址。我们可以通过注释掉这句代码来让mysql-server监听本地的所有ip地址。注释掉后，运行`sudo service mysql restart`重启服务，然后执行`netstat -ano | grep 3306`命令，如下：
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220423185752.png)
+
+此时发现Local Address变为来`:::3306`，表示监听了该本机的所有ip地址的3306端口
+
+此时我们向服务器的3306端口发送请求，能被mysql-server监听到，并做一些处理。但是现在有一个问题就是mysql有用户权限管理，即设置哪些ip能使用什么mysql用户来进行访问。
+
+通过如下可以看到mysql的用户权限管理：
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220423190531.png)
+
+以上设置了有哪些主机host能够访问，并且只能以什么用户user访问。
+
+若此时我不是本地以root用户连接mysql，会报如下错误：
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220423191415.png)
+
+所以为了能让所有ip能购以user用户来访问，我们可以运行如下语句：
+
+```mysql
+update user set host = ’%’ where user = ’root’;
+```
+
+host为%表示所有ip
+
+设置完成且重启mysql服务后，我可以成功地在从不是本地以root用户连接mysql，如下：
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220423191841.png)
 
 ## 创建表
 ```sql

@@ -195,13 +195,14 @@ jobs命令用于显示Linux中的任务列表及任务状态，包括后台运�
 
 ## ps
 列出系统中正在运行的进程；
-不加参数执行ps命令：展示当前终端中运行的进程情况，很少使用。
+
+不加参数执行ps命令：展示当前shell中运行的进程情况，很少使用。
 
 ![](https://raw.githubusercontent.com/NaisWang/images/master/20220406213401.png)
 
 默认展示了4列信息：
 PID: 运行着的命令(CMD)的进程编号
-TTY: 命令所运行的位置（终端）
+TTY: terminal type that the user is logged into 
 TIME: 运行着的该命令所占用的CPU处理时间
 CMD: 该进程所运行的命令
 
@@ -209,8 +210,7 @@ ps常使用的参数：
 -A ：所有的进程均显示出来，与 -e 具有同样的效用；
 -a ：显示现行终端机下的所有进程，包括其他用户的进程；
 -u ：查看特定用户进程；
--x ：通常与 a 这个参数一起使用，可列出较完整信息
-由于输出的内容太多，ps一般使用情况是   ps -aux | grep %要查询的东西%
+由于输出的内容太多，ps一般使用情况是`ps aux | grep %要查询的东西%`, 注意，`aux`前没有`-`
 
 ![](https://raw.githubusercontent.com/NaisWang/images/master/20220406213411.png)
 
@@ -275,7 +275,7 @@ systemd(1)-+-agetty(2021)
 - 25778这个进程也有几个子线程，分别为,25781，25783,25784,27547,27548
 
 ## fg
-fg将后台中的命令调至前台继续运行如果后台中有多个命令，可以用 fg %jobnumber将选中的命令调出， %jobnumber是通过jobs命令查到的后台正在执行的命令的序号(不是pid)
+fg将后台中的命令调至前台继续运行如果后台中有多个命令，可以用`fg %jobnumber`将选中的命令调出， `%jobnumber`是通过jobs命令查到的后台正在执行的命令的序号(不是pid)
 
 ![](https://raw.githubusercontent.com/NaisWang/images/master/20220406213425.png)
 
@@ -335,7 +335,7 @@ kill 可将指定的信息送至程序。预设的信息为 SIGTERM(15)，可将
 若是只是临时有一个命令须要长时间运行，什么方法能最简便的保证它在后台稳定运行呢？
 
 > hangup 名称的来由
-> 在 Unix 的早期版本中，每一个终端都会经过 modem 和系统通信。当用户 logout 时，modem 就会挂断（hang up）电话。 同理，当 modem 断开链接时，就会给终端发送 hangup 信号来通知其关闭全部子进程。github
+> 在 Unix 的早期版本中，每一个终端都会经过 modem 和系统通信。当用户 logout 时，modem 就会挂断（hang up）电话。 同理，当 modem 断开链接时，就会给终端发送 hangup 信号来通知其关闭全部子进程。
 
 咱们知道，当用户注销（logout）或者网络断开时，终端会收到 HUP（hangup）信号从而关闭其全部子进程。所以，咱们的解决办法就有两种途径：要么让进程忽略 HUP 信号，要么让进程运行在新的会话里从而成为不属于此终端的子进程。
 

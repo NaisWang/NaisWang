@@ -1,3 +1,98 @@
+# 进程、进程组、作业、session
+## 进程、进程组与作业
+每个进程都会属于一个进程组，进程组中可以包含一个或多个进程。进程组中有一个进程组长，组长的进程 ID 是进程组 ID(PGID)
+```bash
+$ ps -o pid,pgid,ppid,comm | cat
+  PID  PGID  PPID  COMMAND
+10179  10179 10177 bash
+10263  10263 10179 ps
+10264  10263 10179 cat
+```
+下边通过简单的示例来理解进程组
+- bash：进程和进程组ID都是 10179，父进程其实是 sshd(10177)
+- ps：进程和进程组ID都是 10263，父进程是 bash(10179)，因为是在 Shell 上执行的命令
+- cat：进程组 ID 与 ps 的进程组 ID 相同，父进程同样是 bash(10179)
+
+容易理解 Bash 就是Shell进程，Shell 父进程是 sshd；ps 与 cat 通过管道符号一起运行，属于一个进程组，其父进程都是 Bash；一个进程组也被称为「作业」。
+
+## session
+我们常见的 Linux session 一般是指 shell session。Shell session 是终端中当前的状态，在终端中只能有一个 session。当我们打开一个新的终端时，总会创建一个新的 shell session。
+
+就进程间的关系来说，session 由一个或多个进程组组成。一般情况下，来自单个登录的所有进程都属于同一个 session。我们可以通过下图来理解进程、进程组和 session 之间的关系：
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220425205747.png)
+
+会话是由会话中的第一个进程创建的，一般情况下是打开终端时创建的 shell 进程。该进程也叫 session 的领头进程。Session 中领头进程的 PID 也就是 session 的 SID。我们可以通过下面的命令查看 SID：
+
+```bash
+$ ps -o pid,ppid,pgid,sid,tty,comm
+```
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220425205822.png)
+
+Session 中的每个进程组被称为一个 job，有一个 job 会成为 session 的前台 job(foreground)，其它的 job 则是后台 job(background)。每个 session 连接一个控制终端(control terminal)，控制终端中的输入被发送给前台 job，从前台 job 产生的输出也被发送到控制终端上。同时由控制终端产生的信号，比如 ctrl + z 等都会传递给前台 job。
+
+一般情况下 session 和终端是一对一的关系，当我们打开多个终端窗口时，实际上就创建了多个 session。
+
+Session 的意义在于多个工作(job)在一个终端中运行，其中的一个为前台 job，它直接接收该终端的输入并把结果输出到该终端。其它的 job 则在后台运行。
+
+### session 的诞生与消亡
+通常，新的 session 由系统登录程序创建，session 中的领头进程是运行用户登录 shell 的进程。新创建的每个进程都会属于一个进程组，当创建一个进程时，它和父进程在同一个进程组、session 中。
+
+将进程放入不同 session 的惟一方法是使用 setsid 函数使其成为新 session 的领头进程。这还会将 session 领头进程放入一个新的进程组中。
+
+当 session 中的所有进程都结束时 session 也就消亡了。实际使用中比如网络断开了，session 肯定是要消亡的。另外就是正常的消亡，比如让 session 的领头进程退出。一般情况下 session 的领头进程是 shell 进程，如果它处于前台，我们可以使用 exit 命令或者是 ctrl + d 让它退出。或者我们可以直接通过 kill 命令杀死 session 的领头进程。这里面的原理是：当系统检测到挂断(hangup)条件时，内核中的驱动会将 SIGHUP 信号发送到整个 session。通常情况下，这会杀死 session 中的所有进程。
+
+### session 与终端的关系
+如果 session 关联的是伪终端，这个伪终端本身就是随着 session 的建立而创建的，session 结束，那么这个伪终端也会被销毁。
+
+如果 session 关联的是 tty1-6，tty 则不会被销毁。因为该终端设备是在系统初始化的时候创建的，并不是依赖该会话建立的，所以当 session 退出，tty 仍然存在。只是 init 系统在 session 结束后，会重启 getty 来监听这个 tty。
+
+### nohup
+如果我们在 session 中执行了 nohup 等类似的命令，当 session 消亡时，相关的进程并不会随着 session 结束，原因是这些进程不再受 SIGHUP 信号的影响。比如我们执行下面的命令：
+```bash
+$ nohup sleep 1000 >/dev/null 2>&1 & 
+```
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220425205922.png)
+
+此时 sleep 进程的 sid 和其它进程是相同的，还可以通过 pstree 命令看到进程间的父子关系：
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220425205939.png)
+
+如果我们退出当前 session 的领头进程(bash)，sleep 进程并不会退出，这样我们就可以放心的等待该进程运行结果了。
+
+nohup 并不改变进程的 sid，同时也说明在这种情况中，虽然 session 的领头进程退出了，但是 session 依然没有被销毁(至少 sid 还在被引用)。重新建立连接，通过下面的命令查看 sleep 进程的信息，发现进程的 sid 依然是 7837：
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220425210005.png)
+
+但是此时的 sleep 已经被系统的 1 号进程 systemd 收养了：
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220425210037.png)
+
+### setsid
+setsid 会创建一个新的 session，它的目的是让进程在后台执行命令，实现方式就是让命令进程运行在一个新的与终端脱离的 session 中。看下面的示例：
+```bash
+$ setsid sleep 1000
+```
+查找之下居然没有发现 sleep 进程的踪迹：
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220425210108.png)
+
+通过 grep 查询 sleep 进程的 PID：
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220425210123.png)
+
+去查看 sleep 进程所在的 sid，发现是一个新的 session ID，并且没有关联终端：
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220425210137.png)
+
+当一个进程通过调用 setsid 成为一个新的 session 领头进程时，它会与控制终端断开连接。
+
+此时通过 pstree 查看进程间的关系，发现 sleep 进程直接被系统的 1 号进程 systemd 收养了：
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220425210153.png)
+
 # 服务相关操作
 ## service 命令
 service 命令用于对系统服务进行管理，比如启动（start）、停止（stop）、重启（restart）、重新加载配置（reload）、查看状态（status）等。不同的 Linux 发行版一般均会带有此命令，比如 RHEL、CentOS、SUSE、Ubuntu、Fedora 等。
@@ -119,6 +214,66 @@ ps常使用的参数：
 
 ![](https://raw.githubusercontent.com/NaisWang/images/master/20220406213411.png)
 
+## pstree
+pstree shows running processes as a tree.  The tree is rooted at either pid or init if pid is omitted.  If a user name is specified, all process trees rooted at processes owned by that user are shown.
+
+pstree visually merges identical branches by putting them in square brackets and prefixing them with the repetition count, e.g.
+```
+ init-+-getty
+      |-getty
+      |-getty
+      `-getty
+```
+becomes
+```
+ init---4*[getty]
+```
+Child threads of a process are found under the parent process and are shown with the process name in curly braces, e.g.
+```
+ icecast2---13*[{icecast2}]
+```
+
+例子：
+```bash
+#pstree  -up
+
+systemd(1)-+-agetty(2021)
+           |-agetty(2022)
+           |-bash(23254,ffy)
+           |-chronyd(1180,chrony)
+           |-crond(1277)---crond(25734)---sogou-agent(25736)---sleep(25759)
+           |-dbus-daemon(1123,dbus)
+           
+           |-python(25707,dlj)-+-python(25778)-+-{python}(25781)
+           |                   |               |-{python}(25783)
+           |                   |               |-{python}(25784)
+           |                   |               |-{python}(27547)
+           |                   |               `-{python}(27548)
+           |                   |-python(25779)-+-{python}(25785)
+           |                   |               |-{python}(25786)
+           |                   |               `-{python}(25788)
+           |                   |-python(25780)-+-{python}(27549)
+           |                   |               |-{python}(27550)
+           |                   |               |-{python}(27551)
+           |                   |               |-{python}(27552)
+           |                   |               |-{python}(27553)
+           |                   |               |-{python}(27554)
+           |                   |               `-{python}(27555)
+           |                   |-python(25782)-+-{python}(29319)
+           |                   |               |-{python}(29320)
+           |                   |               |-{python}(29321)
+           |                   |               |-{python}(29322)
+           |                   |               |-{python}(29323)
+           |                   |               |-{python}(29324)
+           |                   |               `-{python}(29325)
+           |                   `-python(25787)
+           
+```
+- 可以看到所有的进程都是依附在systemd这个进程下面，它的进程PID是1，因为它是由Linux内核主动调用的一个进程。
+- 可以从中看出来进程所属的用户为dlj，每个进程的pid
+- 而且，25707这个进程有5个子进程，分别为25778,25779,25780,25782,25787
+- 25778这个进程也有几个子线程，分别为,25781，25783,25784,27547,27548
+
 ## fg
 fg将后台中的命令调至前台继续运行如果后台中有多个命令，可以用 fg %jobnumber将选中的命令调出， %jobnumber是通过jobs命令查到的后台正在执行的命令的序号(不是pid)
 
@@ -126,6 +281,7 @@ fg将后台中的命令调至前台继续运行如果后台中有多个命令，
 
 ## bg
 bg将一个在后台暂停的命令，变成继续执行， 即使一个进程在后台
+
 如果后台中有多个命令，可以用bg %jobnumber将选中的命令调出，%jobnumber是通过jobs命令查到的后台正在执行的命令的序号(不是pid) 
 
 ## kill
@@ -173,6 +329,153 @@ kill 可将指定的信息送至程序。预设的信息为 SIGTERM(15)，可将
 #kill -u hnlinux //方法二
 ```
 
+## Linux让进程（正在运行）在后台运行：nohup/&//setid/disown/
+咱们常常会碰到这样的问题，用 telnet/ssh 登陆了远程的 Linux 服务器，运行了一些耗时较长的任务， 结果却因为网络的不稳定致使任务中途失败。如何让命令提交后不受本地关闭终端窗口/网络断开链接的干扰呢？下面举了一些例子， 您能够针对不一样的场景选择不一样的方式来处理这个问题。
+
+若是只是临时有一个命令须要长时间运行，什么方法能最简便的保证它在后台稳定运行呢？
+
+> hangup 名称的来由
+> 在 Unix 的早期版本中，每一个终端都会经过 modem 和系统通信。当用户 logout 时，modem 就会挂断（hang up）电话。 同理，当 modem 断开链接时，就会给终端发送 hangup 信号来通知其关闭全部子进程。github
+
+咱们知道，当用户注销（logout）或者网络断开时，终端会收到 HUP（hangup）信号从而关闭其全部子进程。所以，咱们的解决办法就有两种途径：要么让进程忽略 HUP 信号，要么让进程运行在新的会话里从而成为不属于此终端的子进程。
+
+### nohup
+nohup 无疑是咱们首先想到的办法。顾名思义，nohup 的用途就是让提交的命令忽略 hangup 信号。让咱们先来看一下 nohup 的帮助信息
+```
+NOHUP(1)                        User Commands                        NOHUP(1)
+
+NAME
+       nohup - run a command immune to hangups, with output to a non-tty
+
+SYNOPSIS
+       nohup COMMAND [ARG]...
+       nohup OPTION
+
+DESCRIPTION
+       Run COMMAND, ignoring hangup signals.
+
+       --help display this help and exit
+
+       --version
+              output version information and exit
+```
+可见，nohup 的使用是十分方便的，只需在要处理的命令前加上 nohup 便可，标准输出和标准错误缺省会被重定向到 nohup.out 文件中。通常咱们可在结尾加上”&”来将命令同时放入后台运行，也可用`>filename 2>&1`来更改缺省的重定向文件名。
+
+nohup 示例
+```bash
+[root@pvcent107 ~]# nohup ping www.ibm.com &
+[1] 3059
+nohup: appending output to `nohup.out'
+[root@pvcent107 ~]# ps -ef |grep 3059
+root      3059   984  0 21:06 pts/3    00:00:00 ping www.ibm.com
+root      3067   984  0 21:06 pts/3    00:00:00 grep 3059
+[root@pvcent107 ~]#
+```
+
+### setsid
+nohup 无疑能经过忽略 HUP 信号来使咱们的进程避免中途被中断，但若是咱们换个角度思考，若是咱们的进程不属于接受 HUP 信号的终端的子进程，那么天然也就不会受到 HUP 信号的影响了。setsid 就能帮助咱们作到这一点。让咱们先来看一下 setsid 的帮助信息：
+```
+SETSID(8)                 Linux Programmer’s Manual                 SETSID(8)
+
+NAME
+       setsid - run a program in a new session
+
+SYNOPSIS
+       setsid program [ arg ... ]
+
+DESCRIPTION
+       setsid runs a program in a new session.
+```
+可见 setsid 的使用也是很是方便的，也只需在要处理的命令前加上 setsid 便可
+
+setsid 示例
+```bash
+[root@pvcent107 ~]# setsid ping www.ibm.com
+[root@pvcent107 ~]# ps -ef |grep www.ibm.com
+root     31094     1  0 07:28 ?        00:00:00 ping www.ibm.com
+root     31102 29217  0 07:29 pts/4    00:00:00 grep www.ibm.com
+[root@pvcent107 ~]#
+```
+
+值得注意的是，上例中咱们的进程 ID(PID)为31094，而它的父 ID（PPID）为1（即为 init 进程 ID），并非当前终端的进程 ID。请将此例与nohup 例中的父 ID 作比较。
+
+### &
+这里还有一个关于 subshell 的小技巧。咱们知道，将一个或多个命名包含在`()`中就能让这些命令在子 shell 中运行中，从而扩展出不少有趣的功能，咱们如今要讨论的就是其中之一。
+
+当咱们将`&`也放入`()`内以后，咱们就会发现所提交的做业并不在做业列表中，也就是说，是没法经过jobs来查看的。让咱们来看看为何这样就能躲过 HUP 信号的影响吧。
+
+subshell 示例
+```bash
+[root@pvcent107 ~]# (ping www.ibm.com &)
+[root@pvcent107 ~]# ps -ef |grep www.ibm.com
+root     16270     1  0 14:13 pts/4    00:00:00 ping www.ibm.com
+root     16278 15362  0 14:13 pts/4    00:00:00 grep www.ibm.com
+[root@pvcent107 ~]#
+```
+
+从上例中能够看出，新提交的进程的父 ID（PPID）为1（init 进程的 PID），并非当前终端的进程 ID。所以并不属于当前终端的子进程，从而也就不会受到当前终端的 HUP 信号的影响了
+
+### disown
+咱们已经知道，若是事先在命令前加上 nohup 或者 setsid 就能够避免 HUP 信号的影响。可是若是咱们未加任何处理就已经提交了命令，该如何补救才能让它避免 HUP 信号的影响呢？
+
+这时想加 nohup 或者 setsid 已经为时已晚，只能经过做业调度和 disown 来解决这个问题了。让咱们来看一下 disown 的帮助信息：
+```
+disown [-ar] [-h] [jobspec ...]
+    Without options, each jobspec is  removed  from  the  table  of
+    active  jobs.   If  the -h option is given, each jobspec is not
+    removed from the table, but is marked so  that  SIGHUP  is  not
+    sent  to the job if the shell receives a SIGHUP.  If no jobspec
+    is present, and neither the -a nor the -r option  is  supplied,
+    the  current  job  is  used.  If no jobspec is supplied, the -a
+    option means to remove or mark all jobs; the -r option  without
+    a  jobspec  argument  restricts operation to running jobs.  The
+ return value is 0 unless a jobspec does  not  specify  a  valid
+    job.
+```
+能够看出，咱们能够用以下方式来达成咱们的目的。 
+
+**灵活运用 CTRL-z**
+
+在咱们的平常工做中，咱们能够用 CTRL-z 来将当前进程挂起到后台暂停运行，执行一些别的操做，而后再用 fg 来将挂起的进程从新放回前台（也可用 bg 来将挂起的进程放在后台）继续运行。这样咱们就能够在一个终端内灵活切换运行多个任务，这一点在调试代码时尤其有用。由于将代码编辑器挂起到后台再从新放回时，光标定位仍然停留在上次挂起时的位置，避免了从新定位的麻烦。
+
+- 用disown -h jobspec来使某个做业忽略HUP信号。
+- 用disown -ah 来使全部的做业都忽略HUP信号。
+- 用disown -rh 来使正在运行的做业忽略HUP信号。
+
+须要注意的是，当使用过 disown 以后，会将把目标做业从做业列表中移除，咱们将不能再使用jobs来查看它，可是依然可以用ps -ef查找到它。
+
+可是还有一个问题，这种方法的操做对象是做业，若是咱们在运行命令时在结尾加了”&”来使它成为一个做业并在后台运行，那么就万事大吉了，咱们能够经过jobs命令来获得全部做业的列表。可是若是并无把当前命令做为做业来运行，如何才能获得它的做业号呢？答案就是用 CTRL-z（按住Ctrl键的同时按住z键）了！
+
+CTRL-z 的用途就是将当前进程挂起（Suspend），而后咱们就能够用jobs命令来查询它的做业号，再用bg jobspec来将它放入后台并继续运行。须要注意的是，若是挂起会影响当前进程的运行结果，请慎用此方法。
+
+disown 示例1（若是提交命令时已经用“&”将命令放入后台运行，则能够直接使用“disown”）
+```bash
+[root@pvcent107 build]# cp -r testLargeFile largeFile &
+[1] 4825
+[root@pvcent107 build]# jobs
+[1]+  Running                 cp -i -r testLargeFile largeFile &
+[root@pvcent107 build]# disown -h %1
+[root@pvcent107 build]# ps -ef |grep largeFile
+root      4825   968  1 09:46 pts/4    00:00:00 cp -i -r testLargeFile largeFile
+root      4853   968  0 09:46 pts/4    00:00:00 grep largeFile
+[root@pvcent107 build]# logout
+```
+
+disown 示例2（若是提交命令时未使用“&”将命令放入后台运行，可以使用 CTRL-z 和“bg”将其放入后台，再使用“disown”）
+```bash
+[root@pvcent107 build]# cp -r testLargeFile largeFile2
+
+[1]+  Stopped                 cp -i -r testLargeFile largeFile2
+[root@pvcent107 build]# bg %1
+[1]+ cp -i -r testLargeFile largeFile2 &
+[root@pvcent107 build]# jobs
+[1]+  Running                 cp -i -r testLargeFile largeFile2 &
+[root@pvcent107 build]# disown -h %1
+[root@pvcent107 build]# ps -ef |grep largeFile2
+root      5790  5577  1 10:04 pts/3    00:00:00 cp -i -r testLargeFile largeFile2
+root      5824  5577  0 10:05 pts/3    00:00:00 grep largeFile2
+[root@pvcent107 build]#
+```
 
 # 文件相关操作
 ## grep

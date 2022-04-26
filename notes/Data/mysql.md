@@ -1073,10 +1073,10 @@ GROUP BY province_code
 ![](https://raw.githubusercontent.com/NaisWang/images/master/20220223170445.png)
 
 总结：
-1. MySQL5.7之后，sql_mode中ONLY_FULL_GROUP_BY模式默认设置为打开状态。
-2. ONLY_FULL_GROUP_BY的语义就是确定select target list中的所有列的值都是明确语义，简单的说来，在此模式下，target list中的值要么是来自于聚合函数（sum、avg、max等）的结果，要么是来自于group by list中的表达式的值
-3. MySQL提供了any_value()函数来抑制ONLY_FULL_GROUP_BY值被拒绝
-4. any_value()会选择被分到同一组的数据里第一条数据的指定列值作为返回数据
+1. MySQL5.7之后，`sql_mode`中`ONLY_FULL_GROUP_BY`模式默认设置为打开状态。
+2. `ONLY_FULL_GROUP_BY`的语义就是确定select target list中的所有列的值都是明确语义，简单的说来，在此模式下，**target list中的值要么是来自于聚合函数（sum、avg、max等）的结果，要么是来自于group by list中的表达式的值**
+3. MySQL提供了`any_value()`函数来抑制`ONLY_FULL_GROUP_BY`值被拒绝
+4. `any_value()`会选择被分到同一组的数据里第一条数据的指定列值作为返回数据
 
 正确写法：
 ```sql

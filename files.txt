@@ -144,7 +144,6 @@
     "junit5.md": "junit5.md",
     "tomcat.md": "tomcat.md",
     "java操作excel.md": "java操作excel.md",
-    "分布式与微服务.md": "分布式与微服务.md",
     "高并发与高可用.md": "高并发与高可用.md",
     "java视频流操作.md": "java视频流操作.md"
   }

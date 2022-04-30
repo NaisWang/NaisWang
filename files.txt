@@ -6,6 +6,7 @@
       "Docker.pdf": "Docker.pdf",
       "Docker.md": "Docker.md"
     },
+    "yaml.md": "yaml.md",
     "css.md": "css.md",
     "正则表达式.md": "正则表达式.md",
     "中国地理.md": "中国地理.md",

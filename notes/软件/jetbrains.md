@@ -22,32 +22,29 @@
 
 | 功能                               | Jetbrain  |
 | -----------------------------      | --------- |
-| 显示方法参数信息                   | ctrl+p    |
-| quick Documentation               | ctrl+k |
-| external Documentation               | ctrl+shift+k |
-| 错误/警告描述ErrorDescription      | ctrl+e     |
-| show context actions               | ctrl+f |
+| 显示方法参数信息                   | control+a    |
+| quick Documentation                | control+k |
+| external Documentation             | control+shift+k |
+| 错误/警告描述ErrorDescription      | control+e     |
+| show context actions               | control+f |
 
 ## 编辑快捷键
 
 | 功能                              | Jetbrain   |
 | --------------------------------- | ---------- |
-| Generate                          | ctrl+g     |
-| 重命名                            | ctrl+r     |
-| 快速生成函数注释(Fix doc comment) | ctrl+c     |
-| Surround with                     | ctrl+s     |
-| 完成当前行(自动在行末加;)         | ctrl+enter |
-| 快速导包                          | ctrl+m     |
+| Generate                          | control+g     |
+| 重命名                            | control+r     |
+| 快速生成函数注释(Fix doc comment) | control+c     |
+| Surround with                     | control+s     |
+| 快速导包                          | control+m     |
 | 折叠/展开全部                          | zao/zac     |
 
 ## 有关窗口的快捷键
 
 | 功能                     | Jetbrain     |
 | ------------------------ | ------------ |
-| 显示/关闭资源目录窗口    | command+p        |
-| 关闭窗口                 | command+w        |
-| 显示/关闭其他非编辑窗口  | command+m        |
-| 光标聚集到编辑窗口       | Esc          |
+| 显示/关闭资源目录窗口    | control+p        |
+| 显示/关闭其他非编辑窗口  | control+n        |
 
 ---
 

@@ -867,7 +867,7 @@ List<int[]> list = Arrays.asList(nums);
 <span id="convert"></span>
 
 ## 子类与父类之间的转换
-**子类转父类**
+### 子类转父类
 java中子类转换父类,实际上依然是子类；此时不需要强制转换。 但引用只能调用父类中定义的方法和变量；但如果子类中重写了父类中的一个方法，那么在调用这个方法的时候，将还是会调用子类中的这个方法；
 ```java
 class Animal{
@@ -892,8 +892,17 @@ public static void test9(){
 Dog
 ```
 
-**父类转子类**
+### 父类转子类
 只有满足`父类实例 instanceof 子类`，才能实现父类转子类，即只有父类对象本身就是用子类new出来的时候, 才可以在将来被强制转换为子类对象。但仍需要强制转换,否则会报错
+```java
+// Base是Derived的父类
+Base derivedInstance = new Derived();
+Base baseInstance = new Base();
+
+Derived good = (Derived)derivedInstance; // OK
+Derived fail = (Derived)baseInstance; // Throws InvalidCastException
+```
+
 ```java
 class Animal{
   public void call(){

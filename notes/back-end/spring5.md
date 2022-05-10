@@ -1287,7 +1287,8 @@ rollbackFor 可以指定能够触发事务回滚的异常类型。Spring默认�
 
 开启事务的前提就是需要数据库的支持，我们一般使用的Mysql引擎时支持事务的，所以一般不会出现这种问题。
 
-# @Bean注解
+# IOC相关注解
+## @Bean注解
 Spring的@Bean注解用于告诉方法，给spring容器添加组件，以方法名作为组件的id，方法的返回类型作为组件类型，方法的返回值作为组件的实例。
 ```java
 @Bean
@@ -1324,6 +1325,180 @@ public Person person(Person p){
 }
 ```
 
+## @Conditional注解
+### 基本介绍
+- @Conditional注解是一个条件装配注解，主要用于限制@Bean注解在什么时候才生效。以指定的条件形式控制bean的创建
+- @Conditional可以自定义条件进行装配或者不装配…
+- @Conditional本身还是一个父注解，派生出大量的子注解；可以按需加载！
+- 因此在学习SpringBoot的时候是非常有必要学习这个注解的使用的，SpringBoot就是按需加载。
+- Conditional注解和所有子注解首先必须依托@Configuration配置类注解
+- 都可以加载类或者方法上；加载类上的含义所有的方法都按照这个条件装配、加载方法上只有该方法进行条件装配。
+- 注：Conditional注解是Spring4.0就有的，旗下的子注解是SpringBoot1.0有的。
+
+### 使用
+@Conditional注解源码
+```java
+@Target({ElementType.TYPE, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface Conditional {
+	
+	// 自定义类实现Condition接口，完成给出指定的条件。
+	Class<? extends Condition>[] value();
+
+}
+```
+
+#### 自定义条件
+使用Conditional注解进行条件装配时需要自定义类实现Condition接口（spring包下的，不是JUC包下）
+
+如下实现的效果为：如果存在dog1则不会对条件装配bean进行创建。
+```java
+public class MyCondition implements Condition {
+    /**
+     * @param context: 判断条件使用的上下文环境
+     * @param metadata: 扫描的注解信息
+     */
+    @Override
+    public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
+        // 1. 获取bean工厂
+        ConfigurableListableBeanFactory beanFactory = context.getBeanFactory();
+        // 2. 获取运行环境, 可以根据操作系统的环境进行限制bean
+        Environment environment = context.getEnvironment();
+        // 3. 获取BeanDefinition注册定义表
+        context.getRegistry();
+        // 4. 获取资源加载器
+        context.getResourceLoader();
+        // 5. 获取类加载器
+        ClassLoader classLoader = context.getClassLoader();
+        if (beanFactory.containsBean("dog1")) {
+            return false;
+        }
+        /**
+         *      可以根据以上条件进行条件装配
+         *      true: 装配
+         *      false： 不装配
+         */
+        return true;
+    }
+}
+```
+#### 条件装配测试
+```java
+@Configuration
+public class MyConfig {
+
+    @Bean("user1")
+    public User user1(){
+        return new User("splay", 22, "男");
+    }
+
+
+    @Bean("dog1")
+    //@ConditionalOnBean(name = {"dog2"})
+    public Dog dog1(){
+        return new Dog("金毛", 4,"公");
+    }
+
+    @Bean("dog2")
+    @Conditional(value = MyCondition.class)
+    public Dog dog2(){
+        return new Dog("拉布拉多", 3,"母");
+    }
+}
+```
+在dog2上加上条件装配，当扫描到这个bean时会进行条件判断。
+
+### @condition的派生注解
+继@Conditional注解后，又基于此注解推出了很多派生注解，比如@ConditionalOnBean、@ConditionalOnMissingBean、@ConditionalOnExpression、@ConditionalOnClass…动态注入bean变得更方便了。
+
+- @ConditionalOnBean作用：判断当前需要注册的bean的实现类否被spring管理，如果被管理则注入，反之不注入
+- @ConditionalOnMissingBean作用：判断当前需要注入Spring容器中的bean的实现类是否已经含有，有的话不注入，没有就注入
+
+#### @ConditionalOnBean注解
+@ConditionalOnBean作用：判断当前需要注册的bean的实现类否被spring管理，如果被管理则注入，反之不注入
+
+@ConditionalOnBean注解其实也是Conditional注解的特定装配，只不过条件类已经实现好了。@ConditionalOnBean源码如下：
+```java
+@Target({ ElementType.TYPE, ElementType.METHOD })
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Conditional(OnBeanCondition.class) //OnBeanCondition是一个Condition接口的实现类
+public @interface ConditionalOnBean {
+
+ // 1. 按照bean的类型进行检查
+ Class<?>[] value() default {};
+
+ // 2. 按照bean的类型进行检查
+ String[] type() default {};
+
+ // 3. 按照bean的注解进行检查
+ Class<? extends Annotation>[] annotation() default {};
+
+ // 4. 按照BeanName进行检查
+ String[] name() default {};
+
+ // 5. 搜索策略
+ SearchStrategy search() default SearchStrategy.ALL;
+
+ // 6. 不详
+ Class<?>[] parameterizedContainer() default {};
+}
+```
+
+##### 条件装配测试（一）
+当容器中存在dog1的时候再创建dog2，否则就不会进行创建。
+```java
+@Configuration
+public class MyConfig {
+
+    @Bean("user1")
+    public User user1(){
+        return new User("splay", 22, "男");
+    }
+
+
+    @Bean("dog1")
+    public Dog dog1(){
+        return new Dog("金毛", 4,"公");
+    }
+
+    @Bean("dog2")
+    @ConditionalOnBean(name = {"dog1"})
+    public Dog dog2(){
+        return new Dog("拉布拉多", 3,"母");
+    }
+}
+```
+
+##### 条件装配测试（二）
+在使用时发现条件装配与bean的编写注册顺序有关系，如果先后顺序导致将会出现失败的情况。
+```java
+@Configuration
+public class MyConfig {
+
+    @Bean("user1")
+    public User user1(){
+        return new User("splay", 22, "男");
+    }
+
+
+    @Bean("dog1")
+    @ConditionalOnBean(name = {"dog2"})		//当有dog2组件的时候创建dog1
+    public Dog dog1(){
+        return new Dog("金毛", 4,"公");
+    }
+
+    @Bean("dog2")
+    public Dog dog2(){
+        return new Dog("拉布拉多", 3,"母");
+    }
+}
+```
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220502113404.png)
+
+对比上面测试一发现dog1并没有成功创建，猜测创建的时候估计是按照某种顺序进行的！因此在使用条件装配进行创建的时候一定要注意呗依赖的条件是否要先创建的问题！
 
 # spring5新特性
 整个 Spring5 框架的代码基于 Java8，运行时兼容 JDK9， 许多不建议使用的类和方

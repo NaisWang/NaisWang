@@ -925,6 +925,37 @@ public static void test9(){
 }
 ```
 
+例题1:
+```java
+Object[] a = new Object[3];
+System.out.println(a instanceof Object[][]); // false
+Object[][] b = (Object[][]) a;
+```
+以上会正常编译，因为Object[]是Object[][]的父类。但不会正常运行，因为a本身不是用Object[][]创建出来的
+
+例题2:
+```java
+Object[] a = new Object[3][3];
+System.out.println(a instanceof Object[][]); // true
+Object[][] b = (Object[][]) a;
+```
+以上会正常编译，因为Object[]是Object[][]的父类。且也会正常运行，因为a本身是用Object[][]创建出来的
+
+例题3:
+```java
+Integer[] a = new Integer[3];
+Integer[][] b = (Integer[][]) a;
+```
+以上不会正常编译，因为Integer[]不是Integer[][]的父类。
+
+例题4: 
+```java
+Object a = new int[2];
+System.out.println(a instanceof int[]); // true
+int[] b = (int[]) a;
+```
+以上会正常编译，因为Object是int[]的父类。且也会正常运行，因为a本身是用int[]创建出来的
+
 ## instanceof的作用
 `A instanceof B`的作用：
 假设A对象是由C类new出来的，则该语句的作用是判断C类实例是否是B的实例或者是B的子类的实例
@@ -988,6 +1019,37 @@ public void test(){
   String[] str = list.toArray(new String[0]);
 ```
 
+## 类型转换后引用地址不变
+```java
+Object[] a = new Integer[1];
+a[0] = 1;
+Integer[] b = (Integer[]) a;
+b[0] = 2;
+System.out.println(a[0]); // 2
+System.out.println(System.identityHashCode(a)); // 1856056345
+System.out.println(System.identityHashCode(b)); // 1856056345
+
+Object[][] a1 = new Integer[1][1];
+a1[0][0] = 1;
+Integer[] b1 = (Integer[]) a1[0];
+b1[0] = 2;
+System.out.println(a1[0][0]); // 2
+System.out.println(System.identityHashCode(a1)); // 1778535015
+System.out.println(System.identityHashCode(b1)); // 1778535015
+
+Integer[] a2 = new Integer[1];
+a2[0] = 1;
+Object[] b2 = a2;
+b2[0] = 2;
+System.out.println(a2[0]); // 3
+System.out.println(System.identityHashCode(a2)); // 24433162
+System.out.println(System.identityHashCode(b2)); // 24433162
+
+Object a3 = new int[2];
+int[] b3 = (int[]) a3;
+System.out.println(System.identityHashCode(a3)); // 1725097945
+System.out.println(System.identityHashCode(b3)); // 1725097945
+```
 
 # 接口多继承
 - 一个类只能extends一个父类，但可以implements多个接口
@@ -2067,7 +2129,7 @@ List<Integer> list = new ArrayList(Arrays.asList(nums));
 ```
 
 # Map集合体系
-![](https://raw.githubusercontent.com/NaisWang/images/master/20220329130525.png)
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220510141227.png)
 
 ## Map父接口
 特点：存储一对数据（Key-Value），无序、无下标，键不可重复，值可重复。
@@ -2135,6 +2197,10 @@ System.out.println(user);
 ## 判重
 HashMap中判断key是否重复的方法与HashSet判重方法一样，且解决hash冲突的方式都是链地址法
 TreeSet中判断key是否重复的方法与TreeSet判重方法一样
+
+
+## LinkedHashMap
+LinkedHashMap 是HashMap的一个子类，**保存了记录的插入顺序**，在用Iterator遍历LinkedHashMap时，先得到的记录肯定是先插入的.也可以在构造时用带参数，按照应用次数排序。在遍历的时候会比HashMap慢，不过有种情况例外，当HashMap容量很大，实际数据较少时，遍历起来可能会比 LinkedHashMap慢，因为LinkedHashMap的遍历速度只和实际数据有关，和容量无关，而HashMap的遍历速度和他的容量有关。
 
 # Collections工具类
 概念：集合工具类，定义了除了存取以外的集合常用方法。

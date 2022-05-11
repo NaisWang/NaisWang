@@ -1261,6 +1261,7 @@ org.springframework.transaction.NoTransactionException: No transaction aspect-ma
 - 在项目中，@Transactional(rollbackFor=Exception.class)，如果类加了这个注解，那么这个类里面的方法抛出异常，就会回滚，数据库里面的数据也会回滚。
 - 在@Transactional注解中如果不配置rollbackFor属性,那么事物只会在遇到RuntimeException的时候才会回滚,加上rollbackFor=Exception.class,可以让事物在遇到非运行时异常时也回滚。
 
+
 ### 注解失效问题
 
 正常情况下，只要在方法上添加@Transactional注解就完事了，但是需要注意的是，虽然使用简单，但是如果不合理地使用注解，还是会存在注解失效的问题。

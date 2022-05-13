@@ -9,6 +9,10 @@
     "yaml.md": "yaml.md",
     "css.md": "css.md",
     "正则表达式.md": "正则表达式.md",
+    "算法": {
+      "基础算法.docx": "基础算法.docx",
+      "算法.md": "算法.md"
+    },
     "中国地理.md": "中国地理.md",
     "latex": {
       "latex.md": "latex.md",
@@ -39,7 +43,6 @@
     "台球.md": "台球.md",
     "java.md": "java.md",
     "物理.md": "物理.md",
-    "算法.md": "算法.md",
     "文献.md": "文献.md",
     "xml.md": "xml.md",
     "计算机网络.md": "计算机网络.md",

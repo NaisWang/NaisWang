@@ -326,6 +326,42 @@ java中的浮点型常量默认为double型，声明float型常量可以在后�
 无论哪个版本的JDK，都是不支持 long，float，double，boolean 这个一定要注意！
 因为在Float/Double上执行精确的相等匹配通常是个坏主意。
 
+# 声明成员数组时包含变量
+加载(非静态变量，非静态初始化块)、构造器的过程是在实例初始化过程, 且执行顺序与所写顺序一致
+
+例1:
+```java
+class Test {
+	int n;
+	int[][] plants = new int[n][2];
+}
+```
+此时由于执行到`int[][] plants = new int[n][2]`语句时，已经执行了`int n`语句。而`n`的默认值为0，所以声明plants的语句实际上是`int[][] plants = new int[0][2]`, 因为在转换成汇编语言后是不会存储变量名称的（对于基本类型，汇编语言会保存其值。对于引用类型，汇编语言会保存其指向的地址）。
+
+
+例2:
+```java
+class Test {
+	Integer n;
+	int[][] plants = new int[n][2];
+}
+```
+由于n的初始值为null，所以在执行声明plants语句时，会报如下错误：
+```
+Exception in thread "main" java.lang.NullPointerException
+	at Test.<init>
+```
+
+例2:
+```java
+class Test {
+	int[][] plants = new int[n][2];
+	int n;
+}
+```
+此时由于声明plants语句比声明n语句先执行，所以在转成汇编语言时，会找不到变量n对应的值，所以在编译的时候会报错
+
+
 # 包装类
 Java中每一种基本类型都会对应一个唯一的包装类，基本类型与其包装类都可以通过包装类中的静态或者成员方法进行转换。每种基本类型及其包装类的对应关系如下，值得注意的是，所有的包装类都是final修饰的，也就是它们都是无法被继承和重写的。
 

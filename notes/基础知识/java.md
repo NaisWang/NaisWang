@@ -2157,13 +2157,6 @@ System.out.println(cups);
 ```
 这是 JDK 9 里面新增的 List 接口里面的静态方法，同样也是不可变的。
 
-## int数组和Integer数组以及List＜Integer＞集合三者的相互转化
-**int数组转List<Integer>集合 以及 List<Integer>集合转int数组**
-```java
-int[] nums = {3, 30, 34, 5, 9};
-List<Integer> list = new ArrayList(Arrays.asList(nums));
-```
-
 # Map集合体系
 ![](https://raw.githubusercontent.com/NaisWang/images/master/20220510141227.png)
 

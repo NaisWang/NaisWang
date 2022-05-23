@@ -1,43 +1,6 @@
 做算法最好要满足：
 - <font color="red">一个变量不能多意</font>
 
-# 算法的伪码编写
-## 分支语句
-```
-if a = b then
-  ...
-else
-  ...
-end if
-```
-
-## 循环语句
-```
-while a != b do
-  ...
-end while
-
-
-for i=1 to k do
-  ...
-end for
-```
-
-## 集合表示
-```
-a = {v}
-b = a - {i};
-c = a + {i};
-```
-
-## 方法
-```
-function a(s, x)
-  ...
-end fun
-```
-
-
 # 常用技巧
 ## while(n-- != 0)与while(--n != 0)
 `while(n-- != 0)`循环n次
@@ -99,12 +62,114 @@ $$ω(g(n)) = {f(n):对任意正常量c, 和n_0，使得对所有n \geq n_0, 有0
 
 
 # 枚举
+## 枚举的基本思想
 
-<div class="container">
-  <iframe src="https://drive.google.com/file/d/14BqjQi3YcamJgb1tzUMgj7Ltvv9lKpA4/preview" width="640" height="480" allow="autoplay"></iframe>
-</div>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514142835.png)
 
-## OpenJudge-NOI/2.1基本算法之枚举-1816：拨钟问题
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514142939.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514161558.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514161715.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514183503.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514183540.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514183712.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514183750.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514183825.png)
+
+## 例题
+### 熄灯问题
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514183916.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514184136.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514184221.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514184256.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514184339.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514184429.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514184507.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514184635.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514184733.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514184811.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514184856.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514184934.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514185009.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514185045.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514185123.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514185225.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514185257.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514185342.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514185416.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514185509.png)
+
+### 讨厌的青蛙
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514185610.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514185649.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514185738.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514235513.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514235557.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514235627.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514235657.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514235731.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514235759.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514235831.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514235854.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220514235943.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220515000025.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220515000100.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220515000127.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220515093656.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220515093751.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220515093811.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220515093829.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220515093851.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220515093911.png)
+
+### OpenJudge-NOI/2.1基本算法之枚举-1816：拨钟问题
 总时间限制: 1000ms 内存限制: 65536kB
 
 描述
@@ -167,7 +232,7 @@ $$ω(g(n)) = {f(n):对任意正常量c, 和n_0，使得对所有n \geq n_0, 有0
 4 5 8 9
 ```
 
-### 题解
+#### 题解
 由题可知，一共有9种不同的移动，那么我们将每一种移动对应于一种操作(operation),简写成op。每种操作都会影响若干个时钟，那么我们将每种操作影响的时钟转换为每个时钟受哪些操作的影响。如下所示：
 ```
 A 1 2 4
@@ -182,7 +247,7 @@ I 6 8 9
 ```
 又因为每次操作会将若干个时钟转动90度，所以当同一个操作进行4次，其实就是旋转了360度，相当于没有操作。(**一种操作做四次和不做是一样的**)所以每种操作做的次数为：0，1，2，3。一共有9种操作，所以枚举次数为4的9次方，暴力枚举就是一个9重循环。最后用一个变量sum来累加每个时钟被操作后的指向，如果累加完后sum=0，那么说明找到了一个移动序列使得9个时钟的指针都指向12点。但此时我们并不知道找到的是否就是最短的序列，所以还要进行比较取操作次数的最小值。
 
-#### 方法一 暴力枚举
+##### 方法一 暴力枚举
 代码如下：
 ```cpp
 #include<iostream>
@@ -253,7 +318,7 @@ int main()
 
 所以根据局部思想的方法，我们只需对操作1，2，3进行枚举，枚举的次数为4的3次方=64次。
 
-#### 方法二 局部枚举
+##### 方法二 局部枚举
 代码如下：
 ```cpp
 #include<iostream>
@@ -460,10 +525,6 @@ int binarySearch(int left, int right) {
 - 无论什么时候，`f(left)`都是为true, `f(right)`都是为false
 - 最后返回left还是right，看你是想要获取哪个转折点。据需求而定
 - 要进行二分查找时，left的值为列表的左边界-1，right为列表的右边界+1
-
-## 解题流程
-
-![](https://raw.githubusercontent.com/NaisWang/images/master/20220520163540.png)
 
 ## 例题
 ### 例题1: 猜数字大小
@@ -805,11 +866,11 @@ class Solution {
 }
 ```
 ### K-th object problems
-K-th object problems问题可以归纳为：有一堆objects，让你找出将这些objects按其某属性A的值排序后的第k个object的属性值
+K-th object problems问题可以归纳为：为你让你从一堆Objects中找出第k属性值，例如第k小的数、第k小的距离对、第k个神奇数字
 
 这类问题的解题步骤：
-1. 列出所有可能解：object的属性A的所有可能值
-2. 找到boolean function f(v)能把所有可能解划分成2部分：这里function为，将这些objects排好序后，如果位于属性值v前面的object个数大于等于k个，则返回true，反之，返回false
+1. 列出所有可能解：即属性值所有可能取到的值
+2. 找到boolean function f(v)能把所有可能解划分成2部分：即这里function为，如果在这个objects中属性值小于等于v的个数大于等于k的话，则返回true，反之，返回false
 
 #### 例题7: 乘法表中第k小的数
 [乘法表中第k小的数](https://leetcode.cn/problems/kth-smallest-number-in-multiplication-table/)
@@ -848,10 +909,10 @@ K-th object problems问题可以归纳为：有一堆objects，让你找出将�
 ```
 
 ##### 题目分析
-1. 这一堆objects就是乘法表中元素
-2. 属性：乘法表中元素的大小值
+1. 这一大堆objects就是乘法表
+2. 属性值：乘法表中元素的大小
 3. 所有可能解是`[1, m*n]`;
-4. `boolean f(v)`是将objects按大小排好序后，如果大小小于value的个数大于等于k，则返回true，反之，返回false
+4. `boolean f(v)`是如果矩阵中元素小于value的个数大于等于k，则返回true，反之，返回false
 
 代码：
 ```java
@@ -890,10 +951,6 @@ class Solution {
   <iframe width="560" height="315" src="https://www.youtube.com/embed/mwIge6NXAyQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
-<div class="container">
-  <iframe src="https://drive.google.com/file/d/1SnFyU98h9F6DTEB5g4x8b2XM7wSkUqM4/preview" width="640" height="480" allow="autoplay"></iframe>
-</div>
-
 一个正整数如果能被 a 或 b 整除，那么它是神奇的。
 
 给定三个整数 n , a , b ，返回第 n 个神奇的数字。因为答案可能很大，所以返回答案 对 109 + 7 取模 后的值。
@@ -911,10 +968,10 @@ class Solution {
 ```
 
 ##### 题目分析
-1. 这一堆objects就是a与b的神奇数字
-2. 属性：神奇数字大小
+1. 这一大堆objects就是a与b的神奇数字
+2. 属性值：
 3. 所有可能解是`[0, n * Math.min(a, b)]`;
-4. `boolean f(v)`是将objects排好序后，如果大小小于value的个数大于等于k，则返回true，反之，返回false
+4. `boolean f(v)`是如果1~value中能被a或b整除的个数大于或等于n，则返回true，反之返回false
 
 代码：
 ```java
@@ -935,7 +992,7 @@ class Solution {
     return (int)(right % (1e9 + 7));
   }
 
-  // 如果a与b的神奇数字小于value的个数大于或等于n，则返回true，反之返回false
+  // 如果1~value中能被a或b整除的个数大于或等于n，则返回true，反之返回false
   boolean f(int n, int a, int b, long value) {
     return value / a + value / b - value / lcm(a, b) >= n;
   }
@@ -1203,701 +1260,6 @@ int facttail(int n, int a)
 示例3-2中的函数是尾递归的，因为对facttail的单次递归调用是函数返回前最后执行的一条语句。在facttail中碰巧最后一条语句也是对facttail的调用，但这并不是必需的。换句话说，在递归调用之后还可以有其他的语句执行，只是它们只能在递归调用没有执行时才可以执行。
 尾递归是极其重要的，不用尾递归，函数的堆栈耗用难以估量，需要保存很多中间函数的堆栈。比如f(n, sum) = f(n-1) + value(n) + sum; 会保存n个函数调用堆栈，而使用尾递归f(n, sum) = f(n-1, sum+value(n)); 这样则只保留后一个函数堆栈即可，之前的可优化删去。
 也许在C语言中有很多的特例，但编程语言不只有C语言，在函数式语言Erlang中（亦是栈语言），如果想要保持语言的高并发特性，就必须用尾递归来替代传统的递归。
-
-## 回溯、递归、DFS之间的区别
-递归就是自我调用，经常作为一种编程的实现方式，比如题主问题中的DFS 、动态规划、回溯法都可以用递归来实现，当然也可以用非递归来实现。
-
-回溯是一种通用的算法，把问题分步解决，在每一步都试验所有的可能，当发现已经找到一种方式或者目前这种方式不可能是结果的时候，退回上一步继续尝试其他可能。很多时候每一步的处理都是一致的，这时候用递归来实现就很自然。回溯有点类似于穷举，但是和穷举不同的是回溯会“剪枝”。
-
-当回溯用于树/图的时候，就是深度优先搜索。当然了，几乎所有可以用回溯解决的问题都可以表示为树。那么这俩在这里就几乎同义了。如果一个问题解决的时候显式地使用了树，那么我们就叫它dfs。很多时候没有用树我们也管它叫dfs严格地说是不对的，但是dfs比回溯打字的时候好输入。别的回答里提到了砍枝，实际上这二者都可以砍枝。
-
-
-# 隐式图上的DFS和BFS算法
-
-<div class="container">
-  <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vTsncuwX8bZZ5Eq1f4fHx0pV1AaX8DgE4vxrwvs126IbfY75gn8bz3areORo6I9Kz8ZZuKXRFZLBjUD/embed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
-</div>
-
-## 模版
-
-### DFS模版
-```java
-/**
-* visited: 用来存储被访问过的状态。如果允许状态是能够重复访问，则不需要创建visited变量
-* path: 用来存储路径。如果不需要输出路径，则不需要创建path变量
-/
-boolean dfs(State currentState, Map<State, Boolean> visited, LinkedList<State> path) {
-  visited.put(currentState, true);
-  
-  // 如果currentState是目标状态
-  if (isObjective(currentState)) {
-    // 可以在这里输出path
-    return true;
-  }
-
-  List<State> nextStates = transition(currentState);
-  for (State nextState : nextStates) {
-    if (visited.containsKey(nextState)) continue;
-    path.push(nextState);
-    if (dfs(nextState, visited, path)){
-      return true;
-    }
-    path.pop();
-  }
-  return false;
-}
-```
-
-### BFS模版
-#### 模版1：求路径是否存在
-```java
-/**
-* visited: 用来存储被访问过的状态。如果允许状态是能够重复访问，则不需要创建visited变量
-* path: 用来存储路径。如果不需要输出路径，则不需要创建path变量
-/
-boolean bfs(State startState) {
-  Queue<State> queue = new LinkedList();
-  Map<State, Boolean> visited = new HashMap();
-  Map<State, State> path = new HashMap();
-  
-  queue.add(startState);
-  visited.put(startState, true);
-
-  while (!queue.isEmpty()) {
-    State currentState = queue.poll();
-    // 如果currentState是目标状态
-    if (isObjective(currentState)) {
-      // 可以在这里输出path
-      return visited.get(currentState);
-    }
-
-    List<State> nextStates = transition(currentState);
-    for (State nextState : nextStates) {
-      if (visited.containsKey(nextState)) continue;
-      queue.add(nextState);
-      visited.put(nextState, true);
-      path.put(nextState, currentState); 
-    }
-  }
-  return false;
-}
-```
-
-#### 模版2：求最短路径
-```java
-/**
-* visited: 用来存储被访问过的状态。如果允许状态是能够重复访问，则不需要创建visited变量
-* path: 用来存储路径。如果不需要输出路径，则不需要创建path变量
-/
-boolean bfs(State startState) {
-  Queue<State> queue = new LinkedList();
-  Map<State, Integer> visited = new HashMap();
-  Map<State, State> path = new HashMap();
-  
-  queue.add(startState);
-  visited.put(startState, true);
-
-  while (!queue.isEmpty()) {
-    State currentState = queue.poll();
-    // 如果currentState是目标状态
-    if (isObjective(currentState)) {
-      // 可以在这里输出path
-      return true;
-    }
-
-    List<State> nextStates = transition(currentState);
-    for (State nextState : nextStates) {
-      if (visited.containsKey(nextState)) continue;
-      queue.add(nextState);
-      visited.put(nextState, visited.get(currentState) + 1);
-      path.put(nextState, currentState); 
-    }
-  }
-  return false;
-}
-```
-
-##### visited妙用
-用BFS求最短路径时visited不但可以用来存储被访问过的状态，还可以用来存储到达此状态的最短路径。见例题2: 完全平方数、例题4: 滑动谜题、例题5: 零钱兑换
-
-## 总结
-使用模版前，需要思考下面2点：
-1. 是否允许状态被重复访问?
-  - 允许，不需要创建visited。见例题3：N皇后 II
-  - 不允许，需要创建visited
-2. 是否要求出最短路径?
-  - 是，只能使用BFS，不能使用DFS。见例题2: 完全平方数
-  - 不是，既能使用BFS，也能使用DFS
-
-## 例题
-### 例题1: 水壶问题
-[水壶问题](https://leetcode.cn/problems/water-and-jug-problem/)
-
-有两个水壶，容量分别为 jug1Capacity 和 jug2Capacity 升。水的供应是无限的。确定是否有可能使用这两个壶准确得到 targetCapacity 升。
-
-如果可以得到 targetCapacity 升水，最后请用以上水壶中的一或两个来盛放取得的 targetCapacity 升水。
-
-你可以：
-- 装满任意一个水壶
-- 清空任意一个水壶
-- 从一个水壶向另外一个水壶倒水，直到装满或者倒空
-
-示例 1: 
-```txt
-输入: jug1Capacity = 3, jug2Capacity = 5, targetCapacity = 4
-输出: true
-```
-
-示例 2:
-```
-输入: jug1Capacity = 2, jug2Capacity = 6, targetCapacity = 5
-输出: false
-```
-
-代码：
-dfs实现
-```java
-class Solution {
-  int jug1 = 0;
-  int jug2 = 0;
-  int target = 0;
-
-  public boolean canMeasureWater(int jug1Capacity, int jug2Capacity, int targetCapacity) {
-    jug1 = jug1Capacity;
-    jug2 = jug2Capacity;
-    target = targetCapacity;
-    return dfs(new State(0, 0), new HashMap());
-  }
-
-  boolean dfs(State currentState, Map<State, Boolean> visited) {
-    visited.put(currentState, true);
-
-    if (currentState.x == target || 
-    currentState.y == target || 
-    currentState.x + currentState.y == target) {
-      return true;
-    }
-
-    List<State> nextStates = transition(currentState);
-    for (State nextState : nextStates) {
-      if (visited.containsKey(nextState)) continue;
-      if (dfs(nextState, visited)){
-        return true;
-      }
-    }
-    return false;
-  }
-
-  List<State> transition(State state) {
-    List<State> res = new ArrayList();
-    if (state.x < jug1) {
-      res.add(new State(jug1, state.y)); // 把第一个壶倒满
-    }
-    if (state.y < jug2) {
-      res.add(new State(state.x, jug2)); // 把第二个壶倒满
-    }
-    if (state.x > 0) {
-      res.add(new State(0, state.y)); // 清空第一个壶
-    }
-    if (state.y > 0) {
-      res.add(new State(state.x, 0)); // 清空第二个壶
-    }
-    if (state.x < jug1 && state.y > 0) {
-      res.add(new State(Math.min(jug1, state.x + state.y), Math.max(0, state.y - (jug1 - state.x)))); // 将第二个壶中的水倒入第一个壶中
-    }
-    if (state.y < jug2 && state.x > 0) {
-      res.add(new State(Math.max(0, state.x - (jug2 - state.y)), Math.min(jug2, state.y + state.x))); // 将第一个壶中的水倒入第二个壶中
-    }
-    return res;
-  }
-
-  class State {
-    int x;
-    int y;
-
-    public State(int x, int y) {
-      this.x = x; 
-      this.y = y;
-    }
-
-    public boolean equals(Object o) {
-      if (this == o) return true;
-      if (o == null) return false;
-      State a = (State) o;
-      return x == a.x && y == a.y;
-    }
-
-    public int hashCode() {
-      return Objects.hash(x, y);
-    } 
-
-  }
-
-}
-```
-
-bfs实现
-```java
-class Solution {
-  int jug1 = 0;
-  int jug2 = 0;
-  int target = 0;
-
-  public boolean canMeasureWater(int jug1Capacity, int jug2Capacity, int targetCapacity) {
-    jug1 = jug1Capacity;
-    jug2 = jug2Capacity;
-    target = targetCapacity;
-    return bfs(new State(0, 0));
-  }
-
-  boolean bfs(State startState) {
-    Queue<State> queue = new LinkedList();
-    Map<State, Boolean> visited = new HashMap();
-    Map<State, State> path = new HashMap();
-    
-    queue.add(startState);
-    visited.put(startState, true);
-
-    while (!queue.isEmpty()) {
-      State currentState = queue.poll();
-      if (currentState.x == target || 
-        currentState.y == target || 
-        currentState.x + currentState.y == target) {
-      return true;
-      }
-
-      List<State> nextStates = transition(currentState);
-      for (State nextState : nextStates) {
-        if (visited.containsKey(nextState)) continue;
-        queue.add(nextState);
-        visited.put(nextState, true);
-        path.put(nextState, currentState); 
-      }
-    }
-    return false;
-
-  }
-
-  List<State> transition(State state) {
-    List<State> res = new ArrayList();
-    if (state.x < jug1) {
-      res.add(new State(jug1, state.y)); // 把第一个壶倒满
-    }
-    if (state.y < jug2) {
-      res.add(new State(state.x, jug2)); // 把第二个壶倒满
-    }
-    if (state.x > 0) {
-      res.add(new State(0, state.y)); // 清空第一个壶
-    }
-    if (state.y > 0) {
-      res.add(new State(state.x, 0)); // 清空第二个壶
-    }
-    if (state.x < jug1 && state.y > 0) {
-      res.add(new State(Math.min(jug1, state.x + state.y), Math.max(0, state.y - (jug1 - state.x)))); // 将第二个壶中的水倒入第一个壶中
-    }
-    if (state.y < jug2 && state.x > 0) {
-      res.add(new State(Math.max(0, state.x - (jug2 - state.y)), Math.min(jug2, state.y + state.x))); // 将第一个壶中的水倒入第二个壶中
-    }
-    return res;
-  }
-
-  class State {
-    int x;
-    int y;
-
-    public State(int x, int y) {
-      this.x = x; 
-      this.y = y;
-    }
-
-    public boolean equals(Object o) {
-      if (this == o) return true;
-      if (o == null) return false;
-      State a = (State) o;
-      return x == a.x && y == a.y;
-    }
-
-    public int hashCode() {
-      return Objects.hash(x, y);
-    } 
-
-  }
-
-}
-```
-
-### 例题2: 完全平方数
-
-[完全平方数](https://leetcode.cn/problems/perfect-squares/)
-
-给你一个整数 n ，返回 和为 n 的完全平方数的最少数量 。
-
-完全平方数 是一个整数，其值等于另一个整数的平方；换句话说，其值等于一个整数自乘的积。例如，1、4、9 和 16 都是完全平方数，而 3 和 11 不是。
-
-示例 1：
-```txt
-输入：n = 12
-输出：3 
-解释：12 = 4 + 4 + 4
-```
-
-示例 2：
-```txt
-输入：n = 13
-输出：2
-解释：13 = 4 + 9
-```
-
-#### 分析
-此题是最短路径问题，可以用BFS来做，但是不能用DFS来做
-
-代码：
-```java
-class Solution {
-  public int numSquares(int n) {
-    return bfs(n);    
-  }
-  
-  int bfs(Integer startState) {
-    Queue<Integer> queue = new LinkedList(); 
-    Map<Integer, Integer> visited = new HashMap(); // 技巧：可以用visited表示是否被访问过，也过表示访问此状态所经过的步数
-
-    queue.add(startState);
-    visited.put(startState, 0);
-    
-    while(!queue.isEmpty()) {
-      Integer currentState = queue.poll();
-      if (currentState == 0) {
-        return visited.get(currentState);
-      }
-
-      for (int i = 1; i * i <= currentState; i++) {
-        int nextState = currentState - i * i;
-        if (visited.containsKey(nextState)) continue;;
-        queue.add(nextState);
-        visited.put(nextState, visited.get(currentState) + 1);
-      }
-
-    }
-    return -1;
-  }
-}
-```
-
-
-### 例题3：N皇后 II
-[N皇后 II](https://leetcode.cn/problems/n-queens-ii/)
-
-n 皇后问题 研究的是如何将 n 个皇后放置在 n × n 的棋盘上，并且使皇后彼此之间不能相互攻击。
-
-给你一个整数 n ，返回 n 皇后问题 不同的解决方案的数量。
-
-示例 1：
-```txt
-输入：n = 4
-输出：2
-```
-
-#### 分析
-dfs代码：
-```java
-class Solution {
-
-  int n; 
-  int cnt = 0; 
-
-  public int totalNQueens(int n) {
-    this.n = n;
-    dfs(new State(new int[9], 0));
-    return cnt;
-  }
-  
-  void dfs(State currentState) {
-    if (currentState.nowRow == n) {
-      cnt++;
-      return;
-    }
-
-    for (int col = 0; col < n; col++) {
-      boolean conflict = false;
-      for (int row = 0; row < currentState.nowRow; row++) {
-        if (col == currentState.preRows[row] || currentState.nowRow - row  == Math.abs(currentState.preRows[row] - col)) {
-          conflict = true; 
-          break;
-        }
-      }
-      if (!conflict) {
-        int[] temp =  Arrays.copyOf(currentState.preRows, n);
-        temp[currentState.nowRow] = col; 
-        dfs(new State(temp,  currentState.nowRow + 1));
-      }
-    }
-
-  }
-
-  class State {
-    int[] preRows; // 存放位于nowRow前面的每行中皇后所在列
-    int nowRow; // 当前需要摆放皇后的行
-
-    public State(int[] preRows, int nowRow) {
-      this.preRows = preRows;
-      this.nowRow = nowRow;
-    }
-
-
-    public boolean equals(Object o) {
-      if (this == o) return true;
-      if (o == null || getClass() != o.getClass()) return false;
-      State state = (State) o;
-      return nowRow == state.nowRow && Arrays.equals(preRows, state.preRows);
-    }
-  
-    public int hashCode() {
-      int result = Objects.hash(nowRow);
-      result = 31 * result + Arrays.hashCode(preRows);
-      return result;
-    }
-  }
-
-}
-```
-
-bfs代码：
-```java
-class Solution {
-
-  int n; 
-  int cnt = 0; 
-
-  public int totalNQueens(int n) {
-    this.n = n;
-    bfs(new State(new int[9], 0));
-    return cnt;
-  }
-
-  void bfs(State startState) {
-    Queue<State> queue = new LinkedList();
-    queue.add(startState);
-
-    while(!queue.isEmpty()) {
-      State currentState = queue.poll();
-
-      if (currentState.nowRow == n) {
-        cnt++;
-        continue;
-      }
-
-      for (int col = 0; col < n; col++) {
-        boolean conflict = false;
-        for (int row = 0; row < currentState.nowRow; row++) {
-          if (col == currentState.preRows[row] || currentState.nowRow - row  == Math.abs(currentState.preRows[row] - col)) {
-            conflict = true; 
-            break;
-          }
-        }
-
-        if (!conflict) {
-          int[] temp =  Arrays.copyOf(currentState.preRows, n);
-          temp[currentState.nowRow] = col; 
-          queue.add(new State(temp,  currentState.nowRow + 1));
-        }
-      }
-    }
-  }
-
-  class State {
-    int[] preRows; // 存放位于nowRow前面的每行中皇后所在列
-    int nowRow; // 当前需要摆放皇后的行
-
-    public State(int[] preRows, int nowRow) {
-      this.preRows = preRows;
-      this.nowRow = nowRow;
-    }
-
-
-    public boolean equals(Object o) {
-      if (this == o) return true;
-      if (o == null || getClass() != o.getClass()) return false;
-      State state = (State) o;
-      return nowRow == state.nowRow && Arrays.equals(preRows, state.preRows);
-    }
-  
-    public int hashCode() {
-      int result = Objects.hash(nowRow);
-      result = 31 * result + Arrays.hashCode(preRows);
-      return result;
-    }
-  }
-
-}
-```
-
-#### 判断棋盘中的两个点是否在同一斜线上
-假如现在有两个点(x1, y1), (x2, y2); 则其两个在同一斜线上点充要条件是：$abs(x1 - x2) == abs(y1 - y2)$
-
-### 例题4: 滑动谜题
-[滑动谜题](https://leetcode.cn/problems/sliding-puzzle/)
-
-在一个 2 x 3 的板上（board）有 5 块砖瓦，用数字 1~5 来表示, 以及一块空缺用 0 来表示。一次 移动 定义为选择 0 与一个相邻的数字（上下左右）进行交换.
-
-最终当板 board 的结果是 [[1,2,3],[4,5,0]] 谜板被解开。
-
-给出一个谜板的初始状态 board ，返回最少可以通过多少次移动解开谜板，如果不能解开谜板，则返回 -1 。
-
-#### 分析
-代码:
-```java
-class Solution {
-
-  public int slidingPuzzle(int[][] board) {
-    return bfs(new State(board)); 
-  }
-
-  int bfs(State startState) {
-    Queue<State> queue = new LinkedList();
-    Map<State, Integer> visited = new HashMap();
-
-    queue.add(startState);
-    visited.put(startState, 0);
-
-    while (!queue.isEmpty()) {
-      State currentState = queue.poll();
-      if (Arrays.deepEquals(currentState.board, new int[][]{{1,2,3}, {4, 5, 0}})) {
-        return visited.get(currentState);
-      }
-
-      List<State> nextStates = transition(currentState);
-      for(State nextState : nextStates) {
-        if (visited.containsKey(nextState)) continue;    
-        queue.add(nextState);
-        visited.put(nextState, visited.get(currentState) + 1);
-      }
-    }
-    return -1;
-  }
-
-  List<State> transition(State currentState) {
-    int[] now = currentState.now;
-    int[][] board = currentState.board;
-    List<State> res = new ArrayList();
-    int[] dc = new int[]{0, 0, -1, 1};
-    int[] dr = new int[]{-1, 1, 0, 0};
-    for (int i = 0; i < 4; i++) {
-      int nr = now[0] + dr[i];
-      int nc = now[1] + dc[i];
-      if (nr >= 0 && nr <= 1 && nc >= 0 && nc <= 2) {
-        int[][] newBoard = new int[2][3];
-        for (int j = 0; j < 2; j++) {
-          newBoard[j] = Arrays.copyOf(board[j], 3);
-        }
-        newBoard[now[0]][now[1]] = newBoard[nr][nc];
-        newBoard[nr][nc] = 0;
-        res.add(new State(newBoard, new int[]{nr, nc}));
-      }
-    }
-    return res;
-  }
-
-  
-
-  class State {
-    int[][] board = new int[2][3];
-    int[] now; // 现在空缺块坐标
-
-    public State(int[][] board, int[] now) {
-      this.board = board;
-      this.now = now;
-    }
-
-    public State(int[][] board) {
-      this.board = board;
-      for (int r = 0; r < 2; r++) {
-        for (int c = 0; c < 3; c++) {
-          if (board[r][c] == 0) {
-            this.now = new int[]{r, c};
-            return;
-          }
-        }
-      }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-      if (this == o) return true;
-      if (o == null || getClass() != o.getClass()) return false;
-      State state = (State) o;
-      return Arrays.deepEquals(board, state.board) && Arrays.equals(now, state.now);
-    }
-
-    @Override
-    public int hashCode() {
-      int result = Arrays.deepHashCode(board);
-      result = 31 * result + Arrays.hashCode(now);
-      return result;
-    }
-
-  }
- 
-}
-```
-
-### 例题5: 零钱兑换
-[零钱兑换](https://leetcode.cn/problems/coin-change/)
-
-给你一个整数数组 coins ，表示不同面额的硬币；以及一个整数 amount ，表示总金额。
-
-计算并返回可以凑成总金额所需的 最少的硬币个数 。如果没有任何一种硬币组合能组成总金额，返回 -1 。
-
-你可以认为每种硬币的数量是无限的。
-
-示例 1：
-```txt
-输入：coins = [1, 2, 5], amount = 11
-输出：3 
-解释：11 = 5 + 5 + 1
-```
-
-示例 2：
-```txt
-输入：coins = [2], amount = 3
-输出：-1
-```
-
-代码：
-```java
-class Solution {
-  int[] coins;
-
-  public int coinChange(int[] coins, int amount) {
-    this.coins = coins; 
-    return bfs(amount); 
-  }
-
-  int bfs(int startState) {
-    Queue<Integer> queue = new LinkedList();
-    Map<Integer, Integer> visited = new HashMap();
-    queue.add(startState);
-    visited.put(startState, 0); 
-    
-    while(!queue.isEmpty()) {
-      Integer currentState = queue.poll();
-      if (currentState == 0) {
-        return visited.get(currentState);
-      }
-
-      for (int coin : coins) {
-        int nextState = currentState - coin;
-        if (visited.containsKey(nextState)) continue;
-        if (nextState >= 0) {
-          queue.add(nextState);
-          visited.put(nextState, visited.get(currentState) + 1);
-        }
-      } 
-    }
-    return -1;
-  }
-}
-```
 
 # 动态规划
 动态规划通过组合子问题的解来求解原问题，一般来说，动态规划应用于**重叠子问题**的情况，即不同的子问题具有公共的子子问题。

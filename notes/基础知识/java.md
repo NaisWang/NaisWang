@@ -9,6 +9,36 @@
 
 程序运行时会自动引入`Java.lang.*`
 
+# Scanner中nextInt与nextLine
+URL：https://stackoverflow.com/questions/13102045/scanner-is-skipping-nextline-after-using-next-or-nextfoo
+
+问题： Scanner is skipping nextLine() after using next() or nextFoo()?
+
+回答:
+
+That's because the Scanner.nextInt method does not read the newline character in your input created by hitting "Enter," and so the call to Scanner.nextLine returns after reading that newline.
+
+You will encounter the similar behaviour when you use Scanner.nextLine after Scanner.next() or any Scanner.nextFoo method (except nextLine itself).
+
+
+Either put a `Scanner.nextLine` call after each `Scanner.nextInt` or `Scanner.nextFoo` to consume rest of that line including newline
+```java
+int option = input.nextInt();
+input.nextLine();  // Consume newline left-over
+String str1 = input.nextLine();
+```
+Or, even better, read the input through `Scanner.nextLine` and convert your input to the proper format you need. For example, you may convert to an integer using Integer.parseInt(String) method.
+
+```java
+int option = 0;
+try {
+    option = Integer.parseInt(input.nextLine());
+} catch (NumberFormatException e) {
+    e.printStackTrace();
+}
+String str1 = input.nextLine();
+```
+
 # classpath和jar
 ## classpath
 

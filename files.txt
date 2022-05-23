@@ -129,6 +129,7 @@
     "axios.md": "axios.md",
     "webpack.md": "webpack.md"
   },
+  "'": "'",
   "back-end": {
     "Mybatis.md": "Mybatis.md",
     "springmvc.md": "springmvc.md",

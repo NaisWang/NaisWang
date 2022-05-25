@@ -2960,7 +2960,7 @@ JDK5.0提供了4个标准的meta-annotation类型，分别是：
 - RetentionPolicy.CLASS:在class文件中有效（即class保留） ， 当运行Java程序时, JVM不会保留注解。 这是默认值
 - RetentionPolicy.RUNTIME:在运行时有效（即运行时保留），当运行 Java 程序时, JVM 会保留注释。程序可以通过反射获取该注释。
 
-*只有声明为RUNTIME的注解，才能通过反射获取*
+**只有声明为RUNTIME的注解，才能通过反射获取**
 
 ![](https://raw.githubusercontent.com/NaisWang/images/master/20220329130603.png)
 
@@ -3271,6 +3271,8 @@ hello.morning("Bob");
 
 还有一种方式是动态代码，我们仍然先定义了接口Hello，但是我们并不去编写实现类，而是直接通过JDK提供的一个`Proxy.newProxyInstance()`创建了一个Hello接口对象。这种没有实现类但是在运行期动态创建了一个接口对象的方式，我们称为动态代码。JDK提供的动态创建接口对象的方式，就叫动态代理。
 
+### 案例1
+
 一个最简单的动态代理实现如下：
 ```java
 import java.lang.reflect.InvocationHandler;
@@ -3291,7 +3293,7 @@ public class Main {
         };
         Hello hello = (Hello) Proxy.newProxyInstance(
             Hello.class.getClassLoader(), // 传入ClassLoader
-            new Class[] { Hello.class }, // 传入要实现的接口
+            new Class[] { Hello.class }, // 传入要实现的接口, 这里只能传入被代理的接口的class或者是被代理的类所实现的接口的class
             handler); // 传入处理调用方法的InvocationHandler
         hello.morning("Bob");
     }
@@ -3306,7 +3308,7 @@ interface Hello {
 1. 定义一个InvocationHandler实例，它负责实现接口的方法调用；
 2. 通过Proxy.newProxyInstance()创建interface实例，它需要3个参数：
   1. 使用的ClassLoader，通常就是接口类的ClassLoader；
-  2. 需要实现的接口数组，至少需要传入一个接口进去；
+  2. 需要实现的接口数组，至少需要传入一个接口的class进去；**这里的接口可以是被代理的接口或者是被代理的类所实现的接口**
   3. 用来处理接口方法调用的InvocationHandler实例。
 3. 将返回的Object强制转型为接口。
 
@@ -3331,6 +3333,182 @@ public class HelloDynamicProxy implements Hello {
 - Java标准库提供了动态代理功能，允许在运行期动态创建一个接口的实例；
 - 动态代理是通过Proxy创建代理对象，然后将接口方法“代理”给InvocationHandler完成的。
 
+### 案例2
+
+> 参考: https://www.cnblogs.com/gonjan-blog/p/6685611.html
+
+首先是定义一个Person接口:
+```java
+/**
+ * 创建Person接口
+ */
+public interface Person {
+    //上交班费
+    void giveMoney();
+}
+```
+
+创建需要被代理的实际类：
+```java
+public class Student implements Person {
+    private String name;
+    public Student(String name) {
+        this.name = name;
+    }
+    
+    @Override
+    public void giveMoney() {
+       System.out.println(name + "上交班费50元");
+    }
+}
+```
+创建StuInvocationHandler类，实现InvocationHandler接口，**这个类中持有一个被代理对象的实例target**。InvocationHandler中有一个invoke方法，所有执行代理对象的方法都会被替换成执行invoke方法。
+
+再在invoke方法中执行被代理对象target的相应方法。当然，在代理过程中，我们在真正执行被代理对象的方法前加入自己其他处理。这也是Spring中的AOP实现的主要原理，这里还涉及到一个很重要的关于java反射方面的基础知识。
+
+```java
+public class StuInvocationHandler<T> implements InvocationHandler {
+
+    //invocationHandler持有的被代理对象
+    T target;
+    
+    public StuInvocationHandler(T target) {
+       this.target = target;
+    }
+    
+    /**
+     * proxy:代表动态代理对象
+     * method：代表正在执行的方法
+     * args：代表调用目标方法时传入的实参
+     */
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        System.out.println("before: 代理执行" +method.getName() + "方法");
+        Object result = method.invoke(target, args);
+        System.out.println("after: 代理执行" +method.getName() + "方法");
+        return result;
+    }
+}
+```
+
+做完上面的工作后，我们就可以具体来创建动态代理对象了，上面简单介绍了如何创建动态代理对象，我们使用简化的方式创建动态代理对象：
+
+```java
+public class ProxyTest {
+    public static void main(String[] args) {
+        
+        //创建一个实例对象，这个对象是被代理的对象
+        Person zhangsan = new Student("张三");
+        
+        //创建一个与代理对象相关联的InvocationHandler
+        InvocationHandler stuHandler = new StuInvocationHandler<Person>(zhangsan);
+        
+        //创建一个代理对象stuProxy来代理zhangsan，代理对象的每个执行方法都会替换执行Invocation中的invoke方法
+        Person stuProxy = (Person) Proxy.newProxyInstance(Person.class.getClassLoader(), new Class<?>[]{Person.class}, stuHandler)；
+
+       //代理执行上交班费的方法
+        stuProxy.giveMoney();
+    }
+}
+```
+
+我们执行这个ProxyTest类，先想一下，我们创建了一个需要被代理的学生张三，将zhangsan对象传给了stuHandler中，我们在创建代理对象stuProxy时，将stuHandler作为参数了的，上面也有说到所有执行代理对象的方法都会被替换成执行invoke方法，也就是说，最后执行的是StuInvocationHandler中的invoke方法。所以在看到下面的运行结果也就理所当然了。
+
+运行结果：
+```txt
+before: 代理执行giveMoney方法
+张三上交班费50元
+after: 代理执行giveMoney方法
+```
+
+#### 原理分析
+对这个class文件进行反编译，我们看看jdk为我们生成了什么样的内容：
+
+```java
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.lang.reflect.UndeclaredThrowableException;
+import proxy.Person;
+
+public final class $Proxy0 extends Proxy implements Person
+{
+  private static Method m1;
+  private static Method m2;
+  private static Method m3;
+  private static Method m0;
+  
+  /**
+  *注意这里是生成代理类的构造方法，方法参数为InvocationHandler类型，看到这，是不是就有点明白
+  *为何代理对象调用方法都是执行InvocationHandler中的invoke方法，而InvocationHandler又持有一个
+  *被代理对象的实例，不禁会想难道是....？ 没错，就是你想的那样。
+  *
+  *super(paramInvocationHandler)，是调用父类Proxy的构造方法。
+  *父类持有：protected InvocationHandler h;
+  *Proxy构造方法：
+  *    protected Proxy(InvocationHandler h) {
+  *         Objects.requireNonNull(h);
+  *         this.h = h;
+  *     }
+  *
+  */
+  public $Proxy0(InvocationHandler paramInvocationHandler)
+    throws 
+  {
+    super(paramInvocationHandler);
+  }
+  
+  //这个静态块本来是在最后的，我把它拿到前面来，方便描述
+   static
+  {
+    try
+    {
+      //看看这儿静态块儿里面有什么，是不是找到了giveMoney方法。请记住giveMoney通过反射得到的名字m3，其他的先不管
+      m1 = Class.forName("java.lang.Object").getMethod("equals", new Class[] { Class.forName("java.lang.Object") });
+      m2 = Class.forName("java.lang.Object").getMethod("toString", new Class[0]);
+      m3 = Class.forName("proxy.Person").getMethod("giveMoney", new Class[0]);
+      m0 = Class.forName("java.lang.Object").getMethod("hashCode", new Class[0]);
+      return;
+    }
+    catch (NoSuchMethodException localNoSuchMethodException)
+    {
+      throw new NoSuchMethodError(localNoSuchMethodException.getMessage());
+    }
+    catch (ClassNotFoundException localClassNotFoundException)
+    {
+      throw new NoClassDefFoundError(localClassNotFoundException.getMessage());
+    }
+  }
+ 
+  /**
+  * 
+  *这里调用代理对象的giveMoney方法，直接就调用了InvocationHandler中的invoke方法，并把m3传了进去。
+  *this.h.invoke(this, m3, null);这里简单，明了。
+  *来，再想想，代理对象持有一个InvocationHandler对象，InvocationHandler对象持有一个被代理的对象，
+  *再联系到InvacationHandler中的invoke方法。嗯，就是这样。
+  */
+  public final void giveMoney()
+    throws 
+  {
+    try
+    {
+      this.h.invoke(this, m3, null);
+      return;
+    }
+    catch (Error|RuntimeException localError)
+    {
+      throw localError;
+    }
+    catch (Throwable localThrowable)
+    {
+      throw new UndeclaredThrowableException(localThrowable);
+    }
+  }
+
+  //注意，这里为了节省篇幅，省去了toString，hashCode、equals方法的内容。原理和giveMoney方法一毛一样。
+
+}
+```
 
 # 嵌套类
 内部类分为成员内部类、静态嵌套类、方法内部类、匿名内部类。

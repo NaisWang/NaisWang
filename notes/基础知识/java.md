@@ -408,17 +408,18 @@ Java中每一种基本类型都会对应一个唯一的包装类，基本类型�
 
 
 ## 包装类与基本类型的转换（装箱与拆箱）
-- 自动装箱：自动将基本类型用它们对应的包装类包装起来；
-- 自动拆箱：自动将包装类型转换为基本数据类型；
+- 自动装箱：自动调用基本类型对应的包装类中的valueOf()方法来返回包装类;
+- 自动拆箱：自动调用包装类中的xxxValue()方法来返回基本数据类型；
 注：包装类数组与基本类型数组之间不会自动转换，并且也不能强转。因为数组是引用类型，引用类型之间的转换必须要满足<a href="#convert">转换的条件</a>
 ```java
 int a = 1;
-Integer b = a; // a类型会自动装箱
-int c = b; //b类型会自动拆箱
+Integer b = a; // 自动调用Integer.valueOf(a)来返回包装类给b
+int c = b; // 自动调用b.intValue()返回基本类型数据给c
 
 int[] d = (int[])new Integer[1]; //报错，不能Integer[]不能强转为int[]
 Integer e = (Integer[])new int[1];//报错，不能int[]不能强转为Integer[]
 ```
+
 从源代码的角度来看，基础类型和包装类型都可以通过赋值语法赋值给对立的变量类型，如下面的代码所示。
 ```java
 Integer a = 1;
@@ -489,13 +490,16 @@ public static Integer valueOf(int i) {
 直接使用>、>=、<、<=、==即可；
 
 ## 引用类型的比较
-**引用类型使用>、>=、<、<=会报错**。如下：
+### 非Integer类型
+#### 非等于比较
+**非Integer引用类型使用>、>=、<、<=会报错, **。如下：
 ```java
 String a = "ac";
 String b = "dd"
 if(a > b){ //会报错, 说不支持>操作符
   System.out.println("jfkdfj");
 }
+
 ```
 我们应该使用使用Comparable接口中的compareTo() 方法进行比较或使用 Comparator接口中的compare()方法进行比较。
 正确的比较方法：
@@ -507,7 +511,8 @@ if(a.compareTo(b)){
 }
 ```
 
-**引用类型使用==时，是比较的对象地址。而不是调用equals或compareTo方法**
+#### 等于比较
+引用类型使用==时，是比较的对象地址。而不是调用equals或compareTo方法。Integer类型也是如此
 ```java
 class Person{
   public boolean equals(Object object){return true;}
@@ -520,6 +525,65 @@ public class Te {
   }
 }
 ```
+
+### Integer类型
+#### 等于比较
+- 两个Integer类型进行`==`比较, 比较的是Integer对象地址，但是需要注意的是有享元模式，即通过Integer.valueOf()获取到的对象可能是已存在的对象。Integer.valueOf()源码如下：
+```java
+public static Integer valueOf(int i) {    
+    if(i >= -128 && i <= IntegerCache.high)    
+        return IntegerCache.cache[i + 128];    
+    else    
+        return new Integer(i);    
+}    
+```
+可以看到Integer有个缓冲数组IntegerCache.cache, 如果value值在-128到127之间时，直接返回固定的对象引用。但是超过这个范围，就会创建一个新的Integer对象。
+
+- 但是如果Integer类型与基本类型int进行`==`比较时，Integer类型会使用`intValue()`方法拆箱成基本数据类型, 即比较的是value
+
+例子：
+```java
+Integer i = new Integer(100); // 创建新的对象
+Integer j = new Integer(100); // 创建新的对象
+System.out.println(i==j);  // false
+
+Integer i = 100; // 会调用Integer.value(100)方法，100在-128到127之间，返回固定的对象引用
+Integer j = new Integer(100);  // 创建新的对象
+System.out.println(i==j);  // false
+
+Integer i = 100; // 会调用Integer.value(100)方法，100在-128到127之间，返回固定的对象引用
+Integer j = 100;  // 会调用Integer.value(100)方法，100在-128到127之间，返回固定的对象引用
+System.out.println(i==j);  // true
+
+Integer i = Integer.valueOf(100); // 100在-128到127之间，返回固定的对象引用
+Integer j = 100;  // 会调用Integer.value(100)方法，100在-128到127之间，返回固定的对象引用
+System.out.println(i==j);  // true
+
+Integer i = Integer.valueOf(100); // 100在-128到127之间，返回固定的对象引用
+Integer j = Integer.valueOf(100);  // 100在-128到127之间，返回固定的对象引用
+System.out.println(i==j);  // true
+
+int i = 100;
+Integer j = new Integer(100);  // 创建新的对象
+System.out.println(i==j);  // ture (因为j会使用intValue()犯法拆箱成基本数据类型)
+```
+
+#### 非等与比较
+`>, >=, <, <=` 比较的是value, 因为Integer在遇到不等于比较时会使用`intValue()`方法拆箱成基本数据类型
+
+例子：
+```java
+Integer i = new Integer(100);
+Integer i = new Integer(50);
+System.out.println(i > j);  // true
+```
+
+```java
+Integer i = 100;
+Integer i = new Integer(50);
+System.out.println(i > j);  // true
+```
+
 
 # &和&&区别(位运算、逻辑运算、短路运算)
 首先&运算符有两种用法：一种是位运算符，另一种是逻辑运算符
@@ -2137,6 +2201,7 @@ String[] icarr = ico.split(",");
 List<String> iconlist = new ArrayList<>(Arrays.asList(icarr));
 ```
 
+
 ### Collections 工具类
 ```java
 List<String> apples = Collections.nCopies(3, "apple");
@@ -2186,6 +2251,87 @@ List<String> cups = List.of("A", "B", "C");
 System.out.println(cups);
 ```
 这是 JDK 9 里面新增的 List 接口里面的静态方法，同样也是不可变的。
+
+## List和数组相互转换方法
+### List转数组
+#### 方法一、使用for循环
+```java
+//要转换的list集合
+List testList = new ArrayList(){{add(“aa”);add(“bb”);add(“cc”);}};
+
+//初始化需要得到的数组
+String[] array = new String[testList.size()];
+
+//使用for循环得到数组
+for(int i = 0; i < testList.size();i++){
+    array[i] = testList.get(i);
+}
+
+//打印数组
+for(int i = 0; i < array.length; i++){
+    System.out.println(array[i]);
+}
+```
+
+#### 方法二、使用toArray()方法
+需要特别注意，不能这样写：
+```java
+ArrayList<String> list=new ArrayList<String>();
+String strings[]=(String [])list.toArray();
+```
+这样写编译没有什么问题，但是运行时会报ClassCastException，这是因为Java中允许向上和向下转型，但是这个转型是否成功是根据Java虚拟机中这个对象的类型来实现的。Java虚拟机中保存了每个对象的类型。而数组也是一个对象。数组的类型是java.lang.Object。把java.lang.Object转换成java.lang.String是显然不可能的事情，因为这里是一个向下转型，而虚拟机只保存了这是一个Object的数组，不能保证数组中的元素是String的，所以这个转型不能成功。数组里面的元素只是元素的引用，不是存储的具体元素，所以数组中元素的类型还是保存在Java虚拟机中的。
+
+因此正确的方法是这样的：
+```java
+//要转换的list集合
+List<String> testList = new ArrayList<String>(){{add("aa");add("bb");add("cc");}};
+
+//使用toArray(T[] a)方法
+String[] array2 = testList.toArray(new String[testList.size()]);
+
+//打印该数组
+for(int i = 0; i < array2.length; i++){
+    System.out.println(array2[i]);
+}
+```
+
+### 数组转List
+#### 方法一、使用for循环
+```java
+//需要转换的数组
+String[] arrays = new String[]{"aa","bb","cc"};
+
+//初始化list
+List<String> list = new ArrayList<String>();
+
+//使用for循环转换为list
+for(String str : arrays){
+   list.add(str);
+}
+
+//打印得到的list
+System.out.println(list);
+```
+
+#### 方法二、使用asList（）
+```java
+ArrayList<String> arrayList = new ArrayList<String>(Arrays.asList(arrays));
+```
+
+#### 方法三、使用asList（）
+```java
+List<String> list = Arrays.asList(arrays);
+```
+
+同方法二一样使用了asList()方法。这不是最好的，因为asList()返回的列表的大小是固定的。事实上，返回的列表不是java.util.ArrayList，而是定义在java.util.Arrays中一个私有静态类。我们知道ArrayList的实现本质上是一个数组，而asList()返回的列表是由原始数组支持的固定大小的列表。这种情况下，如果添加或删除列表中的元素，程序会抛出异常UnsupportedOperationException。
+
+推荐使用方法二
+
+#### 方法四、使用Collections.addAll()
+```java
+List<String> list2 = new ArrayList<String>(arrays.length);
+Collections.addAll(list2, arrays);
+```
 
 # Map集合体系
 ![](https://raw.githubusercontent.com/NaisWang/images/master/20220510141227.png)
@@ -3509,6 +3655,9 @@ public final class $Proxy0 extends Proxy implements Person
 
 }
 ```
+
+#### 总结
+jdk动态代理能代理接口或者实现了接口的类，但是不能代理没有实现接口的类。对于没有实现接口的类可以用cglib代理
 
 # 嵌套类
 内部类分为成员内部类、静态嵌套类、方法内部类、匿名内部类。
@@ -5197,3 +5346,32 @@ public class IsAssignableFromTest implements Serializable{
 }
 ```
 结果：re1:true re2:true 
+
+## 拼接2个数组
+在 Java 中连接两个数组的另一种方法是 arraycopy() 方法。此方法得到两个数组的值并将其合并为一个。下面的示例说明如何对整数数组完成此操作。
+
+示例代码：
+```java
+import java.util.Arrays;
+
+public class SimpleTesting {
+    public static void main(String[] args)  {
+        int[] Array1 = {00,10,20,30,40,50};
+        int[] Array2 = {60,70,80,90,100};
+        int lenArray1 = Array1.length;
+        int lenArray2 = Array2.length;
+        int[] concate = new int[lenArray1 + lenArray2];
+        System.arraycopy(Array1, 0, concate, 0, lenArray1);  
+        System.arraycopy(Array2, 0, concate, lenArray1, lenArray2);  
+        System.out.println("Array1: " + Arrays.toString(Array1));
+        System.out.println("Array2: " + Arrays.toString(Array2));
+        System.out.println("Concatenated Array: " + Arrays.toString(concate)); 
+    }  
+}  
+```
+输出：
+```txt
+Array1: [0, 10, 20, 30, 40, 50]
+Array2: [60, 70, 80, 90, 100]
+Concatenated Array: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+```

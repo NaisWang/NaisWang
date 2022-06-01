@@ -51,15 +51,15 @@ Class文件是一组以8位字节为基础单位的二进制流，各个数据�
 下表列出了Class文件中各个数据项的具体含义：
 ![](https://raw.githubusercontent.com/NaisWang/images/master/20220329131430.png)
 ![](https://raw.githubusercontent.com/NaisWang/images/master/20220329131444.png)
-从表中可以看出，无论是无符号数还是表，当需要描述同一类型但数量不定的多个数据时，经常会在其前面使用一个前置的容量计数器来记录其数量，而便跟着若干个连续的数据项，称这一系列连续的某一类型的数据为某一类型的集合，如：fields_count个field_info表数据便组成了方法表集合
+从表中可以看出，无论是无符号数还是表，当需要描述同一类型但数量不定的多个数据时，经常会在其前面使用一个前置的容量计数器来记录其数量，而便跟着若干个连续的数据项，称这一系列连续的某一类型的数据为某一类型的集合，如：`fields_count`个`field_info`表数据便组成了方法表集合
 
 这里需要注意的是：Class的结构不像XML等描述语言，由于它没有任何分隔符号，所以上表的数据项，无论是顺序还是数量，甚至于数据存储的字节序这样的细节，都是被严格限定的，每个字节代表的含义、长度、先后顺序都不允许改变。
 
 ## magic与version
 每个Class文件的头4个字节称为魔数（magic），它的唯一作用是判断该文件是否为一个能被虚拟机接受的Class文件。它的值固定为0xCAFEBABE。紧接着magic的4个字节存储的是Class文件的次版本号(Minor Version)和主版本号(Major Version)，高版本的JDK能向下兼容低版本的Class文件，但不能运行更高版本的Class文件。
 
-## constant_pool
-major_version之后是常量池（constant_pool）的入口，它是Class文件中与其他项目关联最多的数据类型，也是占用Class文件空间最大的数据项目之一。
+## `constant_pool`
+`major_version`之后是常量池（`constant_pool`）的入口，它是Class文件中与其他项目关联最多的数据类型，也是占用Class文件空间最大的数据项目之一。
 
 <font color="red">常量池中主要存放两大类常量：字面量和符号引用。</font>字面量比较接近于Java层面的常量概念，如文本字符串、被声明为final的常量值等。而符号引用总结起来则包括了下面三类常量：
 - 类和接口的全限定名（即带有包名的Class名，如：org.lxh.test.TestClass）

@@ -16,7 +16,7 @@ npm install node-sass sass-loader --save-dev
 
 ## 使用
 ### 使用变量
-SCSS中的变量以$开头。
+SCSS中的变量以`$`开头。
 ```css
 $border-color:#aaa; //声明变量
 .container {

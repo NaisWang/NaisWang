@@ -364,7 +364,7 @@ Python 的集合（set）运算
 数学里集合运算在Python的set中也有对应运算。
 
 #### 子集⊆、真子集⊂
-set的运算<对应于真子集⊂，<=对应于子集⊆
+set的运算`<对应于真子集⊂`，`<=`对应于子集⊆
 ```python
 >>> A = {1, 2, 3}
 >>> B = {1, 2, 3, 4, 5}
@@ -2087,7 +2087,7 @@ stack.push('x') # Type error
 # python中yield用法
 yield在函数中的功能类似于return，不同的是yield每次返回结果之后函数并没有退出，而是每次遇到yield关键字后返回相应结果，并保留函数当前的运行状态，等待下一次的调用。如果一个函数需要多次循环执行一个动作，并且每次执行的结果都是需要的，这种场景很适合使用yield实现。
 包含yield的函数成为一个生成器，生成器同时也是一个迭代器，支持通过next方法获取下一个值。
-***
+
 yield基本使用：
 ```python
 def func():
@@ -2368,12 +2368,12 @@ iterabl -- 一个或多个迭代器;
 
 # 多线程
 Python3 线程中常用的两个模块为：
-- _thread
+- `_thread`
 - threading(推荐使用)
-thread 模块已被废弃。用户可以使用 threading 模块代替。所以，在 Python3 中不能再使用"thread" 模块。为了兼容性，Python3 将 thread 重命名为 "_thread"。
+thread 模块已被废弃。用户可以使用 threading 模块代替。所以，在 Python3 中不能再使用"thread" 模块。为了兼容性，Python3 将 thread 重命名为 `"_thread"`。
 
 Python中使用线程有两种方式：函数或者用类来包装线程对象。
-函数式：调用 _thread 模块中的start_new_thread()函数来产生新线程。语法如下:
+函数式：调用 `_thread` 模块中的`start_new_thread()`函数来产生新线程。语法如下:
 ```py
 _thread.start_new_thread (function, args[, kwargs] )
 ```
@@ -2426,9 +2426,9 @@ Thread-2: Wed Apr  6 11:36:49 2016
 # 线程模块
 Python3 通过两个标准库`_thread`和`threading`提供对线程的支持。
 
-_thread 提供了低级别的、原始的线程以及一个简单的锁，它相比于 threading 模块的功能还是比较有限的。
+`_thread`提供了低级别的、原始的线程以及一个简单的锁，它相比于 threading 模块的功能还是比较有限的。
 
-threading 模块除了包含 _thread 模块中的所有方法外，还提供的其他方法：
+threading 模块除了包含`_thread`模块中的所有方法外，还提供的其他方法：
 - threading.currentThread(): 返回当前的线程变量。
 - threading.enumerate(): 返回一个包含正在运行的线程的list。正在运行指线程启动后、结束前，不包括启动前和终止后的线程。
 - threading.activeCount(): 返回正在运行的线程数量，与len(threading.enumerate())有相同的结果。
@@ -2483,8 +2483,9 @@ thread1.join()
 thread2.join()
 print ("退出主线程")
 ```
+
 以上程序执行结果如下；
-```
+```py
 开始线程：Thread-1
 开始线程：Thread-2
 Thread-1: Wed Apr  6 11:46:46 2016
@@ -2563,7 +2564,7 @@ for t in threads:
 print ("退出主线程")
 ```
 执行以上程序，输出结果为：
-```
+```py
 开启线程： Thread-1
 开启线程： Thread-2
 Thread-1: Wed Apr  6 11:52:57 2016

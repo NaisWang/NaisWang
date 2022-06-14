@@ -1,4 +1,5 @@
 import $ from "jquery"
+import {assertBoolean} from "@babel/core/lib/config/validation/option-assertions";
 
 export class FilesShow {
 
@@ -33,10 +34,44 @@ export class FilesShow {
         let filePath = $(this).data("path");
         $('title').html($(this).html())
         filePath = filePath.replace("\./", "");
+        that.addTab($(this)[0], filePath)
         that.$router.push({path: `/${filePath}`})
       }
       e.stopPropagation();
     })
+
+    $(".tab").on("click", ".tabsItem", function (e) {
+      $("div.tabsItem.active").removeClass("active");
+      $(this).addClass("active");
+      let filePath = $(this).data("path");
+      $('title').html($(this).html())
+      filePath = filePath.replace("\./", "");
+      that.$router.push({path: `/${filePath}`})
+    })
+  }
+
+  addTab(e, path) {
+    $("div.tabsItem.active").removeClass("active");
+    let f = 1;
+    $(".tab").children().each((i, element) => {
+      if (element.innerHTML == e.innerHTML) {
+        element.classList.add("active");
+        f = 0
+        return;
+      }
+    });
+    if (f == 0) {
+      return;
+    }
+    if ($(".tab").children().length >= 6) {
+      $(".tab").children().first().remove();
+    }
+    let tab = document.createElement('div');
+    tab.classList.add("tabsItem");
+    tab.classList.add("active");
+    tab.setAttribute('data-path', path);
+    tab.innerHTML = e.innerHTML;
+    $(".tab")[0].appendChild(tab);
   }
 
   setFilesContent() {

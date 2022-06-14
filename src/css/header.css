@@ -63,3 +63,26 @@ div.top {
   margin-right: 8px;
   cursor: pointer;
 }
+
+div.tab {
+  top: 0;
+  left: 20vw;
+  position: fixed;
+  height: 45px;
+}
+
+div.tab div.tabsItem {
+  display: inline-block;
+  color: #909399;
+  padding: 0 20px;
+  border-left: 1px solid #e4e7ed;
+  border-right: 1px solid #e4e7ed;
+  cursor: pointer;
+  background: white;
+  height: 45px;
+  line-height: 45px;
+}
+
+div.tab div.tabsItem.active {
+  color: #409eff;
+}

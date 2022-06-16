@@ -2298,7 +2298,7 @@ for(int i = 0; i < array2.length; i++){
 ```
 
 ### 数组转List
-#### 方法一、使用for循环
+#### 方法一：使用for循环
 ```java
 //需要转换的数组
 String[] arrays = new String[]{"aa","bb","cc"};
@@ -2315,12 +2315,12 @@ for(String str : arrays){
 System.out.println(list);
 ```
 
-#### 方法二、使用asList（）
+#### 方法二：使用asList（）
 ```java
 ArrayList<String> arrayList = new ArrayList<String>(Arrays.asList(arrays));
 ```
 
-#### 方法三、使用asList（）
+#### 方法三：使用asList（）
 ```java
 List<String> list = Arrays.asList(arrays);
 ```
@@ -2329,7 +2329,26 @@ List<String> list = Arrays.asList(arrays);
 
 推荐使用方法二
 
-#### 方法四、使用Collections.addAll()
+> 注意：Arrays.asList的方法参数时泛型，所以传入基本类型数组时，一定要注意。例如现在有一个变量`int[] a`，那么`Arrays.asList(a)`的返回值是`List<int[]>`。如果想要将基本类型数组转成对应的引用类型数组的话，可以使用Arrays.stream()。具体使用方法见方法四
+
+#### 方法四：使用Arrays.stream()
+这个方法可以将基本类型数组转成对应的引用类型数组
+
+```java
+// int=>Integer
+List<Integer> list = Arrays.stream(a).boxed().collect(Collectors.toList());
+
+// long=>Long
+List<Long> list = Arrays.stream(b).boxed().collect(Collectors.toList());
+
+// double=>Double
+List<Double> list = Arrays.stream(c).boxed().collect(Collectors.toList());
+```
+
+> 注意：这个方法只支持int, long, double三种类型，其他基本类型不行
+
+
+#### 方法五：使用Collections.addAll()
 ```java
 List<String> list2 = new ArrayList<String>(arrays.length);
 Collections.addAll(list2, arrays);

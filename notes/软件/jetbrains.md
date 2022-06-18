@@ -167,6 +167,9 @@ private double random() {
 
 ![](https://raw.githubusercontent.com/NaisWang/images/master/20220327143647.png)
 
+Facets的作用就是配置项目框架类支持。比如我们现在要开发的是一个 web 项目，那就需要 web 相关的 Facet，事实上，如果没有这个配置支持，编译器也不知道这个项目是个 web 项目，也就不会去读取 web.xml 的配置，更无法被 tomcat 这种容器支持。
+
+
 ### Artifacts
 
 ![](https://raw.githubusercontent.com/NaisWang/images/master/20220327143815.png)

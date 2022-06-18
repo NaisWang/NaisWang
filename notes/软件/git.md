@@ -6,27 +6,34 @@
 - `已提交`表示数据已经安全地保存在本地数据库中。
 
 ## git三个分区
+<div class="container">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/mZrQtouBSnw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
 这会让我们的 Git 项目拥有三个分区：工作区、暂存区（索引区）以及 Git 目录。
 
 ![](https://raw.githubusercontent.com/NaisWang/images/master/20220409105016.png)
 
-`工作区`操作系统上的文件，所有代码开发编辑都在这上面完成。
-`索引区`可以理解为一个暂存区域，
-`Git仓库目录`由Git 对象记录着每一次提交的快照，以及链式结构记录的提交变更历史。
+- `工作区`操作系统上的文件，所有代码开发编辑都在这上面完成。
+- `索引区`可以理解为一个暂存区域，
+- `Git仓库目录`由Git 对象记录着每一次提交的快照，以及链式结构记录的提交变更历史。
 
 我们来看一下更新一个文件的内容这个过程会发生什么事。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/724a-imkzenp1240383.gif" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/724a-imkzenp1240383.gif)
+
 运行`echo "333" > a.txt`将a.txt的内容从111修改成333，此时如上图可以看到，此时索引区域和git仓库没有任何变化。
 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/feb2-imkzenp1239488.gif" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/feb2-.gif)
+
 运行git add a.txt将a.txt加入到索引区域，此时如上图所示，git在仓库里面新建了一个blob object，储存了新的文件内容。并且更新了索引将a.txt指向了新建的blob object。
 
-<img src="https://gitee.com/NaisWang/images/raw/master/img/60e3-imkzenp1239489.gif" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/60e3-imkzenp1239489.gif)
+
 运行git commit -m 'update'提交这次修改。如上图所示
 Git首先根据当前的索引生产一个tree object，充当新提交的一个快照。
 创建一个新的commit object，将这次commit的信息储存起来，并且parent指向上一个commit，组成一条链记录变更历史。
 将master分支的指针移到新的commit结点。
-
 
 ## 初次运行 Git 前的配置 
  既然已经在系统上安装了 Git，你会想要做几件事来定制你的 Git 环境。 每台计算机上只需要配置一次，程序升级时会保留配置信息。 你可以在任何时候再次通过运行命令来修改它们。
@@ -832,10 +839,10 @@ $ git commit -a -m 'added new benchmarks'
 看到了吗？提交之前不再需要`git add`文件“CONTRIBUTING.md”了。 这是因为`-a`选项使本次提交包含了所有修改过的文件。 这很方便，但是要小心，有时这个选项会将不需要的文件添加到提交中。
 
 ### 移除文件
-要从 Git 中移除某个文件，就必须要从已跟踪文件清单中移除（确切地说，是从暂存区域移除），然后提交。 可以用`git rm`命令完成此项工作，并连带从工作目录中删除指定的文件，这样以后就不会出现在未跟踪文件清单中了。
+`git rm`命令用于删除文件。
 
-如果只是简单地从工作目录中手工删除文件，运行`git status`时就会在`“Changes not staged for commit”`部分（也就是 未暂存清单）看到：
-```shell
+如果只是简单地从工作目录中手工删除文件，运行`git status`时就会在`Changes not staged for commit `的提示。
+```bash
 $ rm PROJECTS.md
 $ git status
 On branch master
@@ -848,34 +855,54 @@ Changes not staged for commit:
 
 no changes added to commit (use "git add" and/or "git commit -a")
 ```
-然后再运行`git rm`记录此次移除文件的操作：
-```shell
-$ git rm PROJECTS.md
-rm 'PROJECTS.md'
-$ git status
-On branch master
-Your branch is up-to-date with 'origin/master'.
-Changes to be committed:
-  (use "git reset HEAD <file>..." to unstage)
 
-    deleted:    PROJECTS.md
-```
-下一次提交时，该文件就不再纳入版本管理了。 如果要删除之前修改过或已经放到暂存区的文件，则必须使用强制删除选项`-f`（译注：即 force 的首字母）。 这是一种安全特性，用于防止误删尚未添加到快照的数据，这样的数据不能被 Git 恢复。
+`git rm`删除文件有以下几种形式：
 
-另外一种情况是，我们想把文件从 Git 仓库中删除（亦即从暂存区域移除），但仍然希望保留在当前工作目录中。 换句话说，你想让文件保留在磁盘，但是并不想让 Git 继续跟踪。 当你忘记添加`.gitignore`文件，不小心把一个很大的日志文件或一堆`.a`这样的编译生成文件添加到暂存区时，这一做法尤其有用。 为达到这一目的，使用`--cached`选项：
-```shell
-$ git rm --cached README
+1. 将文件从暂存区和工作区中删除：
+```bash
+git rm <file>
 ```
-`git rm`命令后面可以列出文件或者目录的名字，也可以使用`glob`模式。比如：
-```shell
-$ git rm log/\*.log
+以下实例从暂存区和工作区中删除`runoob.txt`文件：
+```bash
+git rm runoob.txt 
 ```
-注意到星号`*`之前的反斜杠`\`， 因为 Git 有它自己的文件模式扩展匹配方式，所以我们不用 shell 来帮忙展开。 此命令删除`log/`目录下扩展名为`.log`的所有文件。 类似的比如：
-```shell
-$ git rm \*~
-```
-该命令会删除所有名字以`~`结尾的文件。
+如果删除之前修改过并且已经放到暂存区域的话，则必须要用强制删除选项`-f`。
 
+强行从暂存区和工作区中删除修改后的 `runoob.txt` 文件：
+```bash
+git rm -f runoob.txt 
+```
+如果想把文件从暂存区域移除，但仍然希望保留在当前工作目录中，换句话说，仅是从跟踪清单中删除，使用--cached`选项即可：
+```bash
+git rm --cached <file>
+```
+以下实例从暂存区中删除`runoob.txt`文件：
+```bash
+git rm --cached runoob.txt
+```
+
+#### 实例
+删除`hello.php`文件：
+```bash
+$ git rm hello.php 
+rm 'hello.php'
+$ ls
+README
+```
+
+文件从暂存区域移除，但工作区保留：
+```bash
+$ git rm --cached README 
+rm 'README'
+$ ls
+README
+```
+
+可以递归删除，即如果后面跟的是一个目录做为参数，则会递归删除整个目录中的所有子目录和文件：
+```bash
+git rm –r * 
+```
+进入某个目录中，执行此语句，会删除该目录下的所有文件和子目录。
 
 ### 移动文件
 不像其它的 VCS 系统，Git 并不显式跟踪文件移动操作。 如果在 Git 中重命名了某个文件，仓库中存储的元数据并不会体现出这是一次改名操作。 不过 Git 非常聪明，它会推断出究竟发生了什么，至于具体是如何做到的，我们稍后再谈。

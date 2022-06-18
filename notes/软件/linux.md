@@ -1642,7 +1642,7 @@ netstat [选项]
 - -n或--numeric：直接使用ip地址，而不通过域名服务器；
 - -N或--netlink或--symbolic：显示网络硬件外围设备的符号连接名称；
 - -o或--timers：显示计时器；
-- -p或--programs：显示 PID/Program name
+- -p或--programs：显示 PID/Program name, 注意：mac下-p为指定协议
 - -r或--route：显示Routing Table；
 - -s或--statistice：显示网络工作信息统计表；
 - -t或--tcp：显示TCP传输协议的连线状况；
@@ -1664,6 +1664,8 @@ netstat [选项]
 输出：
 
 ![](https://raw.githubusercontent.com/NaisWang/images/master/20220423113523.png)
+
+> Mac中的netstat是简化版本，参数支持的不多，并且原有-p参数为输出相应程序名，mac下-p为指定协议，且无法知晓pid。综上所述mac下最好还是用lsof
 
 ### 输出说明
 #### Proto

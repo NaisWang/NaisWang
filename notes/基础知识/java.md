@@ -723,6 +723,39 @@ public class Math{
 当使用final修饰变量时，该变量只能在定义处、静态代码块、构造函数中赋值
 当使用static final修饰变量时，该变量只能在定义处、静态代码块中赋值
 
+# java中||与&&优先级问题
+首先，程序中的优先级和执行顺序是两个不同的概念。
+
+代码示例
+```java
+int a1 = 10;
+int a2 = 20;
+System.out.println(a1 < a2 || ++a1 > a2 && ++a2 < a1);
+System.out.println(a1);
+System.out.println(a2);
+```
+
+输出：
+```txt
+true
+10
+20
+```
+
+可见程序只对`a1 < a2`进行了评估。
+
+解释: 我们知道Java中&&的优先级高于||，所以
+```java
+true || false && false
+```
+在Java中相当于：
+```java
+true || (false && false)
+```
+但是，这并不意味着程序会先执行括号中的内容。
+
+由于Java语言的执行顺序是从左到右，所以如果上述的布尔值是表达式的话，则会先计算左边表达式的内容，这叫执行顺序（或评估顺序）。
+
 # this和super的用法总结
 ## this
 this 是自身的一个对象，代表对象本身，可以理解为：指向对象本身的一个指针。

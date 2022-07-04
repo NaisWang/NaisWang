@@ -543,3 +543,63 @@ position 的四个值：static、relative、absolute、fixed。
 relative：定位是相对于自身位置定位（设置偏移量的时候，会相对于自身所在的位置偏移）。设置了relative的元素仍然处在文档流中，元素的宽高不变，设置偏移量也不会影响其他元素的位置。最外层容器设置为relative定位，在没有设置宽度的情况下，宽度是整个浏览器的宽度。
 
 absolute：定位是相对于离元素最近的设置了绝对或相对定位的父元素决定的，如果没有父元素设置绝对或相对定位，则元素相对于根元素即html元素定位。设置了absolute的元素脱了了文档流，元素在没有设置宽度的情况下，宽度由元素里面的内容决定。脱离后原来的位置相当于是空的，下面的元素会来占据位置。
+
+# 字体
+## CSS font-family
+在 CSS 中，可以使用 font-family 属性来指定字体，浏览器渲染文字时候会根据这个属性应用于元素。如果没有指定这个属性或者指定的字体不存在于客户的计算机上，则浏览器会使用默认字体。
+```css
+<style>
+    .line {
+        font-family: 'Courier New', Courier, monospace;
+    }
+</style>
+<p>Hello World!</p>
+```
+- 如果没有设置 font-family，浏览器会使用默认字体应用于元素。
+- 如果 font-family 属性指定的字体，**在本地计算机没有，则使用默认字体**
+- 如果字体的名称有空格，则必须要使用引号。
+- 使用 font-family 属性可以指定一个字体，也可以指定一组字体列表——将多个字体用逗号分割
+- 如果指定一组字体列表，则会依次查找，第一个字体本地没有，则使用第二个。如果指定的字体列表中的字体，本地计算机都没有，则浏览器使用默认字体应用于元素
+
+## Web safe fonts (网络安全字体)
+系统中通常只有一定数量的字体可用，并且不同的系统中的字体可能不相同，所以在 Windows 上可以用的字体，在其他系统中不一定可以用。
+
+开发者指定的字体，在自己的电脑上已经被安装，所以可以正常显示。但客户端机器并没有安装整个字体，则客户端会使用默认字体显示。所以开发者考虑哪一些字体是客户端基本都会被安装的。
+
+有一些字体在常见系统（Windows, Mac, 常见的Linux发行版, Android和iOS版本）中都可以用，这些字体就是安全字体。
+
+具体参考：https://developer.mozilla.org/en-US/docs/Learn/CSS/Styling_text/Fundamentals#Web_safe_fonts
+
+## Web fonts (网络字体)
+Web 字体是一种 CSS 功能，允许指定的字体文件被下载到本地。
+
+这是一种非常有效的方式，这样字体就不受限于本地是否安装了字体，而且大部分浏览器都支持Web 字体。
+
+网络字体使用方式：
+
+Setp 1 下载网络字体；在 CSS 中，使用@font-face 关键字下载网络字体，有2个必要属性
+```css
+@font-face {
+    // 自定义一个名称。
+    font-family: "myFont";
+    // 指定字体资源，可以使用相对路径，例如：url('./../font/Times-New-Roman.ttf')
+    src: url("myFont.ttf");
+}
+```
+
+Setp 2 使用字体；设置 font-family 属性，而这时 font-family 设置的是网络字体的名称，而不再是系统的字体。(网络字体的名称在上一步已经定义。)
+```css
+  .line {
+    font-family: 'myFont;
+  }
+```
+
+## 查看当前浏览器是渲染的什么字体
+
+参考：https://stackoverflow.com/questions/884177/how-can-i-determine-what-font-a-browser-is-actually-using-to-render-some-text
+
+---
+
+For Chrome, go into DevTools' "Elements", go to its "Computed" tab, and scroll all the way down to the section called "Rendered Fonts". Unlike with Firefox, this only shows the base font name, not any specific style it may be using:
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220622223435.png)

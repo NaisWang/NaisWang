@@ -1,12 +1,16 @@
 # 苹果IOS手机设置BurpSuite抓包
 1. 添加BP的Proxy Listeners
 点击Add添加
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210607221913.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220620144732.png)
+
 端口填写8080，然后选择Specific address，选手机和电脑同时在的那个IP区段
 
 2. 在Intercept Client Requests中勾选
+
 Intercept requests based on the following rules和Automatically......edited，截图如下
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210607221947.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220620144747.png)
 
 3. 手机设置代理
 
@@ -16,7 +20,8 @@ Intercept requests based on the following rules和Automatically......edited，�
 5. 手机管理证书
 首先打开设置->通用->关于本机->描述文件
 在里面配置好下载的证书
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210607222013.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220620144804.png)
 
 然后在关于本机->证书信任设置里面开启信任
 

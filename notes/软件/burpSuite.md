@@ -44,3 +44,5 @@ SSL证书没配置好
 
 BurpSuite开启8080端口http代理，绑定地址为0.0.0.0或者局域网ip。
 在苹果手机上安装小飞机（SS），选择协议为http，连接信息填写BurpSuite的。
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20220708094037.png)

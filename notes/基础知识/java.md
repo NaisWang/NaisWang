@@ -3408,11 +3408,39 @@ Hialice
 - public Object get(Object obj) 取得指定对象obj上此Field的属性内容
 - public void set(Object obj,Object value) 设置指定对象obj上此Field的属性内容
 
+#### 妙用
+当一个类中的成员变量设置成私有的，且没有提供set方法时，如果你向改变该成员变量的值，则你可以使用Field类。如下：
+```java
+public class Test {
+  private String name = "whz";
+
+  public void print() {
+    System.out.println(name);
+  }
+}
+```
+```java
+public class main {
+  public static void main(String[] args) {
+    Test test = new Test();
+    try {
+      Field field = test.getClass().getDeclaredField("name");
+      field.setAccessible(true);
+      field.set(test, "hahaha");
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    test.print(); // 输出hahaha
+  }
+}
+```
+
 ### 关于setAccessible方法的使用
 - Method和Field、Constructor对象都有setAccessible()方法。
 - setAccessible启动和禁用访问安全检查的开关。 
 - 参数值为true则指示反射的对象在使用时应该取消Java语言访问检查。 提高反射的效率。如果代码中必须用反射，而该句代码需要频繁的被调用，那么请设置为true。 使得原本无法访问的私有成员也可以访问
 - 参数值为false则指示反射的对象应该实施Java语言访问检查
+
 ```java
 Class clazz = Person.class;   
 Field name = clazz.getDeclaredField("name"); 

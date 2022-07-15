@@ -1993,6 +1993,28 @@ public static void test10(){
   - List subList（int fromIndex，int toIndex）//返回fromIndex和toIndex之间的集合元素。
 [详细](https://docs.oracle.com/javase/8/docs/api/java/util/List.html)
 
+### remove方法
+一定要注意List接口中remove方法有如下两种写法：
+- `E remove(int index);`
+- `boolean remove(Object o);`
+很明显List会根据你所传入的参数类型来选择对应的remove方法，如果传的是int类型，就是对应`remove(int index)`, 如果传的是引用类型，则对应的是`remove(Object o)`。
+
+正是由于这样，所以当你创建了`List<Integer>`类型的对象，并且想要调用`remove(Integer o)`方法来删除指定的元素时，一定要注意了，如果你传的是int类型，则会调用`remove(int index)`方法，则删除的是对应下标的元素。如下例子：
+
+```java
+List<Integer> list = new ArrayList<>();
+list.add(5);
+list.add(6);
+list.add(8);
+list.add(1);
+list.add(9);
+
+list.remove(1);
+System.out.println(list); // [5, 8, 1, 9]
+list.remove((Integer) 1);
+System.out.println(list); // [5, 8, 9]
+```
+
 ### 遍历List
 由于List是有下标的，所以可以使用for循环遍历下标的方式遍历List；
 当然也可以使用增强for， 迭代器Iterator方法来遍历； 并且List除了有迭代器Iterator, 还有特有的列表迭代器ListIterator

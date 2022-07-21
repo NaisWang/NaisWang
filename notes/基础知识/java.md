@@ -356,8 +356,6 @@ java中的浮点型常量默认为double型，声明float型常量可以在后�
 无论哪个版本的JDK，都是不支持 long，float，double，boolean 这个一定要注意！
 因为在Float/Double上执行精确的相等匹配通常是个坏主意。
 
-## java中基本类型数组转引用类型数组
-
 # 声明成员数组时包含变量
 加载(非静态变量，非静态初始化块)、构造器的过程是在实例初始化过程, 且执行顺序与所写顺序一致
 
@@ -516,7 +514,7 @@ if(a.compareTo(b)){
 ```
 
 #### 等于比较
-引用类型使用==时，是比较的对象地址。而不是调用equals或compareTo方法。Integer类型也是如此
+引用类型使用==时，是比较的对象地址。而不是调用equals或compareTo方法。Integer类型也是如此,但是Integer有享元模式
 ```java
 class Person{
   public boolean equals(Object object){return true;}
@@ -570,6 +568,19 @@ System.out.println(i==j);  // true
 int i = 100;
 Integer j = new Integer(100);  // 创建新的对象
 System.out.println(i==j);  // ture (因为j会使用intValue()犯法拆箱成基本数据类型)
+```
+
+重中之中：
+```
+Map<String, Integer> map1 = new HashMap<>();
+Map<String, Integer> map2 = new HashMap<>();
+map1.put("a", 11);
+map2.put("a", 11);
+System.out.println(map1.get("a") == map2.get("a")); // true
+map1.put("b", 1000);
+map2.put("b", 1000);
+System.out.println(map1.get("b") == map2.get("b")); // false, 而这个就是我们容易犯的错误
+System.out.println(map1.get("b").equals(map2.get("b"))); // true
 ```
 
 #### 非等与比较

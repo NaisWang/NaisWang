@@ -5493,3 +5493,34 @@ Array1: [0, 10, 20, 30, 40, 50]
 Array2: [60, 70, 80, 90, 100]
 Concatenated Array: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 ```
+
+## PriorityQueue元素改变后不会自动排序
+java PriorityQueue能够对加入的元素按元素（必须是可比较的Comparable）大小排序，从而出队时总是“最小”元素优先出对。然而，现实应用中存在队列从元素发生改变的情况，PriorityQueue其实并不能时刻保证元素是有序。
+
+PriorityQueue在add addAll后会进行元素重排序，其余操作不会触发元素重排序。
+```java
+class AB{
+    AB（int a
+    int a, b;
+    }
+AB a, b, c, d;
+PriorityQueue<AB> q = new PriorityQueue<AB>();
+q.add(a);
+q.add(b);
+q.add(c);
+q.add(d);
+c.a=1; //并不会触发元素重新排序
+```
+PS：上面的例子中只是示意，AB并没有实现Comparable接口。当c.a元素改变后，队列中a, b, c, d元素可能不满足“从小到大”关系，PriorityQueue就失去了“优先”的意义。当外部修改元素后，需先删掉元素，再插入元素，以保持正确的顺序。
+```java
+AB a, b, c, d;
+PriorityQueue<AB> q = new PriorityQueue<AB>();
+q.add(a);
+q.add(b);
+q.add(c);
+q.add(d);
+q.remove(c);
+c.a=1; 
+q.add(c);//触发元素重新排序
+```
+PriorityQueue在add addAll后会进行元素重排序，其余操作不会触发元素重排序。当外部修改元素后，需先删掉元素，再插入元素，以保持正确的顺序。

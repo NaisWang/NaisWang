@@ -74,7 +74,7 @@ Centos下：
 在使用VMware的过程中，有时候需要让虚拟机与物理主机处于同一个局域网段，这时候就需要用桥接模式。
 方法：
 1、打开VMware上方菜单栏的 编辑→虚拟网络编辑器
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191129201623.png"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20221008151012.png)
 
 然后将虚拟中的网络模式改成桥接模式即可
 
@@ -82,61 +82,102 @@ Centos下：
 vmware为我们提供了三种网络工作模式，它们分别是：Bridged（桥接模式）、NAT（网络地址转换模式）、Host-Only（仅主机模式）。
 
 打开vmware虚拟机，我们可以在选项栏的“编辑”下的“虚拟网络编辑器”中看到VMnet0（桥接模式）、VMnet1（仅主机模式）、VMnet8（NAT模式），那么这些都是有什么作用呢？其实，我们现在看到的VMnet0表示的是用于桥接模式下的虚拟交换机；VMnet1表示的是用于仅主机模式下的虚拟交换机；VMnet8表示的是用于NAT模式下的虚拟交换机。
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191204130524.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20221008151034.png)
+
 同时，在主机上对应的有VMware Network Adapter VMnet1和VMware Network Adapter VMnet8两块虚拟网卡，它们分别作用于仅主机模式与NAT模式下。在“网络连接”中我们可以看到这两块虚拟网卡，如果将这两块卸载了，可以在vmware的“编辑”下的“虚拟网络编辑器”中点击“还原默认设置”，可重新将虚拟网卡还原。
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191204130558.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20221008151049.png)
+
 小伙伴看到这里，肯定有疑问，为什么在真机上没有VMware Network Adapter VMnet0虚拟网卡呢？那么接下来，我们就一起来看一下这是为什么。
 
 ## 1. Bridged(桥接模式)
 什么是桥接模式？桥接模式就是将主机网卡与虚拟机虚拟的网卡利用虚拟网桥进行通信。在桥接的作用下，类似于把物理主机虚拟为一个交换机，所有桥接设置的虚拟机连接到这个交换机的一个接口上，物理主机也同样插在这个交换机当中，所以所有桥接下的网卡与网卡都是交换模式的，相互可以访问而不干扰。在桥接模式下，虚拟机ip地址需要与主机在同一个网段，如果需要联网，则网关与DNS需要与主机网卡一致。其网络结构如下图所示：
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191204130709.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20221008151104.png)
+
 接下来，我们就来实际操作，如何设置桥接模式。
 
 首先，安装完系统之后，在开启系统之前，点击“编辑虚拟机设置”来设置网卡模式。
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191204130734.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20221008151117.png)
+
 点击“网络适配器”，选择“桥接模式”，然后“确定”
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191204130801.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20221008151131.png)
+
 在进入系统之前，我们先确认一下主机的ip地址、网关、DNS等信息。
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191204130856.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20221008151143.png)
+
 然后，进入系统编辑网卡配置文件，命令为vi /etc/sysconfig/network-scripts/ifcfg-eth0
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191204130940.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20221008151158.png)
+
 添加内容如下：
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191204131004.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20221008151210.png)
+
 编辑完成，保存退出，然后重启虚拟机网卡，使用ping命令ping外网ip，测试能否联网。
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191204131030.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20221008151225.png)
+
 能ping通外网ip，证明桥接模式设置成功。
 
 那主机与虚拟机之间的通信是否正常呢？我们就用远程工具来测试一下。
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191204131058.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20221008151238.png)
+
 主机与虚拟机通信正常。
 
 这就是桥接模式的设置步骤，相信大家应该学会了如何去设置桥接模式了。桥接模式配置简单，但如果你的网络环境是ip资源很缺少或对ip管理比较严格的话，那桥接模式就不太适用了。如果真是这种情况的话，我们该如何解决呢？接下来，我们就来认识vmware的另一种网络模式：NAT模式。
 
 ## 2. NAT（地址转换模式）
 刚刚我们说到，如果你的网络ip资源紧缺，但是你又希望你的虚拟机能够联网，这时候NAT模式是最好的选择。NAT模式借助虚拟NAT设备和虚拟DHCP服务器，使得虚拟机可以联网。虚拟机的IP只需要配置NAT网段中的IP，访问外部host可以通过宿主主机IP访问，<font color="red">它不需要有外部网络独立的IP</font>，其网络结构如下图所示：
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191204131141.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20221008151250.png)
+
 在NAT模式中，主机网卡直接与虚拟NAT设备相连，然后虚拟NAT设备与虚拟DHCP服务器一起连接在虚拟交换机VMnet8上，这样就实现了虚拟机联网。那么我们会觉得很奇怪，为什么需要虚拟网卡VMware Network Adapter VMnet8呢？原来我们的VMware Network Adapter VMnet8虚拟网卡主要是为了实现主机与虚拟机之间的通信。在之后的设置步骤中，我们可以加以验证。
 <font color="red">注： 如果真机使用的是WIFI， 虚拟机使用NAT模式时， 则我们需要打开真机的无线网卡网络共享， 否则， 虚拟机无法通信</font>
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191217200115.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20221008151304.png)
+
 首先，设置虚拟机中NAT模式的选项，打开vmware，点击“编辑”下的“虚拟网络编辑器”，设置NAT参数及DHCP参数。
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191218191141.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20221008151316.png)
+
 将虚拟机的网络连接模式修改成NAT模式，点击“编辑虚拟机设置”。
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191204131258.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20221008151328.png)
+
 点击“网络适配器”，选择“NAT模式”
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191204131325.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20221008151340.png)
+
 然后开机启动系统，编辑网卡配置文件，命令为vi /etc/sysconfig/network-scripts/ifcfg-eth0
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191204131346.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20221008151357.png)
+
 具体配置如下：
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191204131408.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20221008151410.png)
+
 编辑完成，保存退出，然后重启虚拟机网卡，动态获取ip地址，使用ping命令ping外网ip，测试能否联网。
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191204131432.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20221008151422.png)
+
 之前，我们说过VMware Network Adapter VMnet8虚拟网卡的作用，那我们现在就来测试一下。
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191204131458.png"/>
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191204131514.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20221008151434.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20221008151450.png)
+
 如此看来，虚拟机能联通外网，确实不是通过VMware Network Adapter VMnet8虚拟网卡，那么为什么要有这块虚拟网卡呢？
 
 之前我们就说VMware Network Adapter VMnet8的作用是主机与虚拟机之间的通信，接下来，我们就用远程连接工具来测试一下。
-<img width="500px" src="https://gitee.com/naiswang/images/raw/master/20191204131533.png"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20221008151502.png)
+
 然后，将VMware Network Adapter VMnet8启用之后，发现远程工具可以连接上虚拟机了。
 
 那么，这就是NAT模式，利用虚拟的NAT设备以及虚拟DHCP服务器来使虚拟机连接外网，而VMware Network Adapter VMnet8虚拟网卡是用来与虚拟机通信的。

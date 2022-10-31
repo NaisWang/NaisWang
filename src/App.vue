@@ -60,9 +60,8 @@
                 fill="#0071BC" p-id="4239"></path>
           </svg>
         </div>
-        <div>
-          <button style="cursor: pointer" v-on:click="toggleNavShow()">切换显示</button>
-        </div>
+
+        <button style="cursor: pointer" v-on:click="toggleNavShow()">切换显示</button>
 
 
       </div>

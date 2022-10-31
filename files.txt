@@ -127,6 +127,7 @@
     "jquery.md": "jquery.md",
     "qs.md": "qs.md",
     "vue.md": "vue.md",
+    "websocket.md": "websocket.md",
     "模板.md": "模板.md",
     "axios.md": "axios.md",
     "webpack.md": "webpack.md"

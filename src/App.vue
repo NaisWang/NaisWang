@@ -3,6 +3,9 @@
     <div class="top">
       <a id="posit" href="#frozenset"></a>
       <input type="search" id="fileSearchInput" placeholder="搜索...">
+
+      <button style="cursor: pointer" v-on:click="toggleFileShow()">切换显示</button>
+
       <div id="allFileSearchButton" title="全文搜索">
         <svg t="1648025539535" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
              p-id="13634" width="32" height="32">
@@ -23,6 +26,8 @@
               fill="#FF4B07" p-id="13639"></path>
         </svg>
       </div>
+
+
       <button style="cursor: pointer" class="back-to-top"
               onclick="window.scrollTo({ left: 0,top: 0,behavior: 'smooth'})">
         <svg xmlns="http://www.w3.org/2000/svg" class="icon back-to-top-icon" viewBox="0 0 1024 1024"
@@ -35,6 +40,7 @@
           </g>
         </svg>
       </button>
+
 
       <div class="tab">
       </div>
@@ -54,6 +60,10 @@
                 fill="#0071BC" p-id="4239"></path>
           </svg>
         </div>
+        <div>
+          <button style="cursor: pointer" v-on:click="toggleNavShow()">切换显示</button>
+        </div>
+
 
       </div>
 
@@ -77,7 +87,6 @@
 import {FilesShow} from "./js/FilesShow";
 import {FileSearch} from "./js/FileSearch";
 import {AllFileSearch} from "./js/allFileSearch";
-
 import $ from "jquery"
 
 export default {
@@ -85,14 +94,15 @@ export default {
     return {
       msg: 'OK',
       allFileSearch: null,
+      filesShow: null,
     }
   },
   mounted() {
     this.$nextTick(() => {
       this.allFileSearch = new AllFileSearch(this.$router);
-      let filesShow = new FilesShow(this.$router);
+      this.filesShow = new FilesShow(this.$router);
       let fileSearch = new FileSearch();
-      filesShow.setFilesContent();
+      this.filesShow.setFilesContent();
 
       $(".topRight .editPage").on("click", function (e) {
         let title = $("#topTitle")[0].textContent
@@ -107,6 +117,29 @@ export default {
   methods: {
     allFileQuery() {
       this.allFileSearch.query($('#allFileSearchInput').val())
+    },
+    toggleFileShow() {
+      $("#files").toggle()
+      this.setContentWith()
+    },
+    toggleNavShow() {
+      $("#nav").toggle()
+      this.setContentWith()
+    },
+    setContentWith() {
+      if ($("#files").is(":hidden") && $("#nav").is(":hidden")) {
+        $("#content").css("width", "95vw")
+        $("#content").css("margin-left", "0")
+      } else if ($("#files").is(":hidden")) {
+        $("#content").css("width", "74vw")
+        $("#content").css("margin-left", "0")
+      } else if ($("#nav").is(":hidden")) {
+        $("#content").css("width", "74vw")
+        $("#content").css("margin-left", "22vw")
+      } else {
+        $("#content").css("width", "52vw")
+        $("#content").css("margin-left", "22vw")
+      }
     }
   }
 

@@ -522,7 +522,7 @@ public class AccountController {
 ```
 
 ## 4. 手工设置响应头（局部跨域 ）
-使用HttpServletResponse对象添加响应头（Access-Control-Allow-Origin）来授权原始域，这里Origin的值也可以设置为"*" ，表示全部放行。
+使用HttpServletResponse对象添加响应头（Access-Control-Allow-Origin）来授权原始域，这里Origin的值也可以设置为`*` ，表示全部放行。
 ```java
 @RequestMapping("/hello")
 @ResponseBody

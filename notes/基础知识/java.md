@@ -984,9 +984,12 @@ public static void main(String[] args){
 ```
 
 # Varargs 可变参数使用
-Java1.5提供了一个叫varargs的新功能，就是可变长度的参数。可变参数底层就是一个数组
+Java1.5提供了一个叫varargs的新功能，就是可变长度的参数。**可变参数底层就是一个数组**，例如`int... arr`在底层就是`int[] arr`, `Integer... arr`在底层就是`Integer[] arr`, `T... arr`在底层就是`T[] arr`
+
 "Varargs"是"variable number of arguments"的意思。有时候也被简单的称为"variable arguments"
+
 定义实参个数可变的方法：只要在一个形参的"类型"与"参数名"之间加上三个连续的"."（即"..."，英文里的句中省略号），就可以让它和不确定个实参相匹配。
+
 以下实例创建了 sumvarargs() 方法来统计所有数字的值：
 ```java
 public class Te {

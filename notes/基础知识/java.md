@@ -5000,6 +5000,17 @@ public class TestFilter implements Filter {
  - Filter的过滤例外一般是在加载的时候在init方法声明,而Interceptor可以通过在xml声明是guest请求还
  - 是user请求来辨别是否过滤。
 
+# ThreadLocal全面解析
+<div class="container">
+  <iframe src="./pdfs/blog/ThreadLocal全面解析.pdf"></iframe>
+</div>
+
+# 强引用，软引用，弱引用，虚引用
+
+<div class="container">
+  <iframe src="./pdfs/blog/强引用，软引用，弱引用，幻象引用有什么区别.pdf"></iframe>
+</div>
+
 
 # 零碎知识点
 ## Java 是编译型语言还是解释型语言？

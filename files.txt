@@ -49,7 +49,6 @@
     "学习路线.md": "学习路线.md",
     "js.md": "js.md"
   },
-  "Untitled.md": "Untitled.md",
   "软件": {
     "markdown.md": "markdown.md",
     "nmap.md": "nmap.md",
@@ -132,7 +131,6 @@
     "axios.md": "axios.md",
     "webpack.md": "webpack.md"
   },
-  "'": "'",
   "back-end": {
     "Mybatis.md": "Mybatis.md",
     "springmvc.md": "springmvc.md",

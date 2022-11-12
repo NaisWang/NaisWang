@@ -1255,6 +1255,10 @@ Java的异常（Exception和Error）分为检查异常和非检查的异常。
 ### 检查异常
 就是编译器要求你必须处理的异常。比如我们在编程某个文件的读于写时，编译器要求你必须要对某段代码try....catch... 或者 throws exception，这就是检查异常，简单的来说，你代码还没有运行，编码器就会检查你的代码，对可能出现的异常必须做出相对的处理。（比如当文件不存在时..）
 
+例如下面就需要对test方法可能会抛出的IOException异常做处理，否者编译不通过。
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20221105200843.png)
+
 #### 如何处理检查异常
 1. 继续往上抛出，（这是一个消极的方法），一直可以抛到java虚拟机来处理，通过throw exception抛出。
 2. 用try...catch捕获
@@ -2731,150 +2735,6 @@ public class TestGeneric{
     myGeneric.show(111); 
   }
 }
-```
-
-## 泛型通配符
-当使用泛型类或者接口时，传递的数据中，泛型类型不确定，可以通过通配符<?>表示
-```java
-class Parent{}
-
-class Son extends Parent{}
-
-class BoxUtils{
-	public static void setBox(Box<Parent> box){
-		System.out.println(box);
-	}
-}
-
-public static void main(String[] args){
-	Box<Parent> box = new Box<Parent>();
-	BoxUtils.setBox(box);
-
-	Box<Son> box1 = new Box<Son>();
-	BoxUtils.setBox(box1); //编译时候出错
-}
-```
-
-使用泛型通配符解决上述问题
-```java
-class BoxUtils{
-	public static void setBox(Box<?> box){
-		System.out.println(box);
-	}
-}
-public static void main(String[] args){
-	Box<Son> box1 = new Box<Son>();
-	BoxUtils.setBox(box1); 
-}
-```
-
-### 泛型上下限
-JAVA的泛型中可以指定一个泛型的上限和下限
-- 泛型的上限：
-格式：类型名称<? extends 类>对象名称
-意义：只能接收该类型及其子类
-- 泛型的下限：
-格式：类型名称<? super 类>对象名称
-意义：只能接收该类型及其父类
-
-注：泛型上下限是用于使用泛型类/接口/方法时，而不能用于创建泛型类/接口/方法。
-
-### 调用泛型中的方法
-```java
-class Person<T> {
-  public void show(T t) {
-    t.show();
-  }
-}
-class Worker {
-  public void show() {
-    System.out.println("get worker");
-  }
-}
-```
-光是`Person<T>`这个泛型类型的声明就无法编译通过。就不用说实例化`Person<Worker>`的地方了。为啥呢？因为`Person<T>`这个声明的意思实际上是：有一个泛型参数T，它可以被实例化为任意java.lang.Object的子类。实际上跟下面这个声明是等价的：
-```java
-class Person<T extends Object> {
-  public void show(T t) {
-    t.show(); // doesn't compile
-  }
-}
-```
-于是在`Person<T>`类型声明内，T类型可用的部分只有“java.lang.Object”这个上限类型所拥有的信息，也就是说调用`t.toString()`、`t.hashCode()`、`t.getClass()`之类的Object上有的方法都OK，但是调用`t.show()`则不行——因为作为T参数上限的Object类型没有show()方法。于是编译`Person<T>`这个类型声明的时候，类型检查就通不过，直接就失败了。要让这个例子能通过要怎么做呢？改变泛型参数T的类型信息即可。
-例如说使它的上限变为更加具体的类型：
-```java
-interface IShowable {
-  void show();
-}
-
-class Person<T extends IShowable> {
-  public void show(T t) {
-    t.show();
-  }
-}
-
-class Worker implements IShowable {
-  public void show() {
-    System.out.println("get worker");
-  }
-}
-```
-这样在`Person<T>`这个泛型类型的声明中，泛型参数T就带有了足够的类型信息来表明它必须实现IShowable接口，于是T就可以使用`IShowable.show()`方法了。
-
-**注意点**
-```java
-public class Main1{
-  public static void main(String[] args){
-    Student st = new Student(); 
-    test(st); 
-  }
-
-  public static <T extends Person> void test(T t){
-    System.out.println(t.age);  // 输出2
-    //System.out.println(t.id); //编译报错
-  }
-}
-
-class Person{
-  public int age = 2;
-}
-
-class Student extends Person{
-  public int id = 1;
-}
-```
-
-使用`<T extends Person>`，则编译时，T就只能使用Person中的属性与方法，这是因为在编译时，编译器无法知道有哪些类是继承了Person， 所以不能使用Person子类中的属性与方法，否则会报错
-
-## 泛型擦除
-所谓泛型，就是指在定义一个类、接口或者方法时可以指定类型参数。这个类型参数我们可以在使用类、接口或者方法时动态指定。
-
-使用泛型可以给我们带来如下的好处：
-- 编译时类型检查：当我们使用泛型时，加入向容器中存入非特定对象在编译阶段就会报错。假如不使用泛型，可以向容器中存入任意类型，容易出现类型转换异常。
-- 不需要进行类型强制转换：使用泛型后容器可以记住存入容器中的对象的类型；
-- 代码可读性提升：使用泛型后开发人员看一眼就知道容器中存放的是何种对象。
-
-有了上面的泛型擦除知识后，我们就可以理解下面的现象了：
-
-1. 泛型类的class对象相同
-```java
-public static void main(String[] args) {  
-    List<String> ls = new ArrayList<String>();  
-    List<Integer> li = new ArrayList<Integer>();  
-    System.out.println(ls.getClass() == li.getClass());  
-}  
-```
-
-2. 不能对泛型数组进行初始化
-```java
-List<String>[] list = new List<String>[];  
-```
-
-3. instanceof 不允许存在泛型参数
-```java
-List<String> list = new ArrayList<String>();  
-//在运行时list的泛型参数会被删除，所以判断不了类型
-System.out.println(list instanceof List<String>)
 ```
 
 # 比较器

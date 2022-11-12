@@ -1397,6 +1397,56 @@ $ git log --oneline --decorate --graph --all
 通常我们会在创建一个新分支后立即切换过去，这可以用`git checkout -b <newbranchname>`一条命令搞定。
 
 
+### git切换分支内容相互影响解决方案
+#### 问题描述：
+在 dev 分支开发需求过程中，突然插入 另一个紧急需求，需要新建 fix 分支处理紧急需求，切换到fix分支后，发现 dev分支中更改的内容也存在。
+
+#### 问题原因:
+如果当前分支所做的修改没有提交的话去其他分支也会看到相同的修改。
+
+#### 解决办法：
+1. 如果当前功能已开发完成，直接 git add => git commit => git status 检查工作区和暂存区是干净的，然后 git push 提交到远程仓库即可。
+2. 但很多情况下，是当前功能尚未开发完成，不能直接提交，这个时候可以先把当前分支工作现场保存起来，等开发完紧急需求之后，再切回来继续开发当前需求。操作如下：
+
+git add 后，使用 git stash 隐藏当前工作区，此时git status检查 工作区是干净的，就可以切到新的分支了；那git stash隐藏之后如何恢复工作现场呢？可先用 git stash list 查看隐藏的工作现场，然后再恢复。
+
+恢复有两种方式：
+1. git stash apply 恢复最近保存的现场，但是stash内容不会删除(git stash list还会显示保存的信息)，需要使用 git stash drop 来删除；
+2. git stash pop 恢复现场的同时也把stash中内容删掉(git stash list 不会显示保存的信息)；
+如果之前保存了多个工作场景，即 git stash list 下有多条信息，可通过
+```
+git stash apply stash@{0}
+git stash apply stash@{1}
+...
+git stash pop stash@{0}
+git stash pop stash@{1}
+```
+完整流程参考：
+```bash
+# 在dev 分支
+$ git add .
+$ git commit -m '注释'
+
+# 把文件修改藏起来，将工作区清理干净
+$ git stash
+
+# 再创建 fix 分支
+$ git checkout -b fix
+
+# 在fix分支 验证，工作区很干净
+$ git status
+On branch fix
+nothing to commit, working tree clean
+
+
+# 在 fix 分支上干完活后，切回dev 分支，
+## 在dev分支， 恢复之前隐藏的文件
+$ git stash apply stash@{0}
+
+## 删除隐藏的备份
+git stash drop
+```
+
 ## 分支的新建与合并
 让我们来看一个简单的分支新建与分支合并的例子，实际工作中你可能会用到类似的工作流。 你将经历如下步骤：
 - 开发某个网站。

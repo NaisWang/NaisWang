@@ -1262,31 +1262,11 @@ org.springframework.transaction.NoTransactionException: No transaction aspect-ma
 - 在@Transactional注解中如果不配置rollbackFor属性,那么事物只会在遇到RuntimeException的时候才会回滚,加上rollbackFor=Exception.class,可以让事物在遇到非运行时异常时也回滚。
 
 
-### 注解失效问题
+### @Transactional注解失效场景
 
-正常情况下，只要在方法上添加@Transactional注解就完事了，但是需要注意的是，虽然使用简单，但是如果不合理地使用注解，还是会存在注解失效的问题。
-
-#### @Transactional应用在非public修饰的方法上
-
-事务拦截器在目标方法执行前后进行拦截，内部会调用方法来获取Transactional 注解的事务配置信息，调用前会检查目标方法的修饰符是否为 public，不是 public则不会获取@Transactional 的属性配置信息。
-
-#### @Transactional注解属性rollbackFor设置错误
-
-rollbackFor 可以指定能够触发事务回滚的异常类型。Spring默认抛出了未检查unchecked异常（继承自 RuntimeException 的异常）或者 Error才回滚事务；其他异常不会触发回滚事务。如果在事务中抛出其他类型的异常，但却期望 Spring 能够回滚事务，就需要指定rollbackFor属性。
-
-#### 同一个类中方法调用，导致@Transactional失效
-
-开发中避免不了会对同一个类里面的方法调用，比如有一个类Test，它的一个方法A，A再调用本类的方法B（不论方法B是用public还是private修饰），但方法A没有声明注解事务，而B方法有。则外部调用方法A之后，方法B的事务是不会起作用的。这也是经常犯错误的一个地方。
-
-那为啥会出现这种情况？其实这还是由于使用Spring AOP代理造成的，因为只有当事务方法被当前类以外的代码调用时，才会由Spring生成的代理对象来管理。
-
-#### 异常被你的catch“吃了”导致@Transactional失效
-
-如果你手动的catch捕获这个异常并进行处理，事务管理器会认为当前事务应该正常commit，就会导致注解失效，如果非要捕获且不失效，就必须在代码块内throw new Exception抛出异常。
-
-#### 数据库引擎不支持事务
-
-开启事务的前提就是需要数据库的支持，我们一般使用的Mysql引擎时支持事务的，所以一般不会出现这种问题。
+<div class="container">
+  <iframe src="./pdfs/blog/@Transactional注解的失效场景.pdf"></iframe>
+</div>
 
 # IOC相关注解
 ## @Bean注解

@@ -1088,124 +1088,9 @@ GROUP BY province_code
 ```
 
 # 索引
-MySQL官方对索引的定义为：索引（index）是帮助MySQL高效获取数据的数据结构（有序）。在数据之外，数据库系统还维护者满足特定查找算法的数据结构，这些数据结构以某种方式引用（指向）数据， 这样就可以在这些数据结构上实现高级查找算法，这种数据结构就是索引。如下面的==示意图==所示 : 
-
-![](https://raw.githubusercontent.com/NaisWang/images/master/20220408182920.png)
-
-左边是数据表，一共有两列七条记录，最左边的是数据记录的物理地址（注意逻辑上相邻的记录在磁盘上也并不是一定物理相邻的）。为了加快Col2的查找，可以维护一个右边所示的二叉查找树，每个节点分别包含索引键值和一个指向对应数据记录物理地址的指针，这样就可以运用二叉查找快速获取到相应数据。
-一般来说索引本身也很大，不可能全部存储在内存中，因此索引往往以索引文件的形式存储在磁盘上。索引是数据库中用来提高性能的最常用的工具。
-
-**索引优势劣势**
-优势
-- 类似于书籍的目录索引，提高数据检索的效率，降低数据库的IO成本。
-- 通过索引列对数据进行排序，降低数据排序的成本，降低CPU的消耗。
-
-劣势
-- 实际上索引也是一张表，该表中保存了主键与索引字段，并指向实体类的记录，所以索引列也是要占用空间的。
-- 虽然索引大大提高了查询效率，同时却也降低更新表的速度，如对表进行INSERT、UPDATE、DELETE。因为更新表时，MySQL 不仅要保存数据，还要保存一下索引文件每次更新添加了索引列的字段，都会调整因为更新所带来的键值变化后的索引信息。
-
-**索引结构**
-索引是在MySQL的存储引擎层中实现的，而不是在服务器层实现的。所以每种存储引擎的索引都不一定完全相同，也不是所有的存储引擎都支持所有的索引类型的。MySQL目前提供了以下4种索引：
-- BTREE 索引 ： 最常见的索引类型，大部分索引都支持 B 树索引。
-- HASH 索引：只有Memory引擎支持 ， 使用场景简单 。
-- R-tree 索引（空间索引）：空间索引是MyISAM引擎的一个特殊索引类型，主要用于地理空间数据类型，通常使用较少，不做特别介绍。
-- Full-text （全文索引） ：全文索引也是MyISAM的一个特殊索引类型，主要用于全文索引，InnoDB从Mysql5.6版本开始支持全文索引。
-
-MyISAM、InnoDB、Memory三种存储引擎对各种索引类型的支持
-
-| 索引        | InnoDB引擎      | MyISAM引擎 | Memory引擎 |
-| ----------- | --------------- | ---------- | ---------- |
-| BTREE索引   | 支持            | 支持       | 支持       |
-| HASH 索引   | 不支持          | 不支持     | 支持       |
-| R-tree 索引 | 不支持          | 支持       | 不支持     |
-| Full-text   | 5.6版本之后支持 | 支持       | 不支持     |
-
-我们平常所说的索引，如果没有特别指明，都是指B+树（多路搜索树，并不一定是二叉的）结构组织的索引。其中聚集索引、复合索引、前缀索引、唯一索引默认都是使用 B+tree 索引，统称为 索引。
-
-**索引类型**
-- 普通索引：这是最基本的索引类型，而且它没有唯一性之类的限制
-- 唯一性索引：这种索引和前面的“普通索引”基本相同，但有一个区别：索引列的所有值都只能出现一次，即必须唯一。创建索引时指定unique即可创建唯一性索引
-
-**主键始终被索引。对于MyISAM和InnoDB，这是相同的，并且通常对所有支持索引的存储引擎都是如此。**
-
-**索引分类**
-- 单值索引 ：即一个索引只包含单个列，一个表可以有多个单列索引
-- 复合索引 ：即一个索引包含多个列
-
-## 索引语法
-索引在创建表的时候，可以同时创建， 也可以随时增加新的索引。
-准备环境:
-```SQL
-create database demo_01 default charset=utf8mb4;
-
-use demo_01;
-
-CREATE TABLE city (
-  city_id int(11) NOT NULL AUTO_INCREMENT,
-  city_name varchar(50) NOT NULL,
-  country_id int(11) NOT NULL,
-  PRIMARY KEY (city_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE country(
-  country_id int(11) NOT NULL AUTO_INCREMENT,
-  country_name varchar(100) NOT NULL,
-  PRIMARY KEY (country_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-insert into city (city_id, city_name, country_id) values(1,'西安',1);
-insert into city (city_id, city_name, country_id) values(2,'NewYork',2);
-insert into city (city_id, city_name, country_id) values(3,'北京',1);
-insert into city (city_id, city_name, country_id) values(4,'上海',1);
-
-insert into country (country_id, country_name) values(1,'China');
-insert into country (country_id, country_name) values(2,'America');
-insert into country (country_id, country_name) values(3,'Japan');
-insert into country (country_id, country_name) values(4,'UK');
-```
-
-**创建索引**
-语法 ： 	
-```sql
-create 	[UNIQUE|FULLTEXT|SPATIAL]  index 索引名
-[USING  索引结构(例如BTREE)]
-on 表名(列名,...)
-index_col_name : column_name[(length)][ASC | DESC]
-```
-
-示例 ： 为city表中的city_name字段创建索引 ；
-
-![](https://raw.githubusercontent.com/NaisWang/images/master/20220408182936.png)
-​	
-
-**查看索引**
-语法： 
-```sql
-show index from  表名;
-```
-示例：查看city表中的索引信息；
-
-![](https://raw.githubusercontent.com/NaisWang/images/master/20220408182947.png)
-
-
-**删除索引**
-语法 ：
-```sql
-DROP INDEX 索引名 ON 表名;
-```
-示例 ： 想要删除city表上的索引idx_city_name，可以操作如下：
-
-![](https://raw.githubusercontent.com/NaisWang/images/master/20220408182956.png)
-
-**修改索引**
-```sql
-alter  table  表名  add  [unique|index|fulltext] 索引名(列名);
-添加[unique|index|fulltext]索引
-
-alter index 旧索引名 rename to 新索引名
-重命名索引名
-```
+<div class="container">
+  <iframe src="./pdfs/blog/MySQL索引详解.pdf"></iframe>
+</div>
 
 # 视图
 ​视图（View）是一种虚拟存在的表。视图并不在数据库中实际存在，行和列数据来自定义视图的查询中使用的表，并且是在使用视图时动态生成的。通俗的讲，视图就是一条SELECT语句执行后返回的结果集。所以我们在创建视图的时候，主要的工作就落在创建这条SQL查询语句上。
@@ -2138,31 +2023,10 @@ delete from userTable t where  t.id='123'
 delete from userTable t where  t.id='123 or 1=1'
 ```
 
-# Mysql InnoDB存储引擎中的事务
-**如何开启事务**
-- 执行DML语句时，会自动开启事务
-- 使用`begin`或`start transaction`命令来手动开启事务
-
-**如何结束事务**
-- 执行DML语句时，会自动提交(commit)事务
-- 使用`rollback`或`commit`命令使用结束事务
-
-## 事务隔离级别
-SQL92 ANSI/ISO标准中给出了数据库开发者开发数据库时，该数据库中的事务应该含有如下4种隔离级别供用户选择
-- `Read Uncommitted(未提交读)`：没有解决任何并发问题；事务未提交的数据对其他事务也是可见的，会出现脏读
-- `Read Committed(已提交读)`：解决脏读问题；但一个事务开始之后，只能看到已提交的事务所做的修改，会出现不可重复读
-- `Repeatable Read(可重复读)`：解决不可重复读问题，在同一个事务中多次读取同样的数据结果是一样的；但这种隔离级别未定义解决幻读的问题
-- `Serializable(串行化)`：解决所有问题，是最高的隔离级别，通过强制事务的串行执行
-
-注：以上只是ANSI/ISO标准建议数据库开发者这样开发数据库，但真正的实现还是要看数据库开发者；
-
-### MySQL InnoDB中事务隔离级别
-
-![](https://raw.githubusercontent.com/NaisWang/images/master/20220408183114.png)
-
-注：在mysql InnoDB中，`Repeatable Read`就解决了幻读的问题
-
-可以通过`sow global variables like 'tx_isolation'`语句来查看当前使用的事务隔离级别
+# Mysql中事务隔离级别
+<div class="container">
+  <iframe src="./pdfs/blog/MySQL事务隔离级别详解.pdf"></iframe>
+</div>
 
  
 # 查询结果中增加一个字段并指定固定值
@@ -2785,92 +2649,12 @@ select * from t where name='lisi';　
 （2）在通过聚集索引定位到行记录；
 这就是所谓的`回表查询`，先定位主键值，再定位行记录，它的性能较扫一遍索引树更低。
 
-# 索引覆盖/覆盖索引
-覆盖索引是select的数据列只用从索引中就能够取得，不必读取数据行，换句话说查询列要被所建的索引覆盖。 即只需要在一棵索引树上就能获取SQL所需的所有列数据，即explain的输出结果Extra字段为Using index, 能够触发索引覆盖, 无需回表，速度更快。
-
-## 如何实现索引覆盖？
-常见的方法是：将被查询的字段，建立到联合索引里去。
-建表
-```sql
-create table user (
-    id int primary key,
-    name varchar(20),
-    sex varchar(5),
-    index(name)
-)engine=innodb;
-```
-
-第一个SQL语句：　　
-
-![](https://raw.githubusercontent.com/NaisWang/images/master/20220408183207.png)
-
-```sql
-select id,name from user where name='shenjian';　
-```
-能够命中name索引，索引叶子节点存储了主键id，通过name的索引树即可获取id和name，无需回表，符合索引覆盖，效率较高。
-
-第二个SQL语句：                 
-
-![](https://raw.githubusercontent.com/NaisWang/images/master/20220408183218.png)
-
-```sql
-select id,name,sex from user where name='shenjian';
-```
-能够命中name索引，索引叶子节点存储了主键id，但sex字段必须回表查询才能获取到，不符合索引覆盖，需要再次通过id值扫码聚集索引获取sex字段，效率会降低。
-
-如果把(name)单列索引升级为联合索引(name, sex)就不同了。
-```sql
-create table user (
-    id int primary key,
-    name varchar(20),
-    sex varchar(5),
-    index(name, sex)
-)engine=innodb;
-```
-
-![](https://raw.githubusercontent.com/NaisWang/images/master/20220408183228.png)
-
-可以看到：
-```sql
-select id,name ... where name='shenjian';
- 
-select id,name,sex ... where name='shenjian';
-```
-都能够命中索引覆盖，无需回表。
-
-## 哪些场景可以利用索引覆盖来优化SQL
-**场景1：全表count查询优化**
-
-![](https://raw.githubusercontent.com/NaisWang/images/master/20220408183240.png)
-
-原表为：
-```sql
-user(PK id, name, sex)；
-```
-直接：
-```sql
-select count(name) from user;
-```
-不能利用索引覆盖。
-添加索引：
-```sql
-alter table user add key(name);
-```
-就能够利用索引覆盖提效。
-
-**场景2：列查询回表优化**
-```sql
-select id,name,sex ... where name='shenjian';
-```
-这个例子不再赘述，将单列索引(name)升级为联合索引(name, sex)，即可避免回表。
-
-**场景3：分页查询**
-```sql
-select id,name,sex ... order by name limit 500,100;
-```
-将单列索引(name)升级为联合索引(name, sex)，也可以避免回表。
-
 # Mysql优化
 ## 查询中尽量避免使用SELECT 星号以及加上LIMIT限制
 当服务器响应客户端请求时，客户端必须完整的接收整个返回结果，而不能简单的只取前面几条结果，然后让服务器停止发送。查询应尽可能只返回必要数据，减小通信数据包大小和数量，提高效率。
 
+
+# Mysql三大日志详解
+<div class="container">
+  <iframe src="./pdfs/blog/MySQL三大日志详解.pdf"></iframe>
+</div>

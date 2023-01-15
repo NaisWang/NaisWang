@@ -399,6 +399,10 @@ gender: 3
 ```
 此时就controller可以直接使用Integer[] gender接收了，而不需要使用@RequestParam("gender[]")
 
+### 例子
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20230115224648.png)
+
 
 # 请求处理方法签名
 Spring MVC 通过分析处理方法的签名，将HTTP请求信息绑定到处理方法的相应参数中。

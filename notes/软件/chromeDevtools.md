@@ -244,7 +244,17 @@ FPS（frames per second）是用来分析动画的一个主要性能指标。能
 
 OK！Devtools里面还有很多很多指标需要你去探索，但是，对于怎么用Devtools去分析网页的运行时性能表现，你现在已经有了一个基本的概念。
 
+# 网络面板
+## 加载请求概览
 
+![](https://raw.githubusercontent.com/NaisWang/images/master/Screenshot%202022-12-08%20at%2013.09.23.jpg)
+
+- `5/20 requests`：表示一共有20个请求，由于你进行了只显示`Fetch/XHR`的筛选，所有只显示了5个请求
+- `144kB/1.5MB transferred`: 表示20个请求的总网络传输下载大小为1.5MB，而这5个请求的总网络传输下载大小为144Kb，即135kB+8.5kB，disk cache方式不是网络传输下载，所以不纳入计算
+- `548kB/4.6MB resources`: 表示20个请求的资源大小为4.5MB，而这5个请求的资源大小为548kB，即135kB+8.5kB+135kB+135kB+135kB，disk cache也是请求资源，所以要纳入计算
+- `Finish: 3.0 min`: 表示所有请求的完成时间为3.0毫秒
+- `DOMContentLoaded: 1.46s`: 表示DOM内容加载时间为1.46秒
+- `Load: 1.71`: 表示页面最终完成时间为1.71秒
 
 
 

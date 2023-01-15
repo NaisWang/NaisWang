@@ -1683,6 +1683,12 @@ netstat [选项]
 
 - `Foreign Address`: 与本机端口通信的外部socket。显示规则与Local Address相同
 
+##### 案例
+![](https://raw.githubusercontent.com/NaisWang/images/master/20230113101313.png)
+
+上述表示 有个服务正在监听本地192.168.0.199:55225地址与远程120.77.80.215:3306地址进行tcp4通信，并且这个服务正处于ESTABLESHED状态
+
+
 #### State
 链路状态，共有11种
 
@@ -3148,6 +3154,52 @@ abcdef
 对于以上文本，使用`:s/abc/&123`后，内容会变成如下：
 ```
 abc123def
+```
+
+## 常用场景
+### c键与d键区分开
+如果要进入插入模式，则使用c键，反之，则使用d键
+
+1. 重写当前整行
+```
+1. fff
+2. nfffff
+3. ddddd
+```
+假如现在光标在第2行，且我要重写第2行，则按`cc`
+
+2. 重写当前光标后面的数据
+```
+1. abcdef
+```
+假如现在光标在c字母处，且我要重写后面的数据，则按`C`
+
+### 善用f键与t键
+f键与t键常与d、c、y、v键搭配使用
+
+### 善用r键与R键
+
+### 测试题 
+```
+ACDSee             000001   499.95  ACD Systems, Ltd.
+Internet Explorer  000004  1999.50  Microsoft Corp.
+Vi IMproved        000015     0.00  Bram Moolenaar
+FlashFXP           000204   199.00  CEDsoft
+```
+1. 使用`C`将`ACD Systems, Ltd`重写成`MDC Coll`
+2. 使用`ciw`键将`Microsoft`重写成`Apple`
+3. 使用`ytC`键复制第2行的`Explorer  000004  1999.50  Apple `到下一行
+4. 使用`ctM`将第3行的`000015     0.00  Bram Moolenaar`修改成`0000dddMoolenaar`
+5. 使用`r`将第4行的`FlashFXP`修改成`FldshFXP`
+6. 使用`R`将第4行的`CEDsoft`修改成`Cabcdet`
+
+最终效果如下
+```
+ACDSee             000001   499.95  MDC Coll
+Internet Explorer  000004  1999.50  Apple Corp.
+Explorer  000004  1999.50  Apple 
+Vi IMproved        0000dddMoolenaar
+FldshFXP           000204   199.00  Cabcdet
 ```
 
 # tmux

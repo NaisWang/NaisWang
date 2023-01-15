@@ -575,3 +575,70 @@ public String index(HttpServletResponse response){
 ```
 java -jar spring-boot-helloworld-quick-SNAPSHOT.jar --spring.config.location=F:/application.properties
 ```
+
+# @ConfigurationProperties的三种使用场景
+在Spring Boot中注解@ConfigurationProperties有三种使用场景，而通常情况下我们使用的最多的只是其中的一种场景。本篇文章带大家了解一下三种场景的使用情况。
+
+## 场景一
+使用@ConfigurationProperties和@Component注解到bean定义类上，这里@Component代指同一类实例化Bean的注解。
+
+基本使用实例如下：
+```java
+// 将类定义为一个bean的注解，比如 @Component,@Service,@Controller,@Repository
+// 或者 @Configuration
+@Component
+// 表示使用配置文件中前缀为user1的属性的值初始化该bean定义产生的的bean实例的同名属性
+// 在使用时这个定义产生的bean时，其属性name会是Tom
+@ConfigurationProperties(prefix = "user1")
+public class User {
+	private String name;
+	// 省略getter/setter方法
+}
+```
+对应application.properties配置文件内容如下：
+```
+user1.name=Tom
+```
+在此种场景下，当Bean被实例化时，@ConfigurationProperties会将对应前缀的后面的属性与Bean对象的属性匹配。符合条件则进行赋值。
+
+## 场景二
+使用@ConfigurationProperties和@Bean注解在配置类的Bean定义方法上。以数据源配置为例：
+```java
+@Configuration
+public class DataSourceConfig {
+
+	@Primary
+	@Bean(name = "primaryDataSource")
+	@ConfigurationProperties(prefix="spring.datasource.primary")
+	public DataSource primaryDataSource() {
+		return DataSourceBuilder.create().build();
+	}
+}
+```
+这里便是将前缀为“spring.datasource.primary”的属性，赋值给DataSource对应的属性值。
+
+@Configuration注解的配置类中通过@Bean注解在某个方法上将方法返回的对象定义为一个Bean，并使用配置文件中相应的属性初始化该Bean的属性。
+
+## 场景三
+使用@ConfigurationProperties注解到普通类，然后再通过@EnableConfigurationProperties定义为Bean。
+```java
+@ConfigurationProperties(prefix = "user1")
+public class User {
+	private String name;
+	// 省略getter/setter方法
+}
+```
+
+这里User对象并没有使用@Component相关注解。
+
+而该User类对应的使用形式如下：
+```java
+@SpringBootApplication
+@EnableConfigurationProperties({User.class})
+public class Application {
+    public static void main(String[] args) throws Exception {
+        SpringApplication.run(Application.class, args);
+    }
+}
+```
+上述代码中，通过@EnableConfigurationProperties对User进行实例化时，便会使用到@ConfigurationProperties的功能，对属性进行匹配赋值。

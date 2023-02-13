@@ -715,51 +715,6 @@ function add(num1, num2){
 **注：js调用函数时传入的参数个数与函数定义时的参数个数不符时的操作**
 ECMAScript函数的参数与大多数其他语言中的函数的参数有所不同。<font color="red">ECMAScript函数不介意传递进来多少个参数，也不在乎穿进来参数是什么数据类型</font>。也就是是说，即便你定义的函数值接受两个参数，在调用这个函数时也未必一定要是两个参数。可以传递一个、三个甚至不传递参数，而解析器永远不会有什么怨言。之所以会这样，原因是ECMAScript中的参数在内部是用一个数组来运行的。函数接受到的永远是这个数组，而不关心数组中包含哪些参数(如果有参数的话)。如果这个数组中不包含任何元素，无所谓；如果包含多个元素，也没问题。实际上，在函数体内可以通过arguments对象来访问这个参数数组，从而获取传递给含糊的每一个参数。
 
-# 原型对象
-- 每创建一个函数，解析器都会向函数中添加一个属性`prototype`，这个属性对应着一个对象，这个对象就是原型对象。
-- 当函数以构造函数的形式调用时，它所创建的对象都会有一个隐含的属性`__proto__`, 这个属性指向构造函数的原型对象
-- 原型对象也一个隐含属性`__prote__`, 同样也是指向它的原型对象
-
-![](https://raw.githubusercontent.com/NaisWang/images/master/20220409110054.png)
-
-原型对象的作用：相当于一个公共的区域，所有同一个类的实例都可以访问到这个原型对象，所以我们可以将对象中共有的内容，放到原型对象中
-下面是用实例阐述了原型对象的作用
-```js
-function Person(name){
-  this.name = name;
-  this.sayName = function(){
-    alert(this.name);
-  };
-}
-var obj4 = new Person("whz");
-```
-这样的话，每创建一个Person对象，都会在堆中创建一个sayName方法对象，这样做的效率太低了
-做如下改进：
-```js
-function Person(name){
-  this.name = name;
-  this.sayName = say;
-}
-var say = function(){
-  alert(this.name);
-};
-
-var obj4 = new Person("whz");
-```
-这样的话，解决了上述的开辟多个sayName方法对象的问题，但是这样做的话，要创建一个全局变量，在开发中，是十分不推荐随意创建全局变量的
-做如下改进：
-```java
-function Person(name){
-  this.name = name;
-  this.sayName = say;
-}
-Person.prototype.sayName = function(){
-  alert(this.name);
-}
-var obj4 = new Person("whz");
-```
-使用原型对象的方式就很好的解决了上述所有问题
-
 # call()和apply()
 call()、apply()都是来修改this的指向。
 
@@ -1721,7 +1676,7 @@ ajax(url, () => {
 解决回调地狱有很多方法，比如：Promise对象、async函数
 
 # Promise
-> 搞懂Promise之前，先要搞懂什么是回调函数
+> 搞懂Promise之前，先要搞懂什么是回调函数、高阶函数
 
 Promise是JS中进行异步编程的新的解决方案
 从语法上来说：Promise是一个构造函数
@@ -1960,6 +1915,129 @@ new Promise(..).then(
 
 代码段4与代码段1/2/3之间是没有先后顺序的，可能代码段4在代码段1/2/3执行完之前执行，也有可能执行完之后执行，即它们之间是异步的
 但是代码段1,2,3之间是由执行顺序的，是同步的。代码段1执行完后，代码段2才能执行，代码段2执行完后，代码段3才能执行
+
+# async与await使用
+
+## await后面跟的对象
+
+await 后面可以跟任何的JS 表达式。虽然说 await 可以等待很多类型的东西，但是它最主要的意图是用来等待 Promise 对象的状态被 resolved。
+
+- 如果await**后面是promise对象**会造成异步函数停止执行并且等待 promise 的解决,
+- 如果await**后面是非promise对象**则立即执行。
+
+1. 后面跟Promise对象
+```js
+function sleep(second) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(' enough sleep~');
+        }, second);
+    })
+}
+async function awaitDemo() {
+    let result = await sleep(2000);
+    console.log("123")
+    console.log(result);
+}
+awaitDemo();// 两秒之后会被打印出来 '123'和' enough sleep~'
+```
+
+2. 后面跟非promise对象
+
+```js
+function sleep(second) {
+    
+        setTimeout(() => {
+            console.log(' enough sleep~');
+        }, second);
+   
+}
+async function awaitDemo() {
+    let result = await sleep(2000);
+    console.log("123");
+}
+awaitDemo();//立即输出123  两秒后输出' enough sleep~'
+```
+
+## 案例
+代码案例1：
+```js
+async function judgeStatusName(body, itemNo) {
+  let cnt = 5;
+  let flag = true
+  while (cnt-- !== 0 && flag) {
+    let statusName = await getWaitAuctionMachineDetail(body, itemNo).then(resp => {
+      return resp.data.data.item.statusName;
+    })
+    if (statusName === "销售中") {
+      flag = false
+      // 状态变为销售中
+      return 1;
+    }
+  }
+  return -1;
+}
+
+
+judgeStatusName(body, itemNo).then(resp => {
+  if (resp === 1) {
+    this.$emit('handleClose')
+    this.$message.success('上拍成功')
+  } else {
+    this.$message.error('信息错误')
+  }
+})
+
+judgeStatusName("111", "222")
+```
+
+代码案例2:
+```js
+  this.paijiUser.forEach(async item => {
+    let mark = 0
+    await getToBePickMachine(item.boby).then(resp => {
+      let data = resp.data.data
+      data.forEach(shipmentItem => {
+        mark++
+        shipmentItem.itemList.forEach(machineItem => {
+          machineItem.actualItemCount = shipmentItem.actualItemCount
+          machineItem.mark = mark
+          this.toBePickMachineList.push(machineItem)
+        })
+      })
+      this.exportTable(item.name)
+    })
+  })
+```
+
+代码案例3:
+```js
+async function test() {
+  for (let i = 0; i < 10; i++) {
+    console.log(Date.now());
+    await run();
+  }
+}
+
+async function run() {
+  await subRun();
+}
+
+async function subRun() {
+  await sleep(1000);
+} 
+
+function sleep(second) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve('enough sleep～')
+    }, second)
+  })
+}
+
+test()
+```
+
 
 # 模块化
 模块化是指将一个大的程序文件，拆封成许多小的文件，然后将小文件组合起来

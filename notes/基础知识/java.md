@@ -1292,6 +1292,10 @@ RuntimeException与其子类，以及错误(Error)
 ### 非运行时异常
 是RuntimeException以外的异常，类型上都属于Exception类及其子类。从程序语法角度讲是必须进行处理的异常，如果不处理，程序就不能编译通过。如IOException、SQLException等以及用户自定义的Exception异常，一般情况下不要自定义检查异常。
 
+![](https://raw.githubusercontent.com/NaisWang/images/master/20230220130423.png)
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20230220131801.png)
+
 # finally关键字
 来看看下面这个test1()方法：
 ```java

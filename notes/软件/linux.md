@@ -2125,6 +2125,51 @@ $ rsync -av source/ rsync://192.168.122.32/module/destination
 - rsync是复制，如果有重复的文件，会直接跳过，而且他自己的算法优化。
 - scp是把文件全部复制过去，当文件修改后还是把所有文件复制过去，rsync 第一次是把所有文件同步过去，当文件修改后，只把修改的文件同步过去。
 
+# linux一行执行多条命令 shell
+要实现在一行执行多条Linux命令，分三种情况：
+## 1、&&
+
+举例：
+```bash
+lpr /tmp/t2 && rm /tmp/t2
+```
+第2条命令只有在第1条命令成功执行之后才执行。当&&前的命令“lpr /tmp/t2”成功执行后"rm /tmp/t2"才执行，根据命令产生的退出码判断是否执行成功（0成功，非0失败）。
+
+## 2、||
+
+举例：
+```bash
+cp /tmp/t2 /tmp/t2.bak || rm /tmp/t2
+```
+只有||前的命令“cp /tmp/t2 /tmp/t2.bak”执行不成功（产生了一个非0的退出码）时，才执行后面的命令。
+
+## 3、;
+
+举例：
+```bash
+cp /tmp/t2 /tmp/t2.bak; echo "hello world"
+```
+顺序执行多条命令，当;号前的命令执行完（不管是否执行成功），才执行;后的命令。
+
+例子：
+```bash
+## 下述方式会报错
+wanghengzhi@:/opt/homebrew/etc/myredis$ redis-server redis6379.conf & ;redis-server redis6380.conf & ;redis-server redis6381.conf & ;redis-server redis6389.conf & ;redis-server redis6390.conf & ;redis-server redis6391.conf &
+-bash: syntax error near unexpected token `;'
+
+
+## 正确方式如下
+wanghengzhi@:/opt/homebrew/etc/myredis$ (redis-server redis6379.conf &); (redis-server redis6380.conf &); (redis-server redis6381.conf &); (redis-server redis6389.conf &); (redis-server redis6390.conf &); redis-server redis6391.conf &
+```
+
+
+## 扩展:
+- `&` 表示任务在后台执行
+- `&&`表示前一条命令执行成功时，才执行后一条命令
+- `|`表示管道，上一条命令的输出，作为下一条命令参数
+- `||`表示上一条命令执行失败后，才执行下一条命令
+- `;`各命令的执行给果，不会影响其它命令的执行
+
 # 管道相关命令
 ## xargs
 - xargs（英文全拼： eXtended ARGuments）是给命令传递参数的一个过滤器，也是组合多个命令的一个工具。

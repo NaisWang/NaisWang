@@ -14,20 +14,20 @@ Nginx在做反向代理时，提供性能稳定，并且能够提供配置灵活
 Nginx提供的负载均衡策略有2种：内置策略和扩展策略。内置策略为轮询，加权轮询，Ip hash。扩展策略，就天马行空，只有你想不到的没有他做不到的啦，你可以参照所有的负载均衡算法，给他一一找出来做下实现。
 
 **轮询**
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210511143125.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20230228094246.png)
 
 **加权轮询**
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210511143151.png" width="700px"/>
+![](https://raw.githubusercontent.com/NaisWang/images/master/20230228094339.png)
+
 
 **ip hash**
 iphash对客户端请求的ip进行hash操作，然后根据hash结果将同一个客户端ip的请求分发给同一台服务器进行处理，可以解决session不共享的问题。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210511143232.png" width="700px"/>
-
+![](https://raw.githubusercontent.com/NaisWang/images/master/20230228094358.png)
 
 ## 动静分离
 动静分离，在我们的软件开发中，有些请求是需要后台处理的，有些请求是不需要经过后台处理的（如：css、html、jpg、js等文件），这些不需要经过后台处理的文件称为静态文件。让动态网站里的动态网页根据一定规则把不变的资源和经常变的资源区分开来，动静资源做好了拆分以后，我们就可以根据静态资源的特点将其做缓存操作，提高资源响应的速度。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210511143513.png" width="700px"/>
 
+![](https://raw.githubusercontent.com/NaisWang/images/master/20230228094420.png)
 
 # LINUX安装nginx
 1. 安装Nginx
@@ -42,7 +42,8 @@ vi /usr/local/nginx/conf/nginx.conf
 将端口号改成8089，因为可能apeache占用80端口，apeache端口尽量不要修改，我们选择修改nginx端口。
 
 localhost修改为你服务器ip地址。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210511143908.png" width="500px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20230228094433.png)
 
 3. 启动nginx
 ```shell
@@ -61,7 +62,8 @@ centOS7关闭防火墙命令： systemctl stop firewalld.service
 随后访问该ip即可看到nginx界面。
 
 5. 访问服务器ip查看（备注，由于我监听的仍是80端口，所以ip后面的端口号被省略）
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210511144016.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20230228094453.png)
 
 # nginx常用命令
 **linux下nginx常用命令**
@@ -177,6 +179,110 @@ http {
 2. 惊群现象：一个网路连接到来，多个睡眠的进程被同时叫醒，但只有一个进程能获得链接，这样会影响系统性能。
 3. 每个指令必须有分号结束。
 
+# Nginx配置中root和alias的区别分析
+root和alias都可以定义在location模块中，都是用来指定请求资源的真实路径，比如：
+```
+location /i/ {  
+    root /data/w3;
+}
+```
+请求`http://foofish.net/i/top.gif` 这个地址时，那么在服务器里面对应的真正的资源是`/data/w3/i/top.gif`文件
+
+<font color="red">注意：真实的路径是root指定的值加上location指定的值。</font>
+
+而 alias 正如其名，alias指定的路径是location的别名，不管location的值怎么写，资源的 真实路径都是 alias 指定的路径 ，比如：
+```
+location /i/ {  
+  alias /data/w3/;
+}
+```
+同样请求`http://foofish.net/i/top.gif`时，在服务器查找的资源路径是：`/data/w3/top.gif`
+
+其他区别：
+1. alias 只能作用在location中，而root可以存在server、http和location中。
+2. alias 后面必须要用 “/” 结束，否则会找不到文件，而 root 则对 ”/” 可有可无。
+
+# 配置try_files实现内部重定向
+Nginx的配置语法灵活，可控制度非常高。
+
+在0.7以后的版本中加入了一个`try_files`指令，配合命名location，可以部分替代原本常用的rewrite配置方式，提高解析效率。
+
+## try_files指令介绍
+语法：`try_files file ... uri（格式1）` 或 `try_files file ... = code（格式2）`
+
+默认值：无
+
+作用域：server location
+
+解释说明：
+1. 按指定的file顺序查找存在的文件，并使用第一个找到的文件进行请求处理；
+2. 查找路径是按照给定的root或alias为根路径来查找的；
+3. 如果给出的file都没有匹配到，则会进行一个内部重定向到最后一个参数给定的uri，就是新的location匹配；
+4. 只有最后一个参数可以引起一个内部重定向，之前的参数只设置内部URI的指向；
+5. 最后一个参数是回退URI且必须存在，否则会出现内部500错误；
+6. 如果是（格式2），若最后一个参数是 = 404 ，若给出的file都没有匹配到，则最后返回404的响应码。
+
+## 举例说明
+例1：
+- root 后面的参数是前端vue项目贷吗安装目录；
+- `try_files` 负责扫描内部目录然后再进行内部重定向；
+- `expires` 是nginx控制缓存的一种方式，7d=7天。
+```
+location  /  {
+           root   /home/nx/dist;
+           try_files $uri $uri/ /index.php?$query_string
+           expires 7d;
+        }
+```
+当用户请求 `http://localhost/example` 时，这里的 `$uri` 就是 `/example`，`try_files` 会到硬盘里尝试找这个文件；如果存在名为 `/$root/example`（其中 `$root` 是项目代码安装目录）的文件，就直接把这个文件的内容发送给用户；显然，目录中没有叫 example 的文件；然后就看 `$uri/`，增加了一个 `/`，也就是看有没有名为 `/$root/example/` 的目录；又找不到，就会 `fall back `到 `try_files` 的最后一个选项 `/index.php`，发起一个内部 “子请求”，也就是相当于 nginx 发起一个 HTTP 请求到 http://localhost/index.php。
+
+例2：
+```
+location  /  {
+           try_files /app/cache/ $uri @fallback;
+           index index.php index.html;
+        }
+
+location  @fallback {
+          rewrite ^/(.*)$ http://www.baidu.com        # 跳转到百度
+        }
+```
+它将检测`$document_root/app/cache/index.php`，`$document_root/app/cache/index.html` 和 `$document_root$uri`是否存在，如果不存在着内部重定向到 `@fallback`。
+
+`＠`表示配置文件中预定义标记点，如上所示`（@fallback）`。
+
+你也可以使用一个文件或者状态码(=404)作为最后一个参数，如果是最后一个参数是文件，那么这个文件必须存在。
+
+## 我遇到的问题
+小编通过nginx启动vue以后，我们在访问页面的时候只能访问默认页面和通过项目内跳转其他页面，如果刷新就会404。如图：
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20230301193830.png)
+
+关于单页面，刷新404问题，如vue + nginx的配置， vue路由必须先加载 index.html 或者XX.js 才能识别到路由，故直接刷新页面会出现404。
+
+这时候最好到做法，是使用`try_files` 进行尝试，如果获取不到资源，加载index.html 再利用 rewrite的 last参数，保持路由路径不变，从而实现刷新页面。
+
+但需要注意：此种解决方法需要 vue和nginx部署在同一台服务器上，这样`try_files`才能在服务器硬盘上找到`index.html`文件。
+
+原来的nginx配置：
+```
+location / {
+           root   /home/vue/dist;
+           index  index.html index.htm index.jsp;
+        }
+```
+修改后的nginx配置：
+
+将默认的index注释掉，换成了`try_files`，它会去扫描内部目录然后再进行内部重定向，规则上面介绍过了。
+
+```
+location / {
+           root   /home/nx/dist;
+           #index  index.html index.htm index.jsp;
+           try_files $uri $uri/ /index.html;
+           expires 7d;
+        }
+```
 
 # Nginx 反向代理与负载均衡详解
 ## Nginx 代理服务的配置说明
@@ -194,7 +300,8 @@ proxy_method get;    #支持客户端的请求方法。post/get；
 proxy_http_version 1.0 ; #Nginx服务器提供代理服务的http协议版本1.0，1.1，默认设置为1.0版本
 ```
 4. 如果你的nginx服务器给2台web服务器做代理，负载均衡算法采用轮询，那么当你的一台机器web程序iis关闭，也就是说web不能访问，那么nginx服务器分发请求还是会给这台不能访问的web服务器，如果这里的响应连接时间过长，就会导致客户端的页面一直在等待响应，对用户来说体验就打打折扣，这里我们怎么避免这样的情况发生呢。这里我配张图来说明下问题。
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210511151035.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20230228094515.png)
 
 如果负载均衡中其中web2发生这样的情况，nginx首先会去web1请求，但是nginx在配置不当的情况下会继续分发请求道web2，然后等待web2响应，直到我们的响应时间超时，才会把请求重新分发给web1，这里的响应时间如果过长，用户等待的时间就会越长。
 下面的配置是解决方案之一。
@@ -311,7 +418,8 @@ upstream mysvr {
 5个步骤实现
 1. 进入nginx编译安装的目录
 这里的目录是指解压后的源码包里，例如：nginx-1.19.0
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210511174909.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20230228094537.png)
 
 2. 执行编译
 执行编译前的配置（configure的配置），添加需要的模块，我这里执行的是下面这条语句，按需添加即可，不一定按照我的写
@@ -327,20 +435,23 @@ upstream mysvr {
 先停止正在运行的nginx的服务（若不在运行则无视）: `nginx -s stop`
 将make之后产生的nginx命令复制到nginx目录
 make之后产生的nginx的位置是：objs（如果这个文件夹里没有，那就再sbin里面）
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210511175038.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20230228094549.png)
 
 5. 验证是否完成，如果生效会列出新增的模块
 ```shell
 nginx -V
 ```
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210511175134.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20230228094600.png)
 
 ## 给通过apt-get安装的nginx添加模块
 首先，要知道你原安装的nginx版本，以及原来安装的模块
 ```shell
 /usr/sbin/nginx -V
 ```
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210511180241.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20230228094613.png)
 
 然后去官网下载一个相同版本的源码包,解压
 ```shell
@@ -388,7 +499,8 @@ cp ./objs/nginx /usr/local/nginx/sbin/ #make编译过后的nginx，替换系统�
 # nginx解决跨域
 由于跨域问题**只**发生在浏览器上， 所以nginx服务器访问其他服务器资源是不存在跨域问题的。
 所以当我们不能修改要访问的服务器后端代码，即不能在要访问的服务器上使用CORS来解决跨域问题时， 我们可以让nginx服务器访问这个服务器，此时浏览器就只需要访问nginx服务器即可，但是，虽然nginx服务器与其他服务器资源不存在跨域问题，但是浏览器与nginx服务器之间还是存在跨域问题，如下：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210512224737.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20230228094628.png)
 
 不过，我们可以修改nginx服务器的配置（使用CORS），来解决跨域问题，这就是为什么要引入nginx的原因， 有关在nginx上使用CORS的配置如下：
 
@@ -449,10 +561,12 @@ server {
 ```
 
 注：当nginx服务器向其他资源服务器发送请求时，如果该请求对应的响应状态码为4xx,或5xx时, 则浏览器仍会报如下错误：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210513184615.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20230228094643.png)
 
 此时通过nginx的access.log查看可知，nginx发送请求的对应的响应状态码为500，表明资源服务器出现问题
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210513184732.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20230228094659.png)
 
 
 # nginx原理
@@ -477,7 +591,8 @@ http {
 }
 ```
 启动nginx后，使用`netstat -lntup`查看端口占用情况，如下：
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210512174904.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20230228094711.png)
 
 ## server_name的作用
 server_name 为虚拟服务器的识别路径。因此不同的域名会通过请求头中的HOST字段，匹配到特定的server块，转发到对应的应用服务器中去。
@@ -549,7 +664,9 @@ server {
 118.126.100.138 zkh.com
 118.126.100.138 zkh.org
 ```
-<img src="https://gitee.com/NaisWang/images/raw/master/img/20210512175600.png" width="700px"/>
+
+![](https://raw.githubusercontent.com/NaisWang/images/master/20230228094729.png)
+
 
 ### 匹配顺序
 server_name与host匹配优先级如下：
